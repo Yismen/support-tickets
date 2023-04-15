@@ -1,0 +1,50 @@
+{
+    "name": "dainsys/support",
+    "description": "Support and recipients management package for Dainsys. This package allows you to Associate recipients to your department files.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yismen Jorge",
+            "email": "yismen.jorge@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "illuminate/support": "^9.0|10.0",
+        "laravel/ui": "^4.0",
+        "livewire/livewire": "^2.10",
+        "rappasoft/laravel-livewire-tables": "^2.8",
+        "php-flasher/flasher-laravel": "^1.7",
+        "owen-it/laravel-auditing": "13.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "7.x-dev",
+        "nunomaduro/collision": "v6.x-dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dainsys\\Support\\Database\\Factories\\": "database/factories/",
+            "Dainsys\\Support\\Database\\Seeders\\": "database/seeders/",
+            "Dainsys\\Support\\": "src/"
+        },
+        "files": [
+            "helpers/functions.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dainsys\\Support\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Dainsys\\Support\\SupportServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    }
+}
