@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e9be181b7888c8ac247350182270221",
+    "content-hash": "3806293a384e9da0fc0bb487535680fe",
     "packages": [
         {
             "name": "brick/math",
@@ -1825,34 +1825,35 @@
         },
         {
             "name": "owen-it/laravel-auditing",
-            "version": "v13.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/owen-it/laravel-auditing.git",
-                "reference": "1ec0aabc97d660292679ff1045a1369b11c68912"
+                "reference": "74cccb458442541fb1176458d150569b71bf1aaa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/owen-it/laravel-auditing/zipball/1ec0aabc97d660292679ff1045a1369b11c68912",
-                "reference": "1ec0aabc97d660292679ff1045a1369b11c68912",
+                "url": "https://api.github.com/repos/owen-it/laravel-auditing/zipball/74cccb458442541fb1176458d150569b71bf1aaa",
+                "reference": "74cccb458442541fb1176458d150569b71bf1aaa",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "illuminate/console": "^7.0|^8.0|^9.0",
-                "illuminate/database": "^7.0|^8.0|^9.0",
-                "illuminate/filesystem": "^7.0|^8.0|^9.0",
+                "illuminate/console": "^7.0|^8.0|^9.0|^10.0",
+                "illuminate/database": "^7.0|^8.0|^9.0|^10.0",
+                "illuminate/filesystem": "^7.0|^8.0|^9.0|^10.0",
                 "php": "^7.3|^8.0"
             },
             "require-dev": {
                 "laravel/legacy-factories": "*",
                 "mockery/mockery": "^1.0",
-                "orchestra/testbench": "^5.0|^6.0|^7.0",
+                "orchestra/testbench": "^5.0|^6.0|^7.0|^8.0",
                 "phpunit/phpunit": "^9.0"
             },
             "suggest": {
                 "laravelista/lumen-vendor-publish": "Needed to publish the package configuration in Lumen"
             },
+            "default-branch": true,
             "type": "package",
             "extra": {
                 "branch-alias": {
@@ -1909,7 +1910,7 @@
                 "issues": "https://github.com/owen-it/laravel-auditing/issues",
                 "source": "https://github.com/owen-it/laravel-auditing"
             },
-            "time": "2022-03-01T14:56:19+00:00"
+            "time": "2023-03-22T18:32:30+00:00"
         },
         {
             "name": "php-flasher/flasher",
@@ -2701,6 +2702,88 @@
             "time": "2023-03-14T16:41:21+00:00"
         },
         {
+            "name": "spatie/laravel-permission",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-permission.git",
+                "reference": "21a295b47d7f0c1d8f51ae4aea7e7bb92ab9b791"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/21a295b47d7f0c1d8f51ae4aea7e7bb92ab9b791",
+                "reference": "21a295b47d7f0c1d8f51ae4aea7e7bb92ab9b791",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/auth": "^8.0|^9.0|^10.0",
+                "illuminate/container": "^8.0|^9.0|^10.0",
+                "illuminate/contracts": "^8.0|^9.0|^10.0",
+                "illuminate/database": "^8.0|^9.0|^10.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.0|^7.0|^8.0",
+                "phpunit/phpunit": "^9.4"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "6.x-dev",
+                    "dev-master": "6.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Spatie\\Permission\\PermissionServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Spatie\\Permission\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Permission handling for Laravel 8.0 and up",
+            "homepage": "https://github.com/spatie/laravel-permission",
+            "keywords": [
+                "acl",
+                "laravel",
+                "permission",
+                "permissions",
+                "rbac",
+                "roles",
+                "security",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-permission/issues",
+                "source": "https://github.com/spatie/laravel-permission/tree/main"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-04-14T21:30:25+00:00"
+        },
+        {
             "name": "symfony/console",
             "version": "6.3.x-dev",
             "source": {
@@ -3317,12 +3400,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "c64aefc43b190ce5958dbcc1c2b530f94b73b29f"
+                "reference": "1228905999bb890c86c14d39b421575b7b4cf3fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/c64aefc43b190ce5958dbcc1c2b530f94b73b29f",
-                "reference": "c64aefc43b190ce5958dbcc1c2b530f94b73b29f",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/1228905999bb890c86c14d39b421575b7b4cf3fc",
+                "reference": "1228905999bb890c86c14d39b421575b7b4cf3fc",
                 "shasum": ""
             },
             "require": {
@@ -3426,7 +3509,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-15T08:04:42+00:00"
+            "time": "2023-04-17T12:35:19+00:00"
         },
         {
             "name": "symfony/mailer",
