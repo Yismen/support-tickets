@@ -30,10 +30,12 @@ class TestCase extends OrchestraTestCase
         return [
             \Laravel\Ui\UiServiceProvider::class,
             \Livewire\LivewireServiceProvider::class,
-            \Rappasoft\LaravelLivewireTables\LaravelLivewireTablesServiceProvider::class,
             \Flasher\Laravel\FlasherServiceProvider::class,
-            \Dainsys\Support\SupportServiceProvider::class,
             \Spatie\Permission\PermissionServiceProvider::class,
+            \OwenIt\Auditing\AuditingServiceProvider::class,
+            \Rappasoft\LaravelLivewireTables\LaravelLivewireTablesServiceProvider::class,
+
+            \Dainsys\Support\SupportServiceProvider::class,
         ];
     }
 

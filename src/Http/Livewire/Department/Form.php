@@ -67,7 +67,7 @@ class Form extends Component
 
         $this->emit('departmentUpdated');
 
-        // flash('Department created!', 'success');
+        flasher('Department created!', 'success');
     }
 
     public function update()
@@ -79,11 +79,11 @@ class Form extends Component
 
         $this->dispatchBrowserEvent('closeAllModals');
 
-        // flashMessage('Department Updated!', 'warning');
-
         $this->editing = false;
 
         $this->emit('departmentUpdated');
+
+        flasher('Department updated!', 'success');
     }
 
     protected function getRules()
