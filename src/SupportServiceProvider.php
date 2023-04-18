@@ -4,6 +4,7 @@ namespace Dainsys\Support;
 
 use Livewire\Livewire;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Gate;
 use Dainsys\Support\Models\Department;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Console\Scheduling\Schedule;
@@ -27,6 +28,10 @@ class SupportServiceProvider extends AuthServiceProvider
         $this->bootPublishableAssets();
         $this->bootLoads();
         $this->bootLivewireComponents();
+
+        Gate::before(function ($user, $ability) {
+            return $user->hasAnyRole(['support super admin', 'Support Super Admin']) ? true : null;
+        });
 
         if ($this->app->runningInConsole() && !app()->isProduction()) {
             $this->commands([

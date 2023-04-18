@@ -12,7 +12,6 @@ class Index extends Component
     use AuthorizesRequests;
 
     protected $listeners = [
-
         'departmentUpdated' => '$refresh',
     ];
 

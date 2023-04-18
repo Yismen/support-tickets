@@ -14,11 +14,11 @@
 
         @if ($editing)
         <x-support::button type="submit" color="warning" class="btn-sm">
-            {{ __('support::messages.update') }}
+            {{ str(__('support::messages.update'))->upper() }}
         </x-support::button>
         @else
         <x-support::button type="submit" color="primary" class="btn-sm">
-            {{ __('support::messages.create') }}
+            {{ str(__('support::messages.create'))->upper() }}
         </x-support::button>
         @endif
     </div>

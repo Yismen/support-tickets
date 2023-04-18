@@ -10,7 +10,6 @@ class Department extends AbstractModel
 {
     use HasManyReasons;
     use HasManyTickets;
-
     protected $fillable = ['name', 'description'];
 
     protected static function newFactory(): DepartmentFactory

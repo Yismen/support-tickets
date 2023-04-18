@@ -13,112 +13,205 @@ class FormTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function recipient_form_requires_authorization_to_create()
+    public function department_form_requires_authorization_to_create_department()
     {
-        $recipient = Department::factory()->create();
-        $component = Livewire::test(Form::class)
-            ->emit('createDepartment', $recipient->id);
+        $department = Department::factory()->create();
+        $component = Livewire::test(Form::class);
+
+        $component->emit('createDepartment', $department);
 
         $component->assertForbidden();
     }
 
     /** @test */
-    public function recipient_form_requires_authorization_to_update()
+    public function department_form_requires_authorization_to_update_department()
     {
-        $recipient = Department::factory()->create();
-        $component = Livewire::test(Form::class)
-            ->emit('updateDepartment', $recipient->id);
+        $department = Department::factory()->create();
+        $component = Livewire::test(Form::class);
+
+        $component->emit('updateDepartment', $department);
 
         $component->assertForbidden();
     }
 
     /** @test */
-    public function recipient_index_component_responds_to_wants_create_recipient_event()
+    public function department_form_component_grants_access_to_super_admin_to_create_department()
     {
-        $this->withAuthorizedUser();
-        $component = Livewire::test(Form::class)
-            ->emit('createDepartment');
+        $this->withSuperUser();
+        $department = Department::factory()->create();
 
+        $component = Livewire::test(Form::class);
+        $component->emit('createDepartment', $department);
+
+        $component->assertOk();
+    }
+
+    /** @test */
+    public function department_form_component_grants_access_to_super_admin_to_update_department()
+    {
+        $this->withSuperUser();
+        $department = Department::factory()->create();
+
+        $component = Livewire::test(Form::class);
+        $component->emit('updateDepartment', $department);
+
+        $component->assertOk();
+    }
+
+    /** @test */
+    public function department_form_component_grants_access_to_authorized_users_to_create_department()
+    {
+        $this->withAuthorizedUser('create departments');
+        $department = Department::factory()->create();
+
+        $component = Livewire::test(Form::class);
+        $component->emit('createDepartment', $department);
+
+        $component->assertOk();
+    }
+
+    /** @test */
+    public function department_form_component_grants_access_to_authorized_users_to_update_department()
+    {
+        $this->withAuthorizedUser('update departments');
+        $department = Department::factory()->create();
+
+        $component = Livewire::test(Form::class);
+        $component->emit('updateDepartment', $department);
+
+        $component->assertOk();
+    }
+
+    /** @test */
+    public function department_form_component_responds_to_create_department_event()
+    {
+        $this->withAuthorizedUser('create departments');
+        $department = new Department();
+
+        $component = Livewire::test(Form::class);
+        $component->emit('createDepartment', $department);
+
+        $component->assertSet('department', $department);
         $component->assertSet('editing', false);
         $component->assertDispatchedBrowserEvent('closeAllModals');
         $component->assertDispatchedBrowserEvent('showDepartmentFormModal');
     }
 
     /** @test */
-    // public function recipient_index_component_responds_to_wants_edit_recipient_event()
-    // {
-    //     $this->withAuthorizedUser();
-    //     $component = Livewire::test(Form::class)
-    //         ->emit('updateDepartment');
+    public function department_form_component_responds_to_update_department_event()
+    {
+        $this->withAuthorizedUser('update departments');
+        $department = Department::factory()->create();
 
-    //     $component->assertSet('editing', true);
-    //     $component->assertDispatchedBrowserEvent('closeAllModals');
-    //     $component->assertDispatchedBrowserEvent('showDepartmentFormModal');
-    // }
+        $component = Livewire::test(Form::class);
+        $component->emit('updateDepartment', $department);
 
-    /** @test */
-    // public function recipient_index_component_create_new_record()
-    // {
-    //     $this->withAuthorizedUser();
-    //     $data = ['name' => 'New Department', 'email' => 'new email'];
-    //     $component = Livewire::test(Form::class)
-    //         ->set('recipient', new Department($data));
-
-    //     $component->call('store');
-    //     $component->assertSet('editing', false);
-    //     $component->assertDispatchedBrowserEvent('closeAllModals');
-    //     $component->assertEmitted('recipientUpdated');
-
-    //     $this->assertDatabaseHas(supportTableName('recipients'), $data);
-    // }
+        $component->assertSet('department', $department);
+        $component->assertSet('editing', true);
+        $component->assertDispatchedBrowserEvent('closeAllModals');
+        $component->assertDispatchedBrowserEvent('showDepartmentFormModal');
+    }
 
     /** @test */
-    // public function recipient_index_component_update_record()
-    // {
-    //     $this->withAuthorizedUser();
-    //     $recipient = Department::factory()->create(['name' => 'New Department', 'email' => 'New email']);
-    //     $component = Livewire::test(Form::class)
-    //         ->set('recipient', $recipient)
-    //         ->set('recipient.name', 'Updated Department')
-    //         ->set('recipient.email', 'Updated email');
+    public function department_form_component_validates_required_fields_to_create_departments()
+    {
+        $this->withAuthorizedUser('create departments');
+        $data = ['name' => ''];
+        $component = Livewire::test(Form::class)
+            ->set('department', new Department($data));
 
-    //     $component->call('update');
-
-    //     $component->assertSet('editing', false);
-    //     $component->assertDispatchedBrowserEvent('closeAllModals');
-    //     $component->assertEmitted('recipientUpdated');
-    //     $this->assertDatabaseHas(supportTableName('recipients'), ['name' => 'Updated Department', 'email' => 'Updated email']);
-    // }
+        $component->call('store');
+        $component->assertHasErrors(['department.name' => 'required']);
+    }
 
     /** @test */
-    // public function recipient_index_component_validates_required_fields()
-    // {
-    //     $this->withAuthorizedUser();
-    //     $data = ['name' => ''];
-    //     $component = Livewire::test(Form::class)
-    //         ->set('recipient', new Department($data));
+    public function department_form_component_validates_required_fields_to_update_departments()
+    {
+        $this->withAuthorizedUser('update departments');
+        $component = Livewire::test(Form::class)
+            ->set('department', Department::factory()->create())
+            ->set('department.name', '');
 
-    //     $component->call('store');
-    //     $component->assertHasErrors(['recipient.name' => 'required']);
-
-    //     $component->call('update');
-    //     $component->assertHasErrors(['recipient.name' => 'required']);
-    // }
+        $component->call('update');
+        $component->assertHasErrors(['department.name' => 'required']);
+    }
 
     /** @test */
-    // public function recipient_index_component_validates_unique_fields()
-    // {
-    //     $this->withAuthorizedUser();
-    //     $data = ['name' => 'New Name'];
-    //     $recipient = Department::factory()->create($data);
+    public function department_form_component_validates_unique_fields_to_create_departments()
+    {
+        $department = Department::factory()->create();
+        $this->withAuthorizedUser('create departments');
+        $data = ['name' => $department->name];
+        $component = Livewire::test(Form::class)
+            ->set('department', new Department($data));
 
-    //     $component = Livewire::test(Form::class)
-    //         ->set('recipient.name', $recipient->name);
+        $component->call('store');
+        $component->assertHasErrors(['department.name' => 'unique']);
+    }
 
-    //     $component->call('store');
-    //     $component->assertHasErrors(['recipient.name' => 'unique']);
+    /** @test */
+    public function department_form_component_validates_unique_fields_to_update_departments_except_on_self_record()
+    {
+        $department_1 = Department::factory()->create();
+        $department_2 = Department::factory()->create();
+        $this->withAuthorizedUser('update departments');
+        $component = Livewire::test(Form::class);
 
-    //     $component->set('recipient', $recipient)->call('update');
-    //     $component->assertHasNoErrors(['recipient.name' => 'unique']);
-    // }
+        $component->set('department', $department_1);
+
+        $component->set('department.name', $department_2->name);
+
+        $component->call('update');
+        $component->assertHasErrors(['department.name' => 'unique']);
+
+        $component->set('department.name', $department_1->name);
+        $component->assertHasNoErrors(['department.name' => 'unique']);
+    }
+
+    /** @test */
+    public function department_form_component_creates_department()
+    {
+        $this->withAuthorizedUser('create departments');
+        $department = Department::factory()->make();
+        $component = Livewire::test(Form::class);
+        $component->emit('createDepartment', new Department());
+        $component->set('department.name', $department->name);
+
+        $component->call('store');
+
+        $component->assertSet('department.name', $department->name);
+        $component->assertSet('editing', false);
+        $component->assertDispatchedBrowserEvent('closeAllModals');
+        $component->assertEmitted('departmentUpdated');
+
+        $this->assertDatabasehas(Department::class, [
+            'name' => $department->name
+        ]);
+
+        // $component->assertSessionHas('success', 'Department created!');
+    }
+
+    /** @test */
+    public function department_form_component_updates_department()
+    {
+        $this->withAuthorizedUser('update departments');
+        $department = Department::factory()->create();
+
+        $component = Livewire::test(Form::class);
+        $component->emit('updateDepartment', $department);
+        $component->set('department.name', 'new name');
+
+        $component->call('update');
+
+        $component->assertSet('editing', false);
+        $component->assertDispatchedBrowserEvent('closeAllModals');
+        $component->assertEmitted('departmentUpdated');
+
+        $this->assertDatabasehas(Department::class, [
+            'id' => $department->id,
+            'name' => 'new name',
+        ]);
+
+        // $component->assertSessionHas('success', 'Department created!');
+    }
 }

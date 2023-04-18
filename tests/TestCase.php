@@ -2,8 +2,10 @@
 
 namespace Dainsys\Support\Tests;
 
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Dainsys\Support\Tests\Models\User;
+use Spatie\Permission\Models\Permission;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 class TestCase extends OrchestraTestCase
@@ -31,6 +33,7 @@ class TestCase extends OrchestraTestCase
             \Rappasoft\LaravelLivewireTables\LaravelLivewireTablesServiceProvider::class,
             \Flasher\Laravel\FlasherServiceProvider::class,
             \Dainsys\Support\SupportServiceProvider::class,
+            \Spatie\Permission\PermissionServiceProvider::class,
         ];
     }
 
@@ -51,12 +54,22 @@ class TestCase extends OrchestraTestCase
         $this->actingAs($user);
     }
 
-    protected function withAuthorizedUser()
+    protected function withAuthorizedUser(string $permission)
     {
-        $user = User::factory()->create([
-            'email' => 'yismen.jorge@gmail.com',
-            'name' => 'Yismen Jorge'
-        ]);
+        $user = User::factory()->create();
+        $permission = Permission::create(['name' => $permission]);
+
+        $user->givePermissionTo($permission);
+
+        $this->actingAs($user);
+    }
+
+    protected function withSuperUser()
+    {
+        $user = User::factory()->create();
+        $role = Role::create(['name' => 'support super admin']);
+
+        $user->assignRole($role);
 
         $this->actingAs($user);
     }

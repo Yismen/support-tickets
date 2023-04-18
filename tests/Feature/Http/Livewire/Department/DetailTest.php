@@ -16,18 +16,45 @@ class DetailTest extends TestCase
     public function department_detail_requires_authorization()
     {
         $department = Department::factory()->create();
-        $component = Livewire::test(Detail::class)
-            ->emit('showDepartment', $department->id);
+        $component = Livewire::test(Detail::class);
+
+        $component->emit('showDepartment', $department);
 
         $component->assertForbidden();
     }
 
     /** @test */
-    public function department_index_component_responds_to_wants_show_department_event()
+    public function department_detail_component_grants_access_to_super_admin()
     {
-        $this->withAuthorizedUser();
-        $component = Livewire::test(Detail::class)
-            ->emit('showDepartment');
+        $this->withSuperUser();
+        $department = Department::factory()->create();
+
+        $component = Livewire::test(Detail::class);
+        $component->emit('showDepartment', $department);
+
+        $component->assertOk();
+    }
+
+    /** @test */
+    public function department_detail_component_grants_access_to_authorized_users()
+    {
+        $this->withAuthorizedUser('view departments');
+        $department = Department::factory()->create();
+
+        $component = Livewire::test(Detail::class);
+        $component->emit('showDepartment', $department);
+
+        $component->assertOk();
+    }
+
+    /** @test */
+    public function department_detail_component_responds_to_wants_show_department_event()
+    {
+        $this->withAuthorizedUser('view departments');
+        $department = Department::factory()->create();
+
+        $component = Livewire::test(Detail::class);
+        $component->emit('showDepartment', $department);
 
         $component->assertSet('editing', false);
         $component->assertDispatchedBrowserEvent('closeAllModals');
