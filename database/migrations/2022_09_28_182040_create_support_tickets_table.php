@@ -4,10 +4,9 @@ use Dainsys\Support\Models\Reason;
 use Illuminate\Foundation\Auth\User;
 use Dainsys\Support\Models\Department;
 use Illuminate\Support\Facades\Schema;
-use Dainsys\Support\Enums\TicketStatusesEnum;
-use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Dainsys\Support\Enums\TicketPrioritiesEnum;
 
 class CreateSupportTicketsTable extends Migration
 {
@@ -26,7 +25,6 @@ class CreateSupportTicketsTable extends Migration
             $table->text('description');
             $table->foreignIdFor(User::class, 'assigned_to')->nullable();
             $table->dateTime('assigned_at')->nullable();
-            $table->integer('status')->default(TicketStatusesEnum::Pending->value); // pending, in_progress, on_hold, complete
             $table->dateTime('expected_at')->nullable();
             $table->integer('priority')->default(TicketPrioritiesEnum::Normal->value); // normal, medium, high
             $table->dateTime('completed_at')->nullable();

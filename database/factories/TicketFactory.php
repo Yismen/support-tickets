@@ -6,8 +6,8 @@ use Dainsys\Support\Models\Reason;
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Models\Department;
 use Dainsys\Support\Enums\TicketStatusesEnum;
-use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Orchestra\Testbench\Factories\UserFactory;
+use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TicketFactory extends Factory
@@ -31,12 +31,11 @@ class TicketFactory extends Factory
             'department_id' => Department::factory(),
             'reason_id' => Reason::factory(),
             'description' => $this->faker->sentence(4),
-            'assigned_to' => UserFactory::new()->create(),
-            'assigned_at' => now(),
-            'status' => TicketStatusesEnum::Pending->value,
+            // 'assigned_to' => UserFactory::new()->create(),
+            // 'assigned_at' => now(),
             'expected_at' => now(),
             'priority' => TicketPrioritiesEnum::Normal->value,
-            'completed_at' => now(),
+            // 'completed_at' => now(),
         ];
     }
 
@@ -45,7 +44,7 @@ class TicketFactory extends Factory
         return $this->state(function (array $aatributes) {
             return [
                 'assigned_to' => null,
-                'status' => TicketStatusesEnum::Pending->value,
+                'assigned_at' => null,
             ];
         });
     }
@@ -54,16 +53,8 @@ class TicketFactory extends Factory
     {
         return $this->state(function (array $aatributes) {
             return [
-                'status' => TicketStatusesEnum::InProgress->value,
-            ];
-        });
-    }
-
-    public function onHold()
-    {
-        return $this->state(function (array $aatributes) {
-            return [
-                'status' => TicketStatusesEnum::OnHold->value,
+                'assigned_to' => UserFactory::new()->create(),
+                'assigned_at' => now(),
             ];
         });
     }
@@ -72,7 +63,7 @@ class TicketFactory extends Factory
     {
         return $this->state(function (array $aatributes) {
             return [
-                'status' => TicketStatusesEnum::Completed->value,
+                'completed_at' => now(),
             ];
         });
     }

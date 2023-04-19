@@ -25,7 +25,6 @@ class TicketTest extends TestCase
             'assigned_to',
             'assigned_at',
             'expected_at',
-            'status',
             'priority',
             'completed_at',
         ]));
