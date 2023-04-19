@@ -30,6 +30,17 @@
                 </a>
             </li> --}}
 
+
+
+            {{-- <li class="nav-item">
+                <a href="{{ route('support.super_admins') }}" class="nav-link">
+                    <i class="nav-icon far fa-address-card"></i>
+                    <p>
+                        {{ str(__('support::messages.super_admins'))->headline() }}
+                    </p>
+                </a>
+            </li> --}}
+
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-circle nav-icon"></i>

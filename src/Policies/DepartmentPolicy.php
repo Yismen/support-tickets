@@ -18,7 +18,7 @@ class DepartmentPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view departments') || $user->hasAnyRole(['support management']);
+        return $user->isSuperAdmin();
     }
 
     /**
@@ -30,7 +30,7 @@ class DepartmentPolicy
      */
     public function view(User $user, Department $department): bool
     {
-        return $user->can('view departments') || $user->hasAnyRole(['support management']);
+        return $user->isSuperAdmin();
     }
 
     /**
@@ -41,7 +41,7 @@ class DepartmentPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create departments') || $user->hasAnyRole(['support management']);
+        return $user->isSuperAdmin();
     }
 
     /**
@@ -53,7 +53,7 @@ class DepartmentPolicy
      */
     public function update(User $user, Department $department): bool
     {
-        return $user->can('update departments') || $user->hasAnyRole(['support management']);
+        return $user->isSuperAdmin();
     }
 
     /**
@@ -65,7 +65,7 @@ class DepartmentPolicy
      */
     public function delete(User $user, Department $department): bool
     {
-        return $user->can('delete departments') || $user->hasAnyRole(['support management']);
+        return $user->isSuperAdmin();
     }
 
     /**
@@ -77,7 +77,7 @@ class DepartmentPolicy
      */
     public function restore(User $user, Department $department): bool
     {
-        return $user->can('restore departments') || $user->hasAnyRole(['support management']);
+        return $user->isSuperAdmin();
     }
 
     /**
@@ -89,6 +89,6 @@ class DepartmentPolicy
      */
     public function forceDelete(User $user, Department $department): bool
     {
-        return $user->can('delete departments') || $user->hasAnyRole(['support management']);
+        return $user->isSuperAdmin();
     }
 }

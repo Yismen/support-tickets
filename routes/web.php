@@ -19,7 +19,10 @@ Route::middleware(['web'])->group(function () {
         )->group(function () {
             Route::get('dashboard', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('dashboard');
 
-            Route::get('departments', \Dainsys\Support\Http\Livewire\Department\Index::class)
-                    ->name('departments.index');
+            // Route::get('super_admins', \Dainsys\Support\Http\Livewire\SuperAdmin\Index::class)
+            //         ->name('super_admins.index');
+
+                    Route::get('departments', \Dainsys\Support\Http\Livewire\Department\Index::class)
+                            ->name('departments.index');
         });
 });

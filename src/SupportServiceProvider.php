@@ -30,7 +30,7 @@ class SupportServiceProvider extends AuthServiceProvider
         $this->bootLivewireComponents();
 
         Gate::before(function ($user, $ability) {
-            return $user->hasAnyRole(['support super admin', 'Support Super Admin']) ? true : null;
+            return $user->isSuperAdmin() ? true : null;
         });
 
         if ($this->app->runningInConsole() && !app()->isProduction()) {
