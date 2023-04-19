@@ -38,16 +38,19 @@ class InstallCommand extends Command
     public function handle()
     {
         $this->call('vendor:publish', ['--tag' => 'support:assets', '--force' => true]);
-        $this->call('vendor:publish', ['--tag' => 'support:translations']);
-        $this->call('ui:auth');
+        $this->call('vendor:publish', ['--tag' => 'support:views']);
         $this->call('migrate');
+
+        if ($this->confirm('Would you like to scafold the auth ui?')) {
+            $this->call('ui:auth');
+        }
 
         if ($this->confirm('Would you like to publish the support\'s configuration file?')) {
             $this->call('vendor:publish', ['--tag' => 'support:config']);
         }
 
-        if ($this->confirm('Would you like to publish the support\'s view files?')) {
-            $this->call('vendor:publish', ['--tag' => 'support:views']);
+        if ($this->confirm('Would you like to publish the support\'s translations files?')) {
+            $this->call('vendor:publish', ['--tag' => 'support:translations']);
         }
 
         $this->info('All done!');
