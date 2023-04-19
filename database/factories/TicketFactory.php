@@ -5,8 +5,8 @@ namespace Dainsys\Support\Database\Factories;
 use Dainsys\Support\Models\Reason;
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Models\Department;
-use Dainsys\Support\Enums\TicketStatus;
-use Dainsys\Support\Enums\TicketPriority;
+use Dainsys\Support\Enums\TicketStatusesEnum;
+use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Orchestra\Testbench\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -33,9 +33,9 @@ class TicketFactory extends Factory
             'description' => $this->faker->sentence(4),
             'assigned_to' => UserFactory::new()->create(),
             'assigned_at' => now(),
-            'status' => TicketStatus::Pending->value,
+            'status' => TicketStatusesEnum::Pending->value,
             'expected_at' => now(),
-            'priority' => TicketPriority::Normal->value,
+            'priority' => TicketPrioritiesEnum::Normal->value,
             'completed_at' => now(),
         ];
     }
@@ -45,7 +45,7 @@ class TicketFactory extends Factory
         return $this->state(function (array $aatributes) {
             return [
                 'assigned_to' => null,
-                'status' => TicketStatus::Pending->value,
+                'status' => TicketStatusesEnum::Pending->value,
             ];
         });
     }
@@ -54,7 +54,7 @@ class TicketFactory extends Factory
     {
         return $this->state(function (array $aatributes) {
             return [
-                'status' => TicketStatus::InProgress->value,
+                'status' => TicketStatusesEnum::InProgress->value,
             ];
         });
     }
@@ -63,7 +63,7 @@ class TicketFactory extends Factory
     {
         return $this->state(function (array $aatributes) {
             return [
-                'status' => TicketStatus::OnHold->value,
+                'status' => TicketStatusesEnum::OnHold->value,
             ];
         });
     }
@@ -72,7 +72,7 @@ class TicketFactory extends Factory
     {
         return $this->state(function (array $aatributes) {
             return [
-                'status' => TicketStatus::Completed->value,
+                'status' => TicketStatusesEnum::Completed->value,
             ];
         });
     }
@@ -81,7 +81,7 @@ class TicketFactory extends Factory
     {
         return $this->state(function (array $aatributes) {
             return [
-                'priority' => TicketPriority::Medium->value,
+                'priority' => TicketPrioritiesEnum::Medium->value,
             ];
         });
     }
@@ -90,7 +90,7 @@ class TicketFactory extends Factory
     {
         return $this->state(function (array $aatributes) {
             return [
-                'priority' => TicketPriority::High->value,
+                'priority' => TicketPrioritiesEnum::High->value,
             ];
         });
     }
@@ -99,7 +99,7 @@ class TicketFactory extends Factory
     {
         return $this->state(function (array $aatributes) {
             return [
-                'priority' => TicketPriority::Emergency->value,
+                'priority' => TicketPrioritiesEnum::Emergency->value,
             ];
         });
     }

@@ -2,7 +2,7 @@
 
 namespace Dainsys\Support\Enums;
 
-enum TicketStatus: int
+enum TicketStatusesEnum: int
 {
     case Pending = 0;
     case InProgress = 2;
