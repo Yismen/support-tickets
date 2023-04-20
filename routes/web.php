@@ -22,7 +22,10 @@ Route::middleware(['web'])->group(function () {
             // Route::get('super_admins', \Dainsys\Support\Http\Livewire\SuperAdmin\Index::class)
             //         ->name('super_admins.index');
 
-                    Route::get('departments', \Dainsys\Support\Http\Livewire\Department\Index::class)
-                            ->name('departments.index');
+            Route::get('departments', \Dainsys\Support\Http\Livewire\Department\Index::class)
+                ->name('departments.index');
+
+            Route::get('reasons', \Dainsys\Support\Http\Livewire\Reason\Index::class)
+                ->name('reasons.index');
         });
 });

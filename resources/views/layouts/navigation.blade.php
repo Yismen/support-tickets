@@ -37,6 +37,15 @@
                 </a>
             </li>
             @endcan
+
+            @can('viewAny', \Dainsys\Support\Models\Reason::class)
+            <li class="nav-item">
+                <a href="{{ route('support.admin.reasons.index') }}" target="_top" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>{{ str(__('support::messages.reasons'))->headline() }}</p>
+                </a>
+            </li>
+            @endcan
         </ul>
     </nav>
     <!-- /.sidebar-menu -->

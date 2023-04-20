@@ -11,4 +11,6 @@ return [
     'edit' => 'edit',
     'update' => 'update',
     'department' => 'department',
+    'reasons' => 'reasons',
+    'reason' => 'reason',
 ];

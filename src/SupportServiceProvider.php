@@ -98,5 +98,10 @@ class SupportServiceProvider extends AuthServiceProvider
         Livewire::component('support::department.index', \Dainsys\Support\Http\Livewire\Department\Index::class);
         Livewire::component('support::department.detail', \Dainsys\Support\Http\Livewire\Department\Detail::class);
         Livewire::component('support::department.form', \Dainsys\Support\Http\Livewire\Department\Form::class);
+
+        Livewire::component('support::reason.table', \Dainsys\Support\Http\Livewire\Reason\Table::class);
+        Livewire::component('support::reason.index', \Dainsys\Support\Http\Livewire\Reason\Index::class);
+        Livewire::component('support::reason.detail', \Dainsys\Support\Http\Livewire\Reason\Detail::class);
+        Livewire::component('support::reason.form', \Dainsys\Support\Http\Livewire\Reason\Form::class);
     }
 }
