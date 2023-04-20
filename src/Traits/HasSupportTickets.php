@@ -4,8 +4,8 @@ namespace Dainsys\Support\Traits;
 
 use Dainsys\Support\Models\Department;
 use Dainsys\Support\Models\SuperAdmin;
-use Dainsys\Support\Enums\DepartmentRolesEnum;
 use Dainsys\Support\Models\DepartmentRole;
+use Dainsys\Support\Enums\DepartmentRolesEnum;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 trait HasSupportTickets

@@ -29,37 +29,14 @@
                     </p>
                 </a>
             </li> --}}
-
-
-
-            {{-- <li class="nav-item">
-                <a href="{{ route('support.super_admins') }}" class="nav-link">
-                    <i class="nav-icon far fa-address-card"></i>
-                    <p>
-                        {{ str(__('support::messages.super_admins'))->headline() }}
-                    </p>
-                </a>
-            </li> --}}
-
+            @can('viewAny', \Dainsys\Support\Models\Department::class)
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-circle nav-icon"></i>
-                    <p>
-                        {{ str(__('support::messages.support_links'))->headline() }}
-                        <i class="fas fa-angle-left right"></i>
-                    </p>
+                <a href="{{ route('support.admin.departments.index') }}" target="_top" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>{{ str(__('support::messages.departments'))->headline() }}</p>
                 </a>
-                <ul class="nav nav-treeview" style="display: none;">
-                    @can('viewAny', \Dainsys\Support\Models\Department::class)
-                    <li class="nav-item">
-                        <a href="{{ route('support.admin.departments.index') }}" target="_top" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>{{ str(__('support::messages.departments'))->headline() }}</p>
-                        </a>
-                    </li>
-                    @endcan
-                </ul>
             </li>
+            @endcan
         </ul>
     </nav>
     <!-- /.sidebar-menu -->

@@ -3,7 +3,7 @@
 namespace Dainsys\Support\Tests;
 
 use Illuminate\Support\Facades\Auth;
-use Dainsys\Support\Tests\Models\User;
+use Orchestra\Testbench\Factories\UserFactory;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 class TestCase extends OrchestraTestCase
@@ -48,14 +48,14 @@ class TestCase extends OrchestraTestCase
 
     protected function withAuthenticatedUser()
     {
-        $user = User::factory()->create();
+        $user = UserFactory::new()->create();
 
         $this->actingAs($user);
     }
 
     protected function withAuthorizedUser(string $permission)
     {
-        $user = User::factory()->create();
+        $user = UserFactory::new()->create();
         $super_user = $user->superAdmin()->create();
 
         $this->actingAs($user);
@@ -63,7 +63,7 @@ class TestCase extends OrchestraTestCase
 
     protected function withSuperUser()
     {
-        $user = User::factory()->create();
+        $user = UserFactory::new()->create();
         $super_user = $user->superAdmin()->create();
 
         $this->actingAs($user);
@@ -71,7 +71,7 @@ class TestCase extends OrchestraTestCase
 
     public function withoutAuthorizedUser()
     {
-        $user = User::factory()->create([
+        $user = UserFactory::new()->create([
             'email' => 'some@random.com',
             'name' => 'Some Random'
         ]);

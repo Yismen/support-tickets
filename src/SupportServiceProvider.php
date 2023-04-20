@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Console\Scheduling\Schedule;
 use Dainsys\Support\Policies\DepartmentPolicy;
 use Dainsys\Support\Console\Commands\InstallCommand;
+use Dainsys\Support\Console\Commands\CreateSuperUser;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider;
 
 class SupportServiceProvider extends AuthServiceProvider
@@ -36,6 +37,7 @@ class SupportServiceProvider extends AuthServiceProvider
         if ($this->app->runningInConsole() && !app()->isProduction()) {
             $this->commands([
                 InstallCommand::class,
+                CreateSuperUser::class,
             ]);
         }
 

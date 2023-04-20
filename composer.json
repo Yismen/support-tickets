@@ -34,7 +34,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Dainsys\\Support\\Tests\\": "tests/"
+            "Dainsys\\Support\\Tests\\": "tests/",
+            "App\\Models\\": "tests/Models/"
         }
     },
     "extra": {
