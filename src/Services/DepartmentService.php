@@ -14,6 +14,13 @@ class DepartmentService implements ServicesContract
         });
     }
 
+    public static function listWithReason()
+    {
+        return Cache::rememberForever('departments_list_with_reason', function () {
+            return Department::orderBy('name')->whereHas('reasons')->pluck('name', 'id');
+        });
+    }
+
     public static function count(): int
     {
         return Cache::rememberForever('departments_count', function () {

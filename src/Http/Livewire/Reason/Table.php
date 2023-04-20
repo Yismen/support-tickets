@@ -57,10 +57,15 @@ class Table extends AbstractDataTableComponent
                         '' => 'All',
 
                     ] +
-                    DepartmentService::list()->toArray()
+                    DepartmentService::listWithReason()->toArray()
                 )->filter(function (Builder $builder, int $value) {
                     $builder->where('department_id', $value);
                 }),
         ];
+    }
+
+    protected function withDefaultSorting()
+    {
+        $this->setDefaultSort('name', 'asc');
     }
 }

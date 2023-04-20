@@ -14,6 +14,13 @@ class ReasonService implements ServicesContract
         });
     }
 
+    public static function listWithDeaprtment()
+    {
+        return Cache::rememberForever('reasons_list_with_department', function () {
+            return Reason::orderBy('name')->whereHas('department')->pluck('name', 'id');
+        });
+    }
+
     public static function count(): int
     {
         return Cache::rememberForever('reasons_count', function () {
