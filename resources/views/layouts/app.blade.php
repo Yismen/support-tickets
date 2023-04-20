@@ -54,7 +54,7 @@
                             <a href="{{ route('logout') }}" class="dropdown-item"
                                 onclick="event.preventDefault(); this.closest('form').submit();">
                                 <i class="mr-2 fas fa-sign-out-alt"></i>
-                                {{ __('support::messages.log_out') }}
+                                {{ __('log_out') }}
                             </a>
                         </form>
                     </div>

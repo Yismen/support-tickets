@@ -13,4 +13,5 @@ return [
     'department' => 'department',
     'reasons' => 'reasons',
     'reason' => 'reason',
+    'super_admins' => 'super_admins',
 ];

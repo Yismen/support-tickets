@@ -20,15 +20,15 @@
                     </p>
                 </a>
             </li>
-            {{--
+            @can('viewAny', \Dainsys\Support\Models\SuperAdmin::class)
             <li class="nav-item">
-                <a href="{{ route('support.admin.dashboard') }}" class="nav-link">
-                    <i class="nav-icon far fa-address-card"></i>
-                    <p>
-                        {{ __('support::messages.dashboard') }}
-                    </p>
+                <a href="{{ route('support.admin.super_admins.index') }}" target="_top" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>{{ str(__('support::messages.super_admins'))->headline() }}</p>
                 </a>
-            </li> --}}
+            </li>
+            @endcan
+
             @can('viewAny', \Dainsys\Support\Models\Department::class)
             <li class="nav-item">
                 <a href="{{ route('support.admin.departments.index') }}" target="_top" class="nav-link">

@@ -36,7 +36,6 @@
 
 @case('open')
 <div class="form-group">
-    {{-- <label for="{{ $question->slug() }}-{{ $option->id }}  ">{{ $option->name }}</label> --}}
     <textarea class="form-control" name="{{ $question->slug() }}-{{ $option->id }} "
         id="{{ $question->slug() }}-{{ $option->id }}" rows="3"
         wire:model.lazy='responses.{{ $question->id }}.option.{{ $option->id }}'></textarea>

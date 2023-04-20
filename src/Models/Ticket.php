@@ -17,6 +17,9 @@ class Ticket extends AbstractModel implements Auditable
 
     protected $casts = [
         'priority' => TicketPrioritiesEnum::class,
+        'assigned_at' => 'datetime',
+        'expected_at' => 'datetime',
+        'completed_at' => 'datetime',
     ];
 
     protected static function newFactory(): TicketFactory
