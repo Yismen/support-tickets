@@ -20,11 +20,20 @@
                     </p>
                 </a>
             </li>
+
             @can('viewAny', \Dainsys\Support\Models\SuperAdmin::class)
             <li class="nav-item">
                 <a href="{{ route('support.admin.super_admins.index') }}" target="_top" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>{{ str(__('support::messages.super_admins'))->headline() }}</p>
+                </a>
+            </li>
+            @endcan
+            @can('viewAny', \Dainsys\Support\Models\DepartmentRole::class)
+            <li class="nav-item">
+                <a href="{{ route('support.admin.department_roles.index') }}" target="_top" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>{{ str(__('support::messages.department_roles'))->headline() }}</p>
                 </a>
             </li>
             @endcan

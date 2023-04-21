@@ -21,6 +21,13 @@ class DepartmentService implements ServicesContract
         });
     }
 
+    public static function listWithRole()
+    {
+        return Cache::rememberForever('departments_list_with_role', function () {
+            return Department::orderBy('name')->whereHas('role')->pluck('name', 'id');
+        });
+    }
+
     public static function count(): int
     {
         return Cache::rememberForever('departments_count', function () {

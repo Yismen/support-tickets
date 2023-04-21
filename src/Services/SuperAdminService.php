@@ -10,7 +10,6 @@ class SuperAdminService implements ServicesContract
 {
     public static function list()
     {
-        dd(User::with('super_admin')->get());
         return Cache::rememberForever('SuperAdmins_list', function () {
             return User::with('super_admin')->get();
         });

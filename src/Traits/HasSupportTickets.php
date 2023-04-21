@@ -7,6 +7,7 @@ use Dainsys\Support\Models\SuperAdmin;
 use Dainsys\Support\Models\DepartmentRole;
 use Dainsys\Support\Enums\DepartmentRolesEnum;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasSupportTickets
 {
@@ -32,8 +33,16 @@ trait HasSupportTickets
             && $this->departmentRole->department_id === $department->id;
     }
 
-    protected function departmentRole(): HasOne
+    public function departmentRole(): HasOne
     {
         return $this->hasOne(DepartmentRole::class);
     }
+
+    // public function department(): BelongsTo
+    // {
+    //     // dd(new Department(['name' => null]));
+    //     return $this->departmentRole
+    //         ? $this->departmentRole->department()
+    //         : new Department(['name' => '']);
+    // }
 }

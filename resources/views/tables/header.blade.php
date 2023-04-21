@@ -4,5 +4,7 @@
         <span class="badge badge-btn bg-primary bg-gradient">{{ $count ?? 0 }}</span>
     </div>
 
+    @if ($this->create_button)
     @include('support::tables.create', ['module' => $module ])
+    @endif
 </h4>

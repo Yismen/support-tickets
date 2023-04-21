@@ -8,6 +8,10 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 
 abstract class AbstractDataTableComponent extends DataTableComponent
 {
+    protected $create_button = true;
+    protected $show_button = true;
+    protected $edit_button = true;
+
     public function configure(): void
     {
         $records = $this->builder()->getModel()->count();
@@ -77,4 +81,19 @@ abstract class AbstractDataTableComponent extends DataTableComponent
 
 //         return Str::of(get_class($this))->beforeLast('\\')->afterLast('\\')->plural()->headline()->__toString() . ' ' . Str::of(get_class($this))->afterLast('\\')->headline()->__toString();
 //     }
+
+    public function disableCreateButton()
+    {
+        $this->create_button = false;
+    }
+
+    public function disableEditButton()
+    {
+        $this->edit_button = false;
+    }
+
+    public function disableShowButton()
+    {
+        $this->show_button = false;
+    }
 }

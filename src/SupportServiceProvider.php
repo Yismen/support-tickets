@@ -30,9 +30,9 @@ class SupportServiceProvider extends AuthServiceProvider
         $this->bootLoads();
         $this->bootLivewireComponents();
 
-        Gate::before(function ($user, $ability) {
-            return $user->isSuperAdmin() ? true : null;
-        });
+        // Gate::before(function ($user, $ability) {
+        //     return $user->isSuperAdmin() ? true : null;
+        // });
 
         if ($this->app->runningInConsole() && !app()->isProduction()) {
             $this->commands([
@@ -105,5 +105,9 @@ class SupportServiceProvider extends AuthServiceProvider
         Livewire::component('support::reason.form', \Dainsys\Support\Http\Livewire\Reason\Form::class);
 
         Livewire::component('support::super_admin.index', \Dainsys\Support\Http\Livewire\SuperAdmin\Index::class);
+
+        Livewire::component('support::department_role.index', \Dainsys\Support\Http\Livewire\DepartmentRole\Index::class);
+        Livewire::component('support::department_role.table', \Dainsys\Support\Http\Livewire\DepartmentRole\Table::class);
+        Livewire::component('support::department_role.form', \Dainsys\Support\Http\Livewire\DepartmentRole\Form::class);
     }
 }

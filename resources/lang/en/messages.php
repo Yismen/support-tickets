@@ -13,5 +13,9 @@ return [
     'department' => 'department',
     'reasons' => 'reasons',
     'reason' => 'reason',
+    'role' => 'role',
+    'for' => 'for',
     'super_admins' => 'super_admins',
+    'department_roles' => 'department_roles',
+    'department_role' => 'department_role',
 ];

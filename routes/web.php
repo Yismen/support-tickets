@@ -30,5 +30,8 @@ Route::middleware(['web'])->group(function () {
 
             Route::get('super_admins', \Dainsys\Support\Http\Livewire\SuperAdmin\Index::class)
                 ->name('super_admins.index');
+
+            Route::get('department_roles', \Dainsys\Support\Http\Livewire\DepartmentRole\Index::class)
+                ->name('department_roles.index');
         });
 });
