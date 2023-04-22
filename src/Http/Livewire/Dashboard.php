@@ -19,6 +19,7 @@ class Dashboard extends Component
             // 'departments' => DepartmentFilesService::count(),
             // 'registered' => DepartmentService::count(),
             // 'departments' => DepartmentService::count(),
+            'user' => auth()->user()
         ])
         ->layout('support::layouts.app');
     }

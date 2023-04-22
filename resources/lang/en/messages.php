@@ -2,6 +2,7 @@
 
 return [
     'about' => 'about',
+    'dashboard' => 'dashboard',
     'support_links' => 'support_links',
     'table' => 'table',
     'departments' => 'departments',

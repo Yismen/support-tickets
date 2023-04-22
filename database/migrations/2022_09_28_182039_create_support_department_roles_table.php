@@ -18,7 +18,7 @@ class CreateSupportDepartmentRolesTable extends Migration
     {
         Schema::create(supportTableName('department_roles'), function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(User::class)->unique();
             $table->foreignIdFor(Department::class);
             $table->string('role')->default(DepartmentRolesEnum::Agent->value);
 

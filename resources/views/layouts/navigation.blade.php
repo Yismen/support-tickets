@@ -3,20 +3,12 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            {{-- <li class="nav-item">
-                <a href="{{ route('support.admin.dashboard.index') }}" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
-                    <p>
-                        {{ __('support::messages.dashboard') }}
-                    </p>
-                </a>
-            </li> --}}
 
             <li class="nav-item">
-                <a href="{{ route('support.about') }}" class="nav-link">
+                <a href="{{ route('support.dashboard') }}" class="nav-link">
                     <i class="nav-icon far fa-address-card"></i>
                     <p>
-                        {{ str(__('support::messages.about'))->headline() }}
+                        {{ str(__('support::messages.dashboard'))->headline() }}
                     </p>
                 </a>
             </li>

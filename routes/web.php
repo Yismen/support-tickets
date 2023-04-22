@@ -2,36 +2,23 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['web'])->group(function () {
-    // Guest Routes
-    Route::as('support.')
-    ->prefix('support')
+Route::middleware(['web', 'auth'])
     ->group(function () {
-        Route::get('', \Dainsys\Support\Http\Controllers\AboutController::class);
-        Route::get('admin', \Dainsys\Support\Http\Controllers\AboutController::class);
-        Route::get('about', \Dainsys\Support\Http\Controllers\AboutController::class)->name('about');
+        Route::as('support.')
+            ->prefix('support')
+            ->group(function () {
+                Route::get('', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('home');
+                Route::get('admin', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('admin');
+                Route::get('dashboard', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('dashboard');
+
+                Route::as('admin.')
+                    ->group(function () {
+                        Route::get('departments', \Dainsys\Support\Http\Livewire\Department\Index::class)->name('departments.index');
+                        Route::get('reasons', \Dainsys\Support\Http\Livewire\Reason\Index::class)->name('reasons.index');
+
+                        Route::get('super_admins', \Dainsys\Support\Http\Livewire\SuperAdmin\Index::class)->name('super_admins.index');
+
+                        Route::get('department_roles', \Dainsys\Support\Http\Livewire\DepartmentRole\Index::class)->name('department_roles.index');
+                    });
+            });
     });
-    // Auth Routes
-    Route::as('support.admin.')
-        ->prefix(config('support.routes_prefix.admin'))
-        ->middleware(
-            preg_split('/[,|]+/', config('support.midlewares.web'), -1, PREG_SPLIT_NO_EMPTY)
-        )->group(function () {
-            Route::get('dashboard', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('dashboard');
-
-            // Route::get('super_admins', \Dainsys\Support\Http\Livewire\SuperAdmin\Index::class)
-            //         ->name('super_admins.index');
-
-            Route::get('departments', \Dainsys\Support\Http\Livewire\Department\Index::class)
-                ->name('departments.index');
-
-            Route::get('reasons', \Dainsys\Support\Http\Livewire\Reason\Index::class)
-                ->name('reasons.index');
-
-            Route::get('super_admins', \Dainsys\Support\Http\Livewire\SuperAdmin\Index::class)
-                ->name('super_admins.index');
-
-            Route::get('department_roles', \Dainsys\Support\Http\Livewire\DepartmentRole\Index::class)
-                ->name('department_roles.index');
-        });
-});

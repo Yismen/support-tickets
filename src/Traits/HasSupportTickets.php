@@ -21,16 +21,14 @@ trait HasSupportTickets
         return $this->superAdmin()->exists();
     }
 
-    public function isDepartmentAdmin(Department $department): bool
+    public function isDepartmentAdmin(): bool
     {
-        return $this->departmentRole->role == DepartmentRolesEnum::Admin
-            && $this->departmentRole->department_id === $department->id;
+        return $this->departmentRole?->role == DepartmentRolesEnum::Admin;
     }
 
-    public function isDepartmentAgent(Department $department): bool
+    public function isDepartmentAgent(): bool
     {
-        return $this->departmentRole->role == DepartmentRolesEnum::Agent
-            && $this->departmentRole->department_id === $department->id;
+        return $this->departmentRole?->role == DepartmentRolesEnum::Agent;
     }
 
     public function departmentRole(): HasOne

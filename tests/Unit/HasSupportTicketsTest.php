@@ -28,11 +28,9 @@ class HasSupportTicketsTest extends TestCase
     {
         $user = UserFactory::new()->create();
         $valid_department = Department::factory()->create();
-        $not_valid_department = Department::factory()->create();
         $department_role = DepartmentRole::factory()->admin()->create(['user_id' => $user->id, 'department_id' => $valid_department->id]);
 
-        $this->assertTrue($user->isDepartmentAdmin($valid_department));
-        $this->assertFalse($user->isDepartmentAdmin($not_valid_department));
+        $this->assertTrue($user->isDepartmentAdmin());
     }
 
     /** @test */
@@ -40,11 +38,9 @@ class HasSupportTicketsTest extends TestCase
     {
         $user = UserFactory::new()->create();
         $valid_department = Department::factory()->create();
-        $not_valid_department = Department::factory()->create();
         $department_role = DepartmentRole::factory()->agent()->create(['user_id' => $user->id, 'department_id' => $valid_department->id]);
 
-        $this->assertTrue($user->isDepartmentAgent($valid_department));
-        $this->assertFalse($user->isDepartmentAgent($not_valid_department));
+        $this->assertTrue($user->isDepartmentAgent());
     }
 
     /** @test */

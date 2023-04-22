@@ -10,20 +10,6 @@ return [
     */
     'midlewares' => [
         'api' => 'api',
-        'web' => 'auth',
     ],
     'db_prefix' => 'support_',
-    'routes_prefix' => [
-        'guest' => 'support',
-        'admin' => 'support/admin'
-    ],
-    'seeds' => [
-        'termination_types' => [],
-        'termination_reasons' => [],
-        'suspension_types' => [],
-        'citizenships' => [],
-        'departments' => [],
-        'payment_types' => [],
-    ],
-    'layout' => env('LAYOUT_VIEW', 'support::layouts.app')
 ];
