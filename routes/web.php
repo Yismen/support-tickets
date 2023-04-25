@@ -9,7 +9,7 @@ Route::middleware(['web', 'auth'])
             ->group(function () {
                 Route::get('', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('home');
                 Route::get('admin', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('admin');
-                Route::get('dashboard', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('dashboard');
+                Route::get('tickets', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('tickets');
 
                 Route::as('admin.')
                     ->group(function () {

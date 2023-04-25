@@ -27,4 +27,11 @@ class ReasonService implements ServicesContract
             return Reason::count();
         });
     }
+
+    public static function listForDeaprtment($department)
+    {
+        return Cache::rememberForever("reasons_list_for_department_{$department}", function () use ($department) {
+            return Reason::orderBy('name')->where('department_id', $department)->pluck('name', 'id');
+        });
+    }
 }

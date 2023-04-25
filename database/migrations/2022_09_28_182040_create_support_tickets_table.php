@@ -5,6 +5,7 @@ use Illuminate\Foundation\Auth\User;
 use Dainsys\Support\Models\Department;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
+use Dainsys\Support\Enums\TicketStatusesEnum;
 use Illuminate\Database\Migrations\Migration;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 
@@ -28,6 +29,9 @@ class CreateSupportTicketsTable extends Migration
             $table->dateTime('expected_at')->nullable();
             $table->integer('priority')->default(TicketPrioritiesEnum::Normal->value); // normal, medium, high
             $table->dateTime('completed_at')->nullable();
+            $table->string('status')->default(TicketStatusesEnum::Pending->value);
+
+            $table->softDeletes();
 
             $table->timestamps();
         });

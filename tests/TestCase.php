@@ -71,10 +71,7 @@ class TestCase extends OrchestraTestCase
 
     public function withoutAuthorizedUser()
     {
-        $user = UserFactory::new()->create([
-            'email' => 'some@random.com',
-            'name' => 'Some Random'
-        ]);
+        $user = UserFactory::new()->create();
 
         $this->actingAs($user);
     }

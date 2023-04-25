@@ -67,7 +67,7 @@ class SupportServiceProvider extends AuthServiceProvider
         ], 'support:assets');
 
         $this->publishes([
-            __DIR__ . '/../resources/lang' => resource_path('lang/vendor/support'),
+            __DIR__ . '/../resources/lang' => $this->app->langPath('vendor/support'),
         ], 'support:translations');
     }
 
@@ -77,7 +77,7 @@ class SupportServiceProvider extends AuthServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'support');
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'support');
+        $this->loadTranslationsFrom(__DIR__ . '/../lang', 'support');
     }
 
     protected function registerSchedulledCommands()
@@ -109,5 +109,10 @@ class SupportServiceProvider extends AuthServiceProvider
         Livewire::component('support::department_role.index', \Dainsys\Support\Http\Livewire\DepartmentRole\Index::class);
         Livewire::component('support::department_role.table', \Dainsys\Support\Http\Livewire\DepartmentRole\Table::class);
         Livewire::component('support::department_role.form', \Dainsys\Support\Http\Livewire\DepartmentRole\Form::class);
+
+        Livewire::component('support::ticket.user.table', \Dainsys\Support\Http\Livewire\Ticket\User\Table::class);
+        Livewire::component('support::ticket.user.index', \Dainsys\Support\Http\Livewire\Ticket\User\Index::class);
+        Livewire::component('support::ticket.user.detail', \Dainsys\Support\Http\Livewire\Ticket\User\Detail::class);
+        Livewire::component('support::ticket.user.form', \Dainsys\Support\Http\Livewire\Ticket\User\Form::class);
     }
 }

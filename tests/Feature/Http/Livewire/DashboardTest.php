@@ -21,7 +21,7 @@ class DashboardTest extends TestCase
 
         $component = Livewire::test(Dashboard::class);
 
-        $component->assertSee('Regular User Dashboard');
+        $component->assertSee('My Tickets');
     }
 
     /** @test */

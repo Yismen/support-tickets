@@ -36,6 +36,7 @@ class TicketFactory extends Factory
             'expected_at' => now(),
             'priority' => TicketPrioritiesEnum::Normal->value,
             // 'completed_at' => now(),
+            'status' => TicketStatusesEnum::Pending->value,
         ];
     }
 

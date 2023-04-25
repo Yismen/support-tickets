@@ -2,7 +2,6 @@
 
 namespace Dainsys\Support\Http\Livewire;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 
@@ -74,13 +73,6 @@ abstract class AbstractDataTableComponent extends DataTableComponent
     {
         $this->setDefaultSort('name', 'asc');
     }
-
-//     public function getTitle(): string
-//     {
-//         dd(str(get_class($this))->beforeLast('\\'));
-
-//         return Str::of(get_class($this))->beforeLast('\\')->afterLast('\\')->plural()->headline()->__toString() . ' ' . Str::of(get_class($this))->afterLast('\\')->headline()->__toString();
-//     }
 
     public function disableCreateButton()
     {

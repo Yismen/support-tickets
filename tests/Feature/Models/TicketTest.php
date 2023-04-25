@@ -27,6 +27,7 @@ class TicketTest extends TestCase
             'expected_at',
             'priority',
             'completed_at',
+            'status',
         ]));
     }
 
