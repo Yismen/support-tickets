@@ -5,7 +5,7 @@ namespace Dainsys\Support\Tests\Feature\Models;
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Tests\TestCase;
 use Dainsys\Support\Models\Department;
-use Dainsys\Support\Enums\TicketStatusesEnum;
+use Dainsys\Support\Enums\TicketProgressesEnum;
 use Orchestra\Testbench\Factories\UserFactory;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,7 +31,7 @@ class TicketTest extends TestCase
             // 'expected_at',
             'priority',
             'completed_at',
-            'status',
+            'progress',
         ]));
     }
 
@@ -82,12 +82,12 @@ class TicketTest extends TestCase
     // completed after timeframe
 
     /** @test */
-    public function tickets_model_update_status_to_pending_when_ticket_is_created()
+    public function tickets_model_update_progress_to_pending_when_ticket_is_created()
     {
-        $ticket = Ticket::factory()->create(['status' => TicketStatusesEnum::InProgress, 'assigned_to' => 20]);
+        $ticket = Ticket::factory()->create(['progress' => TicketProgressesEnum::InProgress, 'assigned_to' => 20]);
 
         $this->assertDatabaseHas(Ticket::class, [
-            'status' => TicketStatusesEnum::Pending,
+            'progress' => TicketProgressesEnum::Pending,
             'assigned_to' => null,
         ]);
     }
@@ -104,7 +104,7 @@ class TicketTest extends TestCase
         $this->assertDatabaseHas(Ticket::class, [
             'assigned_to' => $agent->id,
             'assigned_at' => now(),
-            'status' => TicketStatusesEnum::InProgress,
+            'progress' => TicketProgressesEnum::InProgress,
         ]);
     }
 
@@ -118,7 +118,7 @@ class TicketTest extends TestCase
         $ticket->complete();
 
         $this->assertDatabaseHas(Ticket::class, [
-            'status' => TicketStatusesEnum::Completed,
+            'progress' => TicketProgressesEnum::Completed,
             'completed_at' => now(),
         ]);
     }
