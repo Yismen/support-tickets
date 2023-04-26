@@ -6,28 +6,33 @@
     @endphp
 
     <x-support::modal modal-name="TicketForm" title="{{ $title }}" event-name="{{ $this->modal_event_name_form }}"
-        :backdrop="false">
+        :backdrop="false" class="modal-xl">
 
         <x-support::form :editing="$editing">
             <div class="p-3">
 
-                <x-support::inputs.select field='ticket.department_id' :options='$departments'>
-                    {{ str(__('support::messages.department'))->headline() }}:
-                </x-support::inputs.select>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <x-support::inputs.select field='ticket.department_id' :options='$departments'>
+                            {{ str(__('support::messages.department'))->headline() }}:
+                        </x-support::inputs.select>
+                    </div>
 
-                @if (empty($ticket->department_id) === false)
-                <x-support::inputs.select field='ticket.reason_id' :options='$reasons'>
-                    {{ str(__('support::messages.reason'))->headline() }}:
-                </x-support::inputs.select>
-                @endif
+                    <div class="col-sm-6">
+                        <x-support::inputs.select field='ticket.reason_id' :options='$reasons'>
+                            {{ str(__('support::messages.reason'))->headline() }}:
+                        </x-support::inputs.select>
+                    </div>
+                </div>
 
                 <x-support::inputs.text-area field="ticket.description">
                     {{ str(__('support::messages.description'))->headline() }}:
                 </x-support::inputs.text-area>
 
-                <x-support::inputs.radios field='ticket.priority' :options='$priorities' :placeholder=false>
+                <x-support::inputs.radio-group field='ticket.priority' :options='$priorities' :placeholder=false
+                    class="form-check-inline">
                     {{ str(__('support::messages.priority'))->headline() }}:
-                </x-support::inputs.radios>
+                </x-support::inputs.radio-group>
 
 
             </div>
