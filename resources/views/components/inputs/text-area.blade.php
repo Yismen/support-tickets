@@ -1,15 +1,16 @@
 @props([
 'field',
-'required' => true
+'required' => true,
 ])
 
 <div class="mb-3">
     <x-support::inputs.label :field="$field" :required="$required" :label="$slot" />
-    <textarea wire:model='{{ $field }}' id="{{ $field }}" {{ $attributes->class([
+    <textarea wire:model='{{ $field }}' {{ $attributes->class([
             'form-control',
             'is-invalid' => $errors->has($field)
         ])->merge([
-            'rows' => 5
+            'rows' => 5,
+            'id' => $field 
         ]) }}
         ></textarea>
 

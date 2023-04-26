@@ -65,6 +65,7 @@ class Table extends AbstractDataTableComponent
                 ->sortable(),
             Column::make('Description')
                 ->format(fn ($value, $row) => $row->short_description)
+                ->html()
                 ->sortable()
                 ->searchable(),
             Column::make('Status')
