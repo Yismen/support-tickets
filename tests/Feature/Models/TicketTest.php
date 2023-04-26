@@ -4,6 +4,10 @@ namespace Dainsys\Support\Tests\Feature\Models;
 
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Tests\TestCase;
+use Dainsys\Support\Models\Department;
+use Dainsys\Support\Enums\TicketStatusesEnum;
+use Orchestra\Testbench\Factories\UserFactory;
+use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TicketTest extends TestCase
@@ -24,7 +28,7 @@ class TicketTest extends TestCase
             'description',
             'assigned_to',
             'assigned_at',
-            'expected_at',
+            // 'expected_at',
             'priority',
             'completed_at',
             'status',
@@ -53,5 +57,69 @@ class TicketTest extends TestCase
         $ticket = Ticket::factory()->create();
 
         $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, $ticket->reason());
+    }
+
+    /** @test */
+    public function tickets_model_updates_expected_at_when_priority_is_updated()
+    {
+        $ticket = Ticket::factory()->create(['expected_at' => now()->subDays()]);
+
+        $this->assertDatabaseHas(Ticket::class, [
+            'expected_at' => TicketPrioritiesEnum::Normal->expectedAt(),
+        ]);
+    }
+
+    // case Pending = 'pending';
+    // created
+
+    // case Expired = 'expired';
+    // Not completed yet, time passed,
+    // case InProgress = 'assigned';
+    // Assigned, not completed yet, still on time
+    // case OnTime = 'on_time';
+    // Completed on time
+    // case Late = 'late';
+    // completed after timeframe
+
+    /** @test */
+    public function tickets_model_update_status_to_pending_when_ticket_is_created()
+    {
+        $ticket = Ticket::factory()->create(['status' => TicketStatusesEnum::InProgress, 'assigned_to' => 20]);
+
+        $this->assertDatabaseHas(Ticket::class, [
+            'status' => TicketStatusesEnum::Pending,
+            'assigned_to' => null,
+        ]);
+    }
+
+    /** @test */
+    public function tickets_model_can_assign_an_agent()
+    {
+        $agent = UserFactory::new()->create();
+        $department = Department::factory()->create();
+        $ticket = Ticket::factory()->unassigned()->create(['department_id' => $department->id]);
+
+        $ticket->assignTo($agent);
+
+        $this->assertDatabaseHas(Ticket::class, [
+            'assigned_to' => $agent->id,
+            'assigned_at' => now(),
+            'status' => TicketStatusesEnum::InProgress,
+        ]);
+    }
+
+    /** @test */
+    public function tickets_model_can_be_completed()
+    {
+        $agent = UserFactory::new()->create();
+        $department = Department::factory()->create();
+        $ticket = Ticket::factory()->assigned()->create(['department_id' => $department->id]);
+
+        $ticket->complete();
+
+        $this->assertDatabaseHas(Ticket::class, [
+            'status' => TicketStatusesEnum::Completed,
+            'completed_at' => now(),
+        ]);
     }
 }

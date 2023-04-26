@@ -33,7 +33,7 @@ class TicketFactory extends Factory
             'description' => $this->faker->sentence(4),
             // 'assigned_to' => UserFactory::new()->create(),
             // 'assigned_at' => now(),
-            'expected_at' => now(),
+            // 'expected_at' => now(),
             'priority' => TicketPrioritiesEnum::Normal->value,
             // 'completed_at' => now(),
             'status' => TicketStatusesEnum::Pending->value,
@@ -46,6 +46,16 @@ class TicketFactory extends Factory
             return [
                 'assigned_to' => null,
                 'assigned_at' => null,
+            ];
+        });
+    }
+
+    public function assigned()
+    {
+        return $this->state(function (array $aatributes) {
+            return [
+                'assigned_to' => UserFactory::new()->create(),
+                'assigned_at' => now(),
             ];
         });
     }
@@ -65,6 +75,15 @@ class TicketFactory extends Factory
         return $this->state(function (array $aatributes) {
             return [
                 'completed_at' => now(),
+            ];
+        });
+    }
+
+    public function normal()
+    {
+        return $this->state(function (array $aatributes) {
+            return [
+                'priority' => TicketPrioritiesEnum::Normal->value,
             ];
         });
     }

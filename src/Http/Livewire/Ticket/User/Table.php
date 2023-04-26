@@ -92,16 +92,18 @@ class Table extends AbstractDataTableComponent
     public function filters(): array
     {
         return [
-            // SelectFilter::make('Department')
-            //     ->options(
-            //         [
-            //             '' => 'All',
+            SelectFilter::make('Department')
+                ->options(
+                    [
+                        '' => 'All',
 
-            //         ] +
-            //         DepartmentService::list()->toArray()
-            //     )->filter(function (Builder $builder, int $value) {
-            //         $builder->where('department_id', $value);
-            //     }),
+                    ] +
+                    DepartmentService::list()->toArray()
+                )->filter(function (Builder $builder, int $value) {
+                    $builder->whereHas('department', function ($query) use ($value) {
+                        $query->where('id', $value);
+                    });
+                }),
             SelectFilter::make('Reason')
                 ->options(
                     [
@@ -110,7 +112,7 @@ class Table extends AbstractDataTableComponent
                     ] +
                     Reason::pluck('name', 'id')->toArray()
                 )->filter(function (Builder $builder, int $value) {
-                    $builder->where('ticket_id', $value);
+                    $builder->where('reason_id', $value);
                 }),
             SelectFilter::make('Priority')
                 ->options(

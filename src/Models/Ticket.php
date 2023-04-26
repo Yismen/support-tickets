@@ -2,6 +2,7 @@
 
 namespace Dainsys\Support\Models;
 
+use Illuminate\Foundation\Auth\User;
 use OwenIt\Auditing\Contracts\Auditable;
 use Dainsys\Support\Enums\TicketStatusesEnum;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
@@ -31,8 +32,44 @@ class Ticket extends AbstractModel implements Auditable
         return TicketFactory::new();
     }
 
+    protected static function booted()
+    {
+        static::created(function ($model) {
+            $model->updateQuietly([
+                'status' => TicketStatusesEnum::Pending,
+                'assigned_to' => null
+            ]);
+        });
+        static::saved(function ($model) {
+            $model->updateQuietly([
+                'expected_at' => $model->priority->expectedAt()
+            ]);
+        });
+    }
+
     public function getShortDescriptionAttribute()
     {
         return str($this->attributes['description'] ?? '')->limit(25);
+    }
+
+    public function assignTo(User|int $agent)
+    {
+        if (is_integer($agent)) {
+            $agent = User::findOrFail($agent);
+        }
+
+        $this->updateQuietly([
+            'assigned_to' => $agent->id,
+            'assigned_at' => now(),
+            'status' => TicketStatusesEnum::InProgress,
+        ]);
+    }
+
+    public function complete()
+    {
+        $this->updateQuietly([
+            'status' => TicketStatusesEnum::Completed,
+            'completed_at' => now(),
+        ]);
     }
 }
