@@ -4,7 +4,7 @@ namespace Dainsys\Support\Enums;
 
 use Dainsys\Support\Enums\Traits\AsArray;
 
-enum TicketProgressesEnum: int implements EnumContract
+enum TicketStatusesEnum: int implements EnumContract
 {
     use AsArray;
     case Pending = 1;

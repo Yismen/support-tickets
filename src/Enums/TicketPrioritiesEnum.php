@@ -7,10 +7,10 @@ use Dainsys\Support\Enums\Traits\AsArray;
 enum TicketPrioritiesEnum: int implements EnumContract
 {
     use AsArray;
-    case Normal = 0;
-    case Medium = 1;
-    case High = 2;
-    case Emergency = 3;
+    case Normal = 1;
+    case Medium = 2;
+    case High = 3;
+    case Emergency = 4;
 
     public function class(): string
     {

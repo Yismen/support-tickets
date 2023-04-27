@@ -5,9 +5,9 @@ namespace Dainsys\Support\Tests\Feature\Models;
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Tests\TestCase;
 use Dainsys\Support\Models\Department;
+use Dainsys\Support\Enums\TicketStatusesEnum;
 use Orchestra\Testbench\Factories\UserFactory;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
-use Dainsys\Support\Enums\TicketProgressesEnum;
 use Dainsys\Support\Traits\EnsureDateNotWeekend;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -33,7 +33,7 @@ class TicketTest extends TestCase
             // 'expected_at',
             'priority',
             'completed_at',
-            'progress',
+            'status',
         ]));
     }
 
@@ -121,7 +121,7 @@ class TicketTest extends TestCase
         $this->assertDatabaseHas(Ticket::class, [
             'assigned_to' => $agent->id,
             'assigned_at' => now(),
-            'progress' => TicketProgressesEnum::InProgress,
+            'status' => TicketStatusesEnum::InProgress,
         ]);
     }
 
@@ -140,30 +140,30 @@ class TicketTest extends TestCase
     }
 
     /** @test */
-    public function tickets_model_update_progress_to_pending_when_ticket_is_created()
+    public function tickets_model_update_status_to_pending_when_ticket_is_created()
     {
-        $ticket = Ticket::factory()->create(['progress' => TicketProgressesEnum::InProgress]);
+        $ticket = Ticket::factory()->create(['status' => TicketStatusesEnum::InProgress]);
 
         $this->assertDatabaseHas(Ticket::class, [
-            'progress' => TicketProgressesEnum::Pending,
+            'status' => TicketStatusesEnum::Pending,
         ]);
     }
 
     /** @test */
-    public function tickets_model_update_progress_to_pending_expired_when_expected_at_has_passed()
+    public function tickets_model_update_status_to_pending_expired_when_expected_at_has_passed()
     {
-        $ticket = Ticket::factory()->unassigned()->create(['progress' => TicketProgressesEnum::InProgress]);
+        $ticket = Ticket::factory()->unassigned()->create(['status' => TicketStatusesEnum::InProgress]);
 
         $this->travelTo(now()->addDays(20));
         $ticket->touch();
 
         $this->assertDatabaseHas(Ticket::class, [
-            'progress' => TicketProgressesEnum::PendingExpired,
+            'status' => TicketStatusesEnum::PendingExpired,
         ]);
     }
 
     /** @test */
-    public function tickets_model_update_progress_to_in_progress()
+    public function tickets_model_update_status_to_in_status()
     {
         $ticket = Ticket::factory()->create();
 
@@ -171,12 +171,12 @@ class TicketTest extends TestCase
         $ticket->touch();
 
         $this->assertDatabaseHas(Ticket::class, [
-            'progress' => TicketProgressesEnum::InProgress,
+            'status' => TicketStatusesEnum::InProgress,
         ]);
     }
 
     /** @test */
-    public function tickets_model_update_progress_to_in_progress_expired()
+    public function tickets_model_update_status_to_in_status_expired()
     {
         $ticket = Ticket::factory()->create();
 
@@ -185,12 +185,12 @@ class TicketTest extends TestCase
         $ticket->touch();
 
         $this->assertDatabaseHas(Ticket::class, [
-            'progress' => TicketProgressesEnum::InProgressExpired,
+            'status' => TicketStatusesEnum::InProgressExpired,
         ]);
     }
 
     /** @test */
-    public function tickets_model_update_progress_to_in_completed_compliant()
+    public function tickets_model_update_status_to_in_completed_compliant()
     {
         $ticket = Ticket::factory()->assigned()->create();
 
@@ -198,12 +198,12 @@ class TicketTest extends TestCase
         $ticket->complete();
 
         $this->assertDatabaseHas(Ticket::class, [
-            'progress' => TicketProgressesEnum::Completed,
+            'status' => TicketStatusesEnum::Completed,
         ]);
     }
 
     /** @test */
-    public function tickets_model_update_progress_to_in_completed_expired()
+    public function tickets_model_update_status_to_in_completed_expired()
     {
         $ticket = Ticket::factory()->assigned()->create();
 
@@ -211,7 +211,7 @@ class TicketTest extends TestCase
         $ticket->complete();
 
         $this->assertDatabaseHas(Ticket::class, [
-            'progress' => TicketProgressesEnum::CompletedExpired,
+            'status' => TicketStatusesEnum::CompletedExpired,
         ]);
     }
 }

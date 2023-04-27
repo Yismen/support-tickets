@@ -5,9 +5,9 @@ namespace Dainsys\Support\Database\Factories;
 use Dainsys\Support\Models\Reason;
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Models\Department;
+use Dainsys\Support\Enums\TicketStatusesEnum;
 use Orchestra\Testbench\Factories\UserFactory;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
-use Dainsys\Support\Enums\TicketProgressesEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TicketFactory extends Factory
@@ -36,7 +36,7 @@ class TicketFactory extends Factory
             // 'expected_at' => now(),
             'priority' => TicketPrioritiesEnum::Normal->value,
             // 'completed_at' => now(),
-            'progress' => TicketProgressesEnum::Pending->value,
+            'status' => TicketStatusesEnum::Pending->value,
         ];
     }
 

@@ -5,8 +5,8 @@ namespace Dainsys\Support\Models;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User;
 use OwenIt\Auditing\Contracts\Auditable;
+use Dainsys\Support\Enums\TicketStatusesEnum;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
-use Dainsys\Support\Enums\TicketProgressesEnum;
 use Dainsys\Support\Database\Factories\TicketFactory;
 
 class Ticket extends AbstractModel implements Auditable
@@ -19,14 +19,14 @@ class Ticket extends AbstractModel implements Auditable
     use \Dainsys\Support\Traits\EnsureDateNotWeekend;
     use \OwenIt\Auditing\Auditable;
 
-    protected $fillable = ['created_by', 'department_id', 'reason_id', 'description', 'progress', 'assigned_to', 'assigned_at', 'expected_at',  'priority', 'completed_at'];
+    protected $fillable = ['created_by', 'department_id', 'reason_id', 'description', 'status', 'assigned_to', 'assigned_at', 'expected_at',  'priority', 'completed_at'];
 
     protected $casts = [
         'priority' => TicketPrioritiesEnum::class,
         'assigned_at' => 'datetime',
         'expected_at' => 'datetime',
         'completed_at' => 'datetime',
-        'progress' => TicketProgressesEnum::class,
+        'status' => TicketStatusesEnum::class,
     ];
 
     protected static function newFactory(): TicketFactory
@@ -38,7 +38,7 @@ class Ticket extends AbstractModel implements Auditable
     {
         static::created(function ($model) {
             $model->updateQuietly([
-                'progress' => TicketProgressesEnum::Pending,
+                'status' => TicketStatusesEnum::Pending,
                 'assigned_to' => null,
                 'assigned_at' => null
             ]);
@@ -48,7 +48,7 @@ class Ticket extends AbstractModel implements Auditable
                 'expected_at' => $model->getExpectedDate(),
             ]);
             $model->updateQuietly([
-                'progress' => $model->getProgress(),
+                'status' => $model->getStatus(),
             ]);
         });
     }
@@ -67,14 +67,14 @@ class Ticket extends AbstractModel implements Auditable
         $this->updateQuietly([
             'assigned_to' => $agent->id,
             'assigned_at' => now(),
-            'progress' => TicketProgressesEnum::InProgress,
+            'status' => TicketStatusesEnum::InProgress,
         ]);
     }
 
     public function complete()
     {
         $this->update([
-            'progress' => $this->getProgress(),
+            'status' => $this->getStatus(),
             'completed_at' => now(),
         ]);
     }
@@ -103,25 +103,25 @@ class Ticket extends AbstractModel implements Auditable
         }
     }
 
-    public function getProgress(): TicketProgressesEnum
+    public function getStatus(): TicketStatusesEnum
     {
         // Pendig
         if ($this->assigned_at == null && $this->completed_at == null) {
             return $this->expected_at > now()
-                ? TicketProgressesEnum::Pending
-                : TicketProgressesEnum::PendingExpired;
+                ? TicketStatusesEnum::Pending
+                : TicketStatusesEnum::PendingExpired;
         }
 
-        //    In Progress
+        //    In Status
         if ($this->assigned_at && $this->completed_at == null) {
             return $this->expected_at > now()
-            ? TicketProgressesEnum::InProgress
-            : TicketProgressesEnum::InProgressExpired;
+            ? TicketStatusesEnum::InProgress
+            : TicketStatusesEnum::InProgressExpired;
         }
 
         // Completed
         return $this->expected_at > $this->completed_at
-            ? TicketProgressesEnum::Completed
-            : TicketProgressesEnum::CompletedExpired;
+            ? TicketStatusesEnum::Completed
+            : TicketStatusesEnum::CompletedExpired;
     }
 }

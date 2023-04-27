@@ -17,7 +17,7 @@ return [
     'update' => 'update',
     'department' => 'department',
     'completed_at' => 'completed_at',
-    'progress' => 'progress',
+    'status' => 'status',
     'replies' => 'replies',
     'dued_at' => 'dued_at',
     'reasons' => 'reasons',

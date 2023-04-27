@@ -68,12 +68,12 @@ class Table extends AbstractDataTableComponent
                 ->html()
                 ->sortable()
                 ->searchable(),
-            Column::make('Progress')
-                ->format(fn ($value, $row) => "<span class='{$row->progress->class()}'> {$row->progress->name}</span>")
+            Column::make('Status')
+                ->format(fn ($value, $row) => "<span class='{$row->status->class()}'> {$row->status->name}</span>")
                 ->html()
                 // Return from the model
                 // pending: not assigned
-                // in progress: assigned, not completed
+                // in status: assigned, not completed
                 // dued: assigned, not completed, time passed
                 // completed in time: completed within the timeframe
                 // completed outside of the timeframe

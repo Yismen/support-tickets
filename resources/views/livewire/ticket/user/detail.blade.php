@@ -12,8 +12,8 @@
                     <td class="text-left">{{ $ticket->reason?->name }}</td>
                 </tr>
                 <tr>
-                    <th class="text-right">{{ str(__('support::messages.progress'))->headline() }}:</th>
-                    <td class="text-left {{ $ticket->progress?->class() }}">{{ $ticket->progress?->name }}</td>
+                    <th class="text-right">{{ str(__('support::messages.status'))->headline() }}:</th>
+                    <td class="text-left {{ $ticket->status?->class() }}">{{ $ticket->status?->name }}</td>
                 </tr>
                 @if ($ticket->completed_at ?? null)
                 <tr>
