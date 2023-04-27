@@ -126,40 +126,92 @@ class TicketTest extends TestCase
     }
 
     /** @test */
-    // public function tickets_model_can_be_completed()
-    // {
-    //     $agent = UserFactory::new()->create();
-    //     $department = Department::factory()->create();
-    //     $ticket = Ticket::factory()->assigned()->create(['department_id' => $department->id]);
+    public function tickets_model_can_be_completed()
+    {
+        $agent = UserFactory::new()->create();
+        $department = Department::factory()->create();
+        $ticket = Ticket::factory()->assigned()->create(['department_id' => $department->id]);
 
-    //     $ticket->complete();
+        $ticket->complete();
 
-    //     $this->assertDatabaseHas(Ticket::class, [
-    //         'progress' => TicketProgressesEnum::Completed,
-    //         'completed_at' => now(),
-    //     ]);
-    // }
-
-    // case Pending = 'pending';
-    // created
-
-    // case Expired = 'expired';
-    // Not completed yet, time passed,
-    // case InProgress = 'assigned';
-    // Assigned, not completed yet, still on time
-    // case OnTime = 'on_time';
-    // Completed on time
-    // case Late = 'late';
-    // completed after timeframe
+        $this->assertDatabaseHas(Ticket::class, [
+            'completed_at' => now(),
+        ]);
+    }
 
     /** @test */
     public function tickets_model_update_progress_to_pending_when_ticket_is_created()
     {
-        $ticket = Ticket::factory()->create(['progress' => TicketProgressesEnum::InProgress, 'assigned_to' => 20]);
+        $ticket = Ticket::factory()->create(['progress' => TicketProgressesEnum::InProgress]);
 
         $this->assertDatabaseHas(Ticket::class, [
             'progress' => TicketProgressesEnum::Pending,
-            'assigned_to' => null,
+        ]);
+    }
+
+    /** @test */
+    public function tickets_model_update_progress_to_pending_expired_when_expected_at_has_passed()
+    {
+        $ticket = Ticket::factory()->unassigned()->create(['progress' => TicketProgressesEnum::InProgress]);
+
+        $this->travelTo(now()->addDays(20));
+        $ticket->touch();
+
+        $this->assertDatabaseHas(Ticket::class, [
+            'progress' => TicketProgressesEnum::PendingExpired,
+        ]);
+    }
+
+    /** @test */
+    public function tickets_model_update_progress_to_in_progress()
+    {
+        $ticket = Ticket::factory()->create();
+
+        $ticket->assignTo(UserFactory::new()->create());
+        $ticket->touch();
+
+        $this->assertDatabaseHas(Ticket::class, [
+            'progress' => TicketProgressesEnum::InProgress,
+        ]);
+    }
+
+    /** @test */
+    public function tickets_model_update_progress_to_in_progress_expired()
+    {
+        $ticket = Ticket::factory()->create();
+
+        $ticket->assignTo(UserFactory::new()->create());
+        $this->travelTo(now()->addDays(40));
+        $ticket->touch();
+
+        $this->assertDatabaseHas(Ticket::class, [
+            'progress' => TicketProgressesEnum::InProgressExpired,
+        ]);
+    }
+
+    /** @test */
+    public function tickets_model_update_progress_to_in_completed_compliant()
+    {
+        $ticket = Ticket::factory()->assigned()->create();
+
+        // $this->travelTo(now()->addDays(40));
+        $ticket->complete();
+
+        $this->assertDatabaseHas(Ticket::class, [
+            'progress' => TicketProgressesEnum::Completed,
+        ]);
+    }
+
+    /** @test */
+    public function tickets_model_update_progress_to_in_completed_expired()
+    {
+        $ticket = Ticket::factory()->assigned()->create();
+
+        $this->travelTo(now()->addDays(40));
+        $ticket->complete();
+
+        $this->assertDatabaseHas(Ticket::class, [
+            'progress' => TicketProgressesEnum::CompletedExpired,
         ]);
     }
 }

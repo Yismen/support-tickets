@@ -45,7 +45,10 @@ class Ticket extends AbstractModel implements Auditable
         });
         static::saved(function ($model) {
             $model->updateQuietly([
-                'expected_at' => $model->getExpectedDate()
+                'expected_at' => $model->getExpectedDate(),
+            ]);
+            $model->updateQuietly([
+                'progress' => $model->getProgress(),
             ]);
         });
     }
@@ -70,8 +73,8 @@ class Ticket extends AbstractModel implements Auditable
 
     public function complete()
     {
-        $this->updateQuietly([
-            'progress' => TicketProgressesEnum::Completed,
+        $this->update([
+            'progress' => $this->getProgress(),
             'completed_at' => now(),
         ]);
     }
@@ -98,5 +101,27 @@ class Ticket extends AbstractModel implements Auditable
                 return $this->ensureNotWeekend($date->copy()->addDays(2));
                 break;
         }
+    }
+
+    public function getProgress(): TicketProgressesEnum
+    {
+        // Pendig
+        if ($this->assigned_at == null && $this->completed_at == null) {
+            return $this->expected_at > now()
+                ? TicketProgressesEnum::Pending
+                : TicketProgressesEnum::PendingExpired;
+        }
+
+        //    In Progress
+        if ($this->assigned_at && $this->completed_at == null) {
+            return $this->expected_at > now()
+            ? TicketProgressesEnum::InProgress
+            : TicketProgressesEnum::InProgressExpired;
+        }
+
+        // Completed
+        return $this->expected_at > $this->completed_at
+            ? TicketProgressesEnum::Completed
+            : TicketProgressesEnum::CompletedExpired;
     }
 }

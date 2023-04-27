@@ -4,22 +4,24 @@ namespace Dainsys\Support\Enums;
 
 use Dainsys\Support\Enums\Traits\AsArray;
 
-enum TicketProgressesEnum: string implements EnumContract
+enum TicketProgressesEnum: int implements EnumContract
 {
     use AsArray;
-    case Pending = 'pending';
-    // created, not assigned and already expired
-    case InProgress = 'assigned';
-    // Assigned, not completed yet, still on time
-
-    case Completed = 'completed';
-
+    case Pending = 1;
+    case PendingExpired = 2;
+    case InProgress = 3;
+    case InProgressExpired = 4;
+    case Completed = 5;
+    case CompletedExpired = 6;
     public function class(): string
     {
         return match ($this) {
             self::Pending => '',
-            self::InProgress => 'badge badge-warning',
-            self::Completed => 'badge badge-info',
+            self::PendingExpired => 'text-bold text-warning',
+            self::InProgress => 'badge badge-info',
+            self::InProgressExpired => 'badge badge-warning',
+            self::Completed => 'badge badge-success',
+            self::CompletedExpired => 'badge badge-danger',
         };
     }
 }
