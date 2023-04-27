@@ -5,6 +5,7 @@ namespace Dainsys\Support\Models;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Database\Eloquent\Builder;
 use Dainsys\Support\Enums\TicketStatusesEnum;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Dainsys\Support\Database\Factories\TicketFactory;
@@ -77,6 +78,11 @@ class Ticket extends AbstractModel implements Auditable
             'status' => $this->getStatus(),
             'completed_at' => now(),
         ]);
+    }
+
+    public function scopeIncompleted(Builder $query): Builder
+    {
+        return $query->where('completed_at', null);
     }
 
     protected function getExpectedDate(): Carbon

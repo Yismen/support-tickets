@@ -11,6 +11,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Dainsys\Support\Policies\DepartmentPolicy;
 use Dainsys\Support\Console\Commands\InstallCommand;
 use Dainsys\Support\Console\Commands\CreateSuperUser;
+use Dainsys\Support\Console\Commands\UpdateTicketStatus;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider;
 
 class SupportServiceProvider extends AuthServiceProvider
@@ -38,10 +39,11 @@ class SupportServiceProvider extends AuthServiceProvider
             $this->commands([
                 InstallCommand::class,
                 CreateSuperUser::class,
+                UpdateTicketStatus::class,
             ]);
         }
 
-        // $this->registerSchedulledCommands();
+        $this->registerSchedulledCommands();
     }
 
     public function register()
@@ -83,6 +85,9 @@ class SupportServiceProvider extends AuthServiceProvider
     protected function registerSchedulledCommands()
     {
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
+            $schedule->command(UpdateTicketStatus::class)
+               ->timezone('America/New_York')
+               ->everyThirtyMinutes();
         });
     }
 

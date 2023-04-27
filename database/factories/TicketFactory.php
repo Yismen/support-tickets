@@ -79,6 +79,15 @@ class TicketFactory extends Factory
         });
     }
 
+    public function incompleted()
+    {
+        return $this->state(function (array $aatributes) {
+            return [
+                'completed_at' => null,
+            ];
+        });
+    }
+
     public function normal()
     {
         return $this->state(function (array $aatributes) {
