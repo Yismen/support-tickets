@@ -4,7 +4,9 @@
 ])
 
 @error($field)
-<div class="{{ $textClass }}">
+<div {{ $attributes->merge([
+    'class' => "{$textClass}"
+    ]) }}>
     {{ $message }}
 </div>
 @enderror
