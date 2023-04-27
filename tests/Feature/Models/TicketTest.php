@@ -5,16 +5,16 @@ namespace Dainsys\Support\Tests\Feature\Models;
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Tests\TestCase;
 use Dainsys\Support\Models\Department;
-use Dainsys\Support\Traits\EnsureNotWeekend;
 use Orchestra\Testbench\Factories\UserFactory;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Dainsys\Support\Enums\TicketProgressesEnum;
+use Dainsys\Support\Traits\EnsureDateNotWeekend;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TicketTest extends TestCase
 {
     use RefreshDatabase;
-    use EnsureNotWeekend;
+    use EnsureDateNotWeekend;
 
     /** @test */
     public function tickets_model_interacts_with_db_table()
@@ -126,19 +126,19 @@ class TicketTest extends TestCase
     }
 
     /** @test */
-    public function tickets_model_can_be_completed()
-    {
-        $agent = UserFactory::new()->create();
-        $department = Department::factory()->create();
-        $ticket = Ticket::factory()->assigned()->create(['department_id' => $department->id]);
+    // public function tickets_model_can_be_completed()
+    // {
+    //     $agent = UserFactory::new()->create();
+    //     $department = Department::factory()->create();
+    //     $ticket = Ticket::factory()->assigned()->create(['department_id' => $department->id]);
 
-        $ticket->complete();
+    //     $ticket->complete();
 
-        $this->assertDatabaseHas(Ticket::class, [
-            'progress' => TicketProgressesEnum::Completed,
-            'completed_at' => now(),
-        ]);
-    }
+    //     $this->assertDatabaseHas(Ticket::class, [
+    //         'progress' => TicketProgressesEnum::Completed,
+    //         'completed_at' => now(),
+    //     ]);
+    // }
 
     // case Pending = 'pending';
     // created

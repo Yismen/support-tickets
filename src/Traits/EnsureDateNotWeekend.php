@@ -4,7 +4,7 @@ namespace Dainsys\Support\Traits;
 
 use Carbon\Carbon;
 
-trait EnsureNotWeekend
+trait EnsureDateNotWeekend
 {
     protected static function ensureNotWeekend(Carbon $date): Carbon
     {

@@ -16,7 +16,7 @@ class Ticket extends AbstractModel implements Auditable
     use \Dainsys\Support\Models\Traits\BelongsToAgent;
     use \Dainsys\Support\Models\Traits\BelongsToUser;
     use \Illuminate\Database\Eloquent\SoftDeletes;
-    use \Dainsys\Support\Traits\EnsureNotWeekend;
+    use \Dainsys\Support\Traits\EnsureDateNotWeekend;
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = ['created_by', 'department_id', 'reason_id', 'description', 'progress', 'assigned_to', 'assigned_at', 'expected_at',  'priority', 'completed_at'];
