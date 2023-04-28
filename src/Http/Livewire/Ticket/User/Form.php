@@ -25,7 +25,6 @@ class Form extends Component
 
     public bool $editing = false;
     public string $modal_event_name_form = 'showTicketFormModal';
-    public $tickets = [];
 
     public Ticket $ticket;
 

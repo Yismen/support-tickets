@@ -1,12 +1,13 @@
 @props([
 'field',
 'required' => true,
-'editor' => false
+'editor' => false,
+'modifier' => null
 ])
 <div class="mb-3">
     <x-support::inputs.label :field="$field" :required="$required" :label="$slot" />
     <div @if ($editor) wire:ignore @endif>
-        <textarea wire:model='{{ $field }}' {{ $attributes->class([
+        <textarea wire:model{{ $modifier }}='{{ $field }}' {{ $attributes->class([
        'is-invalid' => $errors->has($field),
        'form-control'
        ])->merge([

@@ -3,18 +3,21 @@
 namespace Dainsys\Support\Http\Livewire\Ticket\User;
 
 use Livewire\Component;
+use Livewire\WithPagination;
+use Dainsys\Support\Models\Reply;
 use Dainsys\Support\Models\Ticket;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Detail extends Component
 {
     use AuthorizesRequests;
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
 
     protected $listeners = [
         'showTicket',
+        'replyUpdated',
     ];
-
-    public bool $editing = false;
     public string $modal_event_name_detail = 'showTicketDetailModal';
 
     public Ticket $ticket;
@@ -26,9 +29,9 @@ class Detail extends Component
 
     public function render()
     {
-        // $this->authorize('view', $this->ticket);
-
-        return view('support::livewire.ticket.user.detail')
+        return view('support::livewire.ticket.user.detail', [
+            'replies' => $this->ticket->replies()->latest()->with('user')->paginate(5, '*', 'repliesPage'),
+        ])
         ->layout('support::layouts.app');
     }
 
@@ -36,11 +39,23 @@ class Detail extends Component
     {
         $this->authorize('view', $ticket);
 
-        $this->editing = false;
         $this->ticket = $ticket;
         $this->resetValidation();
 
         $this->dispatchBrowserEvent('closeAllModals');
         $this->dispatchBrowserEvent($this->modal_event_name_detail);
+        $this->emit('showReplyForm', ['ticket' => $this->ticket]);
+
+        $this->resetPage('repliesPage');
+    }
+
+    public function editReply(Reply $reply)
+    {
+        $this->emit('showReplyEdit', $reply);
+    }
+
+    public function replyUpdated()
+    {
+        $this->resetPage('repliesPage');
     }
 }

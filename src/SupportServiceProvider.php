@@ -119,5 +119,7 @@ class SupportServiceProvider extends AuthServiceProvider
         Livewire::component('support::ticket.user.index', \Dainsys\Support\Http\Livewire\Ticket\User\Index::class);
         Livewire::component('support::ticket.user.detail', \Dainsys\Support\Http\Livewire\Ticket\User\Detail::class);
         Livewire::component('support::ticket.user.form', \Dainsys\Support\Http\Livewire\Ticket\User\Form::class);
+
+        Livewire::component('support::reply.form', \Dainsys\Support\Http\Livewire\Reply\Form::class);
     }
 }

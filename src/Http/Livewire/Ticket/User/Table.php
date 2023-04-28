@@ -69,7 +69,7 @@ class Table extends AbstractDataTableComponent
                 ->sortable()
                 ->searchable(),
             Column::make('Status')
-                ->format(fn ($value, $row) => "<span class='{$row->status->class()}'> {$row->status->name}</span>")
+                ->format(fn ($value, $row) => "<span class='{$row->status->class()}'> " . str($row->status->name)->headline() . '</span>')
                 ->html()
                 // Return from the model
                 // pending: not assigned

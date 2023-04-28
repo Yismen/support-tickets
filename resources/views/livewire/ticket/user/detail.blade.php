@@ -11,10 +11,6 @@
                     <th class="text-right">{{ str(__('support::messages.reason'))->headline() }}:</th>
                     <td class="text-left">{{ $ticket->reason?->name }}</td>
                 </tr>
-                <tr>
-                    <th class="text-right">{{ str(__('support::messages.status'))->headline() }}:</th>
-                    <td class="text-left {{ $ticket->status?->class() }}">{{ $ticket->status?->name }}</td>
-                </tr>
                 @if ($ticket->completed_at ?? null)
                 <tr>
                     <th class="text-right">{{ str(__('support::messages.completed_at'))->headline() }}:</th>
@@ -36,8 +32,13 @@
                     <td class="text-left {{ $ticket->priority?->class() }}">{{ $ticket->priority?->name }}</td>
                 </tr>
                 <tr>
+                    <th class="text-right">{{ str(__('support::messages.status'))->headline() }}:</th>
+                    <td class="text-left {{ $ticket->status?->class() }}">{{ str($ticket->status?->name)->headline() }}
+                    </td>
+                </tr>
+                <tr>
                     <th class="text-right">{{ str(__('support::messages.dued_at'))->headline() }}:</th>
-                    <td class="text-left">{{ $ticket?->assigned_at?->diffForHumans() }} </td>
+                    <td class="text-left">{{ $ticket?->expected_at?->diffForHumans() }} </td>
                 </tr>
                 <tr>
                     <th class="text-right">{{ str(__('support::messages.description'))->headline() }}:</th>
@@ -46,36 +47,48 @@
             </tbody>
         </table>
 
-        @if ($ticket?->replies)
-        <div class="px-3 mb-4 border-top pt-2">
-            <h5 class="text-bold text-dark">{{ str(__('support::messages.replies'))->headline() }}</h5>
-            <div class="text-sm">
-                <div class="d-flex justify-content-between">
-                    <span class="text-bold text-black text-uppercase ">User Name</span>
-                    <span class="text-secondary text-sm">3 days ago</span>
-                </div>
-                <div class="bg-gradient bg-light ml-5 mt-2 p-2 rounded">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi deserunt, asperiores dolor nam nemo
-                    corrupti consequatur, excepturi accusamus ducimus quidem dolorum sed porro debitis neque praesentium
-                    ex
-                    beatae, qui eligendi!
-                </div>
+        <section id="replies" style="background-color: #f9f9f9;">
+            <div wire:ignore.self>
+                <livewire:support::reply.form ticket='{{ $ticket }}' :key="'asdfasfd-dff'" modifier="lazy" />
             </div>
 
-            <div class="text-sm">
-                <div class="d-flex justify-content-between">
-                    <span class="text-bold text-black text-uppercase ">User Name</span>
-                    <span class="text-secondary text-sm">3 days ago</span>
+            @if ($ticket?->replies->count())
+            <div class="px-3 mb-4 border-top pt-2">
+                <h5 class="text-bold text-dark">
+                    {{ str(__('support::messages.replies'))->headline() }}
+                    <span class="badge badge-primary badge-btn">{{ $ticket->replies->count() }}</span>
+                </h5>
+                @foreach ($replies as $reply)
+                <div class="text-sm border-bottom">
+                    <div class="p-2
+                        @can('update', $reply)
+                            ml-5 bg-light
+                        @else
+                            mr-5 bg-cyan
+                        @endcan
+                    ">
+                        <div class="d-flex justify-content-between">
+                            <div class="text-bold text-uppercase">{{ $reply->user->name }}</div>
+                            <div class="text-xs">{{ $reply->updated_at?->diffForHumans() }}</div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            {{ $reply->content }}
+                            @can('update', $reply)
+                            <div class="">
+                                <a wire:click.prevent='editReply({{ $reply->id }})'
+                                    class="btn btn-link text-warning text-bold">{{
+                                    str(__("support::messages.edit"))->headline() }}</a>
+                            </div>
+                            @endcan
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-gradient bg-light ml-5 mt-2 p-2 rounded">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi deserunt, asperiores dolor nam nemo
-                    corrupti consequatur, excepturi accusamus ducimus quidem dolorum sed porro debitis neque praesentium
-                    ex
-                    beatae, qui eligendi!
-                </div>
+                @endforeach
             </div>
-        </div>
-        @endif
+
+            {{ $replies->links() }}
+            @endif
+        </section>
 
         <x-slot name="footer">
             <button class="btn btn-warning btn-sm" wire:click='$emit("updateTicket", {{ $ticket->id }})'>
