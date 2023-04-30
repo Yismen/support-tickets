@@ -14,6 +14,10 @@
                     }}:
                 </x-support::inputs.with-labels>
 
+                <x-support::inputs.with-labels field="department.ticket_prefix">{{ str( __('support::messages.ticket_prefix'))->headline()
+                    }}:
+                </x-support::inputs.with-labels>
+
                 <x-support::inputs.text-area field="department.description" :required="false">
                     {{ str(__('support::messages.description'))->headline() }}:
                 </x-support::inputs.text-area>

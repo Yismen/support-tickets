@@ -176,6 +176,7 @@ class FormTest extends TestCase
         $component = Livewire::test(Form::class);
         $component->emit('createDepartment', new Department());
         $component->set('department.name', $department->name);
+        $component->set('department.ticket_prefix', $department->ticket_prefix);
 
         $component->call('store');
 

@@ -16,6 +16,7 @@ class CreateSupportDepartmentsTable extends Migration
         Schema::create(supportTableName('departments'), function (Blueprint $table) {
             $table->id();
             $table->string('name', 500)->unique();
+            $table->string('ticket_prefix', 8)->unique()->index();
             $table->text('description')->nullable();
             $table->timestamps();
         });

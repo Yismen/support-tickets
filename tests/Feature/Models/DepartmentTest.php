@@ -18,7 +18,7 @@ class DepartmentTest extends TestCase
         Department::create($data->toArray());
 
         $this->assertDatabaseHas(supportTableName('departments'), $data->only([
-            'name', 'description'
+            'name', 'ticket_prefix', 'description'
         ]));
     }
 
