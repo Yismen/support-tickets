@@ -31,7 +31,6 @@ class TicketTest extends TestCase
             'assigned_to',
             'assigned_at',
             // 'expected_at',
-            'priority',
             'completed_at',
             'status',
         ]));
@@ -73,8 +72,9 @@ class TicketTest extends TestCase
     public function tickets_model_updates_expected_at_when_priority_is_normal()
     {
         $ticket = Ticket::factory()->create(['created_at' => now()]);
-
-        $ticket->update(['priority' => TicketPrioritiesEnum::Normal]);
+        
+        $ticket->reason->update(['priority' => TicketPrioritiesEnum::Normal]);
+        $ticket->touch();
 
         $this->assertDatabaseHas(Ticket::class, [
             'expected_at' => $this->ensureNotWeekend(now()->addDays(2)),
@@ -86,7 +86,8 @@ class TicketTest extends TestCase
     {
         $ticket = Ticket::factory()->create(['created_at' => now()]);
 
-        $ticket->update(['priority' => TicketPrioritiesEnum::Medium]);
+        $ticket->reason->update(['priority' => TicketPrioritiesEnum::Medium]);
+        $ticket->touch();
 
         $this->assertDatabaseHas(Ticket::class, [
             'expected_at' => $this->ensureNotWeekend(now()->addDay()),
@@ -98,7 +99,8 @@ class TicketTest extends TestCase
     {
         $ticket = Ticket::factory()->create(['created_at' => now()]);
 
-        $ticket->update(['priority' => TicketPrioritiesEnum::High]);
+        $ticket->reason->update(['priority' => TicketPrioritiesEnum::High]);
+        $ticket->touch();
 
         $this->assertDatabaseHas(Ticket::class, [
             'expected_at' => $this->ensureNotWeekend(now()->addMinutes(4 * 60)),
@@ -110,8 +112,9 @@ class TicketTest extends TestCase
     {
         $ticket = Ticket::factory()->create(['created_at' => now()]);
 
-        $ticket->update(['priority' => TicketPrioritiesEnum::Emergency]);
-
+        $ticket->reason->update(['priority' => TicketPrioritiesEnum::Emergency]);
+        $ticket->touch();
+        
         $this->assertDatabaseHas(Ticket::class, [
             'expected_at' => $this->ensureNotWeekend(now()->addMinutes(30)),
         ]);

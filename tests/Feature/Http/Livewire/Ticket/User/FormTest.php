@@ -3,218 +3,178 @@
 namespace Dainsys\Support\Feature\Http\Livewire\Ticket\User;
 
 use Livewire\Livewire;
-use Dainsys\Support\Models\Reason;
+use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Tests\TestCase;
 use Dainsys\Support\Models\Department;
-use Dainsys\Support\Http\Livewire\Reason\Form;
+use Orchestra\Testbench\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Dainsys\Support\Http\Livewire\Ticket\User\Form;
 
 class FormTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function reason_form_requires_authorization_to_create_reason()
+    public function ticket_form_requires_authorization_to_create_ticket()
     {
-        $reason = Reason::factory()->create();
+        $ticket = Ticket::factory()->create();
         $component = Livewire::test(Form::class);
 
-        $component->emit('createReason', $reason);
+        $component->emit('createTicket', $ticket);
 
         $component->assertForbidden();
     }
 
     /** @test */
-    public function reason_form_requires_authorization_to_update_reason()
+    public function ticket_form_requires_authorization_to_update_ticket()
     {
-        $reason = Reason::factory()->create();
+        $ticket = Ticket::factory()->create();
         $component = Livewire::test(Form::class);
 
-        $component->emit('updateReason', $reason);
+        $component->emit('updateTicket', $ticket);
 
         $component->assertForbidden();
     }
 
     /** @test */
-    public function reason_form_component_grants_access_to_super_admin_to_create_reason()
+    public function ticket_form_component_allows_any_user_to_create_ticket()
     {
-        $this->withSuperUser();
-        $reason = Reason::factory()->create();
+        $this->withoutAuthorizedUser();
+        $ticket = Ticket::factory()->create();
 
         $component = Livewire::test(Form::class);
-        $component->emit('createReason', $reason);
+        $component->emit('createTicket', $ticket);
 
         $component->assertOk();
     }
 
     /** @test */
-    public function reason_form_component_grants_access_to_super_admin_to_update_reason()
+    public function ticket_form_allows_users_to_update_their_tickets()
     {
-        $this->withSuperUser();
-        $reason = Reason::factory()->create();
+        $this->withoutAuthorizedUser();
+        $ticket_1 = Ticket::factory()->create(['created_by' => auth()->user()->id]);
+        $ticket_2 = Ticket::factory()->create(['created_by' => UserFactory::new()->create()]);
 
         $component = Livewire::test(Form::class);
-        $component->emit('updateReason', $reason);
+        $component->emit('updateTicket', $ticket_1);
 
         $component->assertOk();
     }
 
     /** @test */
-    public function reason_form_component_grants_access_to_authorized_users_to_create_reason()
+    public function ticket_form_prevent_users_from_updating_tickets_for_other_users()
     {
-        $this->withAuthorizedUser('create reasons');
-        $reason = Reason::factory()->create();
+        $this->withoutAuthorizedUser();
+        $ticket_1 = Ticket::factory()->create(['created_by' => auth()->user()->id]);
+        $ticket_2 = Ticket::factory()->create(['created_by' => UserFactory::new()->create()]);
 
         $component = Livewire::test(Form::class);
-        $component->emit('createReason', $reason);
+        $component->emit('updateTicket', $ticket_2);
 
-        $component->assertOk();
+        $component->assertForbidden();
     }
-
     /** @test */
-    public function reason_form_component_grants_access_to_authorized_users_to_update_reason()
+    public function ticket_form_component_responds_to_create_ticket_event()
     {
-        $this->withAuthorizedUser('update reasons');
-        $reason = Reason::factory()->create();
+        $this->withAuthorizedUser('create tickets');
+        $ticket = new Ticket();
 
         $component = Livewire::test(Form::class);
-        $component->emit('updateReason', $reason);
+        $component->emit('createTicket', $ticket);
 
-        $component->assertOk();
-    }
-
-    /** @test */
-    public function reason_form_component_responds_to_create_reason_event()
-    {
-        $this->withAuthorizedUser('create reasons');
-        $reason = new Reason();
-
-        $component = Livewire::test(Form::class);
-        $component->emit('createReason', $reason);
-
-        $component->assertSet('reason', $reason);
+        $component->assertSet('ticket', $ticket);
         $component->assertSet('editing', false);
         $component->assertDispatchedBrowserEvent('closeAllModals');
-        $component->assertDispatchedBrowserEvent('showReasonFormModal');
+        $component->assertDispatchedBrowserEvent('showTicketFormModal');
     }
 
     /** @test */
-    public function reason_form_component_responds_to_update_reason_event()
+    public function ticket_form_component_responds_to_update_ticket_event()
     {
-        $this->withAuthorizedUser('update reasons');
-        $reason = Reason::factory()->create();
+        $this->withAuthorizedUser('update tickets');
+        $ticket = Ticket::factory()->create();
 
         $component = Livewire::test(Form::class);
-        $component->emit('updateReason', $reason);
+        $component->emit('updateTicket', $ticket);
 
-        $component->assertSet('reason', $reason);
+        $component->assertSet('ticket', $ticket);
         $component->assertSet('editing', true);
         $component->assertDispatchedBrowserEvent('closeAllModals');
-        $component->assertDispatchedBrowserEvent('showReasonFormModal');
+        $component->assertDispatchedBrowserEvent('showTicketFormModal');
     }
 
     /** @test */
-    public function reason_form_component_validates_required_fields_to_create_reasons()
+    public function ticket_form_component_validates_required_fields_to_create_tickets()
     {
-        $this->withAuthorizedUser('create reasons');
-        $data = ['name' => '', 'department_id' => Department::factory()->create()];
+        $this->withAuthorizedUser('create tickets');
+        $data = ['department_id' => Department::factory()->create()];
         $component = Livewire::test(Form::class)
-            ->set('reason', new Reason($data));
+            ->set('ticket.reason_id', null);
 
         $component->call('store');
-        $component->assertHasErrors(['reason.name' => 'required']);
+        $component->assertHasErrors(['ticket.reason_id' => 'required']);
     }
 
     /** @test */
-    public function reason_form_component_validates_required_fields_to_update_reasons()
+    public function ticket_form_component_validates_required_fields_to_update_tickets()
     {
-        $this->withAuthorizedUser('update reasons');
+        $this->withAuthorizedUser('update tickets');
         $component = Livewire::test(Form::class)
-            ->set('reason', Reason::factory()->create())
-            ->set('reason.name', '');
+            ->set('ticket.department_id', '')
+            ->set('ticket.reason_id', '');
 
         $component->call('update');
-        $component->assertHasErrors(['reason.name' => 'required']);
+        $component->assertHasErrors(['ticket.reason_id' => 'required']);
     }
 
     /** @test */
-    public function reason_form_component_validates_unique_fields_to_create_reasons()
+    public function ticket_form_component_creates_ticket()
     {
-        $reason = Reason::factory()->create();
-        $this->withAuthorizedUser('create reasons');
-        $data = ['name' => $reason->name];
-        $component = Livewire::test(Form::class)
-            ->set('reason', new Reason($data));
-
-        $component->call('store');
-        $component->assertHasErrors(['reason.name' => 'unique']);
-    }
-
-    /** @test */
-    public function reason_form_component_validates_unique_fields_to_update_reasons_except_on_self_record()
-    {
-        $reason_1 = Reason::factory()->create();
-        $reason_2 = Reason::factory()->create();
-        $this->withAuthorizedUser('update reasons');
+        $this->withAuthorizedUser('create tickets');
+        $ticket = Ticket::factory()->make();
         $component = Livewire::test(Form::class);
-
-        $component->set('reason', $reason_1);
-
-        $component->set('reason.name', $reason_2->name);
-
-        $component->call('update');
-        $component->assertHasErrors(['reason.name' => 'unique']);
-
-        $component->set('reason.name', $reason_1->name);
-        $component->assertHasNoErrors(['reason.name' => 'unique']);
-    }
-
-    /** @test */
-    public function reason_form_component_creates_reason()
-    {
-        $this->withAuthorizedUser('create reasons');
-        $reason = Reason::factory()->make();
-        $component = Livewire::test(Form::class);
-        $component->emit('createReason', new Reason());
-        $component->set('reason.name', $reason->name);
-        $component->set('reason.department_id', $reason->department_id);
+        $component->emit('createTicket', new Ticket());
+        $component->set('ticket.reason_id', $ticket->reason_id);
+        $component->set('ticket.description', $ticket->description);
+        $component->set('ticket.department_id', $ticket->department_id);
 
         $component->call('store');
 
-        $component->assertSet('reason.name', $reason->name);
+        $component->assertSet('ticket.reason_id', $ticket->reason_id);
         $component->assertSet('editing', false);
         $component->assertDispatchedBrowserEvent('closeAllModals');
-        $component->assertEmitted('reasonUpdated');
+        $component->assertEmitted('ticketUpdated');
 
-        $this->assertDatabasehas(Reason::class, [
-            'name' => $reason->name,
-            'department_id' => $reason->department_id
+        $this->assertDatabasehas(Ticket::class, [
+            'reason_id' => $ticket->reason_id,
+            'description' => $ticket->description,
+            'department_id' => $ticket->department_id
         ]);
 
-        // $component->assertSessionHas('success', 'Reason created!');
+        // $component->assertSessionHas('success', 'Ticket created!');
     }
 
     /** @test */
-    public function reason_form_component_updates_reason()
+    public function ticket_form_component_updates_ticket()
     {
-        $this->withAuthorizedUser('update reasons');
-        $reason = Reason::factory()->create();
+        $this->withAuthorizedUser('update tickets');
+        $ticket = Ticket::factory()->create();
 
         $component = Livewire::test(Form::class);
-        $component->emit('updateReason', $reason);
-        $component->set('reason.name', 'new name');
+        $component->emit('updateTicket', $ticket);
+        $component->set('ticket.description', 'new description');
 
         $component->call('update');
 
         $component->assertSet('editing', false);
         $component->assertDispatchedBrowserEvent('closeAllModals');
-        $component->assertEmitted('reasonUpdated');
+        $component->assertEmitted('ticketUpdated');
 
-        $this->assertDatabasehas(Reason::class, [
-            'id' => $reason->id,
-            'name' => 'new name',
+        $this->assertDatabasehas(Ticket::class, [
+            'id' => $ticket->id,
+            'description' => 'new description',
         ]);
 
-        // $component->assertSessionHas('success', 'Reason created!');
+        // $component->assertSessionHas('success', 'Ticket created!');
     }
 }

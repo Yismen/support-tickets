@@ -21,4 +21,12 @@ class Department extends AbstractModel
     {
         return str($this->attributes['description'] ?? '')->limit(25);
     }
+
+    public function setTicketPrefixAttribute($prefix)
+    {
+        $upper = str($prefix)->upper();
+        $prefix = str($upper)->endsWith('-') ? $upper : "{$upper}-";
+
+        $this->attributes['ticket_prefix'] = $prefix;
+    }
 }

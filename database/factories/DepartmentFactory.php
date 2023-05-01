@@ -24,7 +24,7 @@ class DepartmentFactory extends Factory
     {
         return [
             'name' => $this->faker->sentence(2),
-            'ticket_prefix' => Str::random(8),
+            'ticket_prefix' => str(Str::random(5))->upper() . '-',
             'description' => $this->faker->paragraph(),
         ];
     }

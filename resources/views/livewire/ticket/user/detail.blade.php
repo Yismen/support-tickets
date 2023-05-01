@@ -29,7 +29,8 @@
                 </tr>
                 <tr>
                     <th class="text-right">{{ str(__('support::messages.priority'))->headline() }}:</th>
-                    <td class="text-left {{ $ticket->priority?->class() }}">{{ $ticket->priority?->name }}</td>
+                    <td class="text-left {{ $ticket->reason?->priority->class() }}">{{ $ticket->reason?->priority->name
+                        }}</td>
                 </tr>
                 <tr>
                     <th class="text-right">{{ str(__('support::messages.status'))->headline() }}:</th>
@@ -49,7 +50,7 @@
 
         <section id="replies" style="background-color: #f9f9f9;">
             <div wire:ignore.self>
-                <livewire:support::reply.form ticket='{{ $ticket }}' :key="'asdfasfd-dff'" modifier="lazy" />
+                <livewire:support::reply.form ticket='{{ $ticket }}' :key="'replies-form'" modifier="lazy" />
             </div>
 
             @if ($ticket?->replies->count())

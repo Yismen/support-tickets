@@ -7,7 +7,6 @@ use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Models\Department;
 use Dainsys\Support\Enums\TicketStatusesEnum;
 use Orchestra\Testbench\Factories\UserFactory;
-use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TicketFactory extends Factory
@@ -34,7 +33,6 @@ class TicketFactory extends Factory
             // 'assigned_to' => UserFactory::new()->create(),
             // 'assigned_at' => now(),
             // 'expected_at' => now(),
-            'priority' => TicketPrioritiesEnum::Normal->value,
             // 'completed_at' => now(),
             'status' => TicketStatusesEnum::Pending->value,
         ];
@@ -84,42 +82,6 @@ class TicketFactory extends Factory
         return $this->state(function (array $aatributes) {
             return [
                 'completed_at' => null,
-            ];
-        });
-    }
-
-    public function normal()
-    {
-        return $this->state(function (array $aatributes) {
-            return [
-                'priority' => TicketPrioritiesEnum::Normal->value,
-            ];
-        });
-    }
-
-    public function medium()
-    {
-        return $this->state(function (array $aatributes) {
-            return [
-                'priority' => TicketPrioritiesEnum::Medium->value,
-            ];
-        });
-    }
-
-    public function high()
-    {
-        return $this->state(function (array $aatributes) {
-            return [
-                'priority' => TicketPrioritiesEnum::High->value,
-            ];
-        });
-    }
-
-    public function emergency()
-    {
-        return $this->state(function (array $aatributes) {
-            return [
-                'priority' => TicketPrioritiesEnum::Emergency->value,
             ];
         });
     }

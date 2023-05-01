@@ -32,7 +32,7 @@ class Detail extends Component
         return view('support::livewire.ticket.user.detail', [
             'replies' => $this->ticket->replies()->latest()->with('user')->paginate(5, '*', 'repliesPage'),
         ])
-        ->layout('support::layouts.app');
+            ->layout('support::layouts.app');
     }
 
     public function showTicket(Ticket $ticket)

@@ -37,6 +37,11 @@ class Table extends AbstractDataTableComponent
             Column::make('Department', 'department.name')
                 ->sortable()
                 ->searchable(),
+            Column::make('Priority')
+                ->format(fn ($value, $row) => "<span class='{$row->priority->class()}'> {$row->priority->name}</span>")
+                ->html()
+                ->searchable()
+                ->sortable(),
             Column::make('Description')
                 ->format(fn ($value, $row) => $row->short_description)
                 ->sortable()

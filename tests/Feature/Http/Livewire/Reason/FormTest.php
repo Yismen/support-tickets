@@ -177,6 +177,7 @@ class FormTest extends TestCase
         $component = Livewire::test(Form::class);
         $component->emit('createReason', new Reason());
         $component->set('reason.name', $reason->name);
+        $component->set('reason.priority', $reason->priority);
         $component->set('reason.department_id', $reason->department_id);
 
         $component->call('store');

@@ -3,61 +3,63 @@
 namespace Dainsys\Support\Feature\Http\Livewire\Ticket\User;
 
 use Livewire\Livewire;
-use Dainsys\Support\Models\Reason;
+use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Tests\TestCase;
-use Dainsys\Support\Http\Livewire\Reason\Detail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Dainsys\Support\Http\Livewire\Ticket\User\Detail;
 
 class DetailTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function reason_detail_requires_authorization()
+    public function ticket_detail_requires_authorization()
     {
-        $reason = Reason::factory()->create();
+        // $this->withSuperUser();
+
+        $ticket = Ticket::factory()->create();
         $component = Livewire::test(Detail::class);
 
-        $component->emit('showReason', $reason);
+        // $component->emit('showTicket', $ticket);
 
         $component->assertForbidden();
     }
 
     /** @test */
-    public function reason_detail_component_grants_access_to_super_admin()
+    public function ticket_detail_component_grants_access_to_super_admin()
     {
         $this->withSuperUser();
-        $reason = Reason::factory()->create();
+        $ticket = Ticket::factory()->create();
 
         $component = Livewire::test(Detail::class);
-        $component->emit('showReason', $reason);
+        $component->emit('showTicket', $ticket);
 
         $component->assertOk();
     }
 
     /** @test */
-    public function reason_detail_component_grants_access_to_authorized_users()
+    public function ticket_detail_component_grants_access_to_authorized_users()
     {
-        $this->withAuthorizedUser('view reasons');
-        $reason = Reason::factory()->create();
+        $this->withAuthorizedUser('view tickets');
+        $ticket = Ticket::factory()->create();
 
         $component = Livewire::test(Detail::class);
-        $component->emit('showReason', $reason);
+        $component->emit('showTicket', $ticket);
 
         $component->assertOk();
     }
 
     /** @test */
-    public function reason_detail_component_responds_to_wants_show_reason_event()
+    public function ticket_detail_component_responds_to_wants_show_ticket_event()
     {
-        $this->withAuthorizedUser('view reasons');
-        $reason = Reason::factory()->create();
+        $this->withAuthorizedUser('view tickets');
+        $ticket = Ticket::factory()->create();
 
         $component = Livewire::test(Detail::class);
-        $component->emit('showReason', $reason);
+        $component->emit('showTicket', $ticket);
 
         $component->assertSet('editing', false);
         $component->assertDispatchedBrowserEvent('closeAllModals');
-        $component->assertDispatchedBrowserEvent('showReasonDetailModal');
+        $component->assertDispatchedBrowserEvent('showTicketDetailModal');
     }
 }

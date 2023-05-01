@@ -120,10 +120,6 @@ class Form extends Component
             'ticket.description' => [
                 'required',
                 'min:3'
-            ],
-            'ticket.priority' => [
-                'required',
-                Rule::in(array_column(TicketPrioritiesEnum::cases(), 'value'))
             ]
         ];
     }

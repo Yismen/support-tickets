@@ -28,11 +28,6 @@
                 <x-support::inputs.text-area field="ticket.description" rows="10" :editor=false :editor=true>
                     {{ str(__('support::messages.description'))->headline() }}:
                 </x-support::inputs.text-area>
-
-                <x-support::inputs.radio-group field='ticket.priority' :options='$priorities' :placeholder=false
-                    class="form-check-inline">
-                    {{ str(__('support::messages.priority'))->headline() }}:
-                </x-support::inputs.radio-group>
             </div>
         </x-support::form>
     </x-support::modal>

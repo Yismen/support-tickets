@@ -18,7 +18,7 @@ class ReasonTest extends TestCase
         Reason::create($data->toArray());
 
         $this->assertDatabaseHas(supportTableName('reasons'), $data->only([
-            'name', 'department_id', 'description'
+            'name', 'department_id', 'priority', 'description'
         ]));
     }
 

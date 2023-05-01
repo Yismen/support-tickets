@@ -21,10 +21,9 @@ class Ticket extends AbstractModel implements Auditable
     use \Illuminate\Database\Eloquent\SoftDeletes;
     use \OwenIt\Auditing\Auditable;
 
-    protected $fillable = ['created_by', 'department_id', 'reason_id', 'description', 'status', 'assigned_to', 'assigned_at', 'expected_at',  'priority', 'completed_at'];
+    protected $fillable = ['created_by', 'department_id', 'reason_id', 'description', 'status', 'assigned_to', 'assigned_at', 'expected_at', 'completed_at'];
 
     protected $casts = [
-        'priority' => TicketPrioritiesEnum::class,
         'assigned_at' => 'datetime',
         'expected_at' => 'datetime',
         'completed_at' => 'datetime',
@@ -89,8 +88,9 @@ class Ticket extends AbstractModel implements Auditable
     protected function getExpectedDate(): Carbon
     {
         $date = $this->created_at ?? now();
+        // $this->load('reason');
 
-        switch ($this->priority) {
+        switch ($this->reason->priority) {
             case TicketPrioritiesEnum::Normal:
                 return $this->ensureNotWeekend($date->copy()->addDays(2));
                 break;

@@ -37,11 +37,6 @@ class CreateSuperUser extends Command
      */
     public function handle()
     {
-        $confirmation = $this->confirm('This command will convert user into a SUPER USER, capable of handling the whole application. Are you sure?');
-        if ($confirmation === false) {
-            return self::FAILURE;
-        }
-
         $email = $this->ask('Please provide the email of the user to be made super admin!');
         $user = \App\Models\User::where('email', $email)->first();
 

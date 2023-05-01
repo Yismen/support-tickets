@@ -6,6 +6,7 @@ use Livewire\Component;
 use Illuminate\Validation\Rule;
 use Dainsys\Support\Models\Reason;
 use Dainsys\Support\Models\Department;
+use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Dainsys\Support\Services\DepartmentService;
 use Dainsys\Support\Traits\WithRealTimeValidation;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -29,7 +30,8 @@ class Form extends Component
     public function render()
     {
         return view('support::livewire.reason.form', [
-            'departments' => DepartmentService::list()
+            'departments' => DepartmentService::list(),
+            'priorities' => TicketPrioritiesEnum::asArray(),
         ])
         ->layout('support::layouts.app');
     }
@@ -100,6 +102,10 @@ class Form extends Component
             'reason.department_id' => [
                 'required',
                 Rule::exists(Department::class, 'id')
+            ],
+            'reason.priority' => [
+                'required',
+                Rule::in(array_column(TicketPrioritiesEnum::cases(), 'value'))
             ],
             'reason.description' => [
                 'nullable'
