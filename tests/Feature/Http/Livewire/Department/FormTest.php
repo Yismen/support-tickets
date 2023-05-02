@@ -37,7 +37,7 @@ class FormTest extends TestCase
     /** @test */
     public function department_form_component_grants_access_to_super_admin_to_create_department()
     {
-        $this->withSuperUser();
+        $this->actingAs($this->superAdmin());
         $department = Department::factory()->create();
 
         $component = Livewire::test(Form::class);
@@ -49,7 +49,7 @@ class FormTest extends TestCase
     /** @test */
     public function department_form_component_grants_access_to_super_admin_to_update_department()
     {
-        $this->withSuperUser();
+        $this->actingAs($this->superAdmin());
         $department = Department::factory()->create();
 
         $component = Livewire::test(Form::class);
@@ -61,7 +61,7 @@ class FormTest extends TestCase
     /** @test */
     public function department_form_component_grants_access_to_authorized_users_to_create_department()
     {
-        $this->withAuthorizedUser('create departments');
+        $this->actingAs($this->superAdmin());
         $department = Department::factory()->create();
 
         $component = Livewire::test(Form::class);
@@ -73,7 +73,7 @@ class FormTest extends TestCase
     /** @test */
     public function department_form_component_grants_access_to_authorized_users_to_update_department()
     {
-        $this->withAuthorizedUser('update departments');
+        $this->actingAs($this->superAdmin());
         $department = Department::factory()->create();
 
         $component = Livewire::test(Form::class);
@@ -85,7 +85,7 @@ class FormTest extends TestCase
     /** @test */
     public function department_form_component_responds_to_create_department_event()
     {
-        $this->withAuthorizedUser('create departments');
+        $this->actingAs($this->superAdmin());
         $department = new Department();
 
         $component = Livewire::test(Form::class);
@@ -100,7 +100,7 @@ class FormTest extends TestCase
     /** @test */
     public function department_form_component_responds_to_update_department_event()
     {
-        $this->withAuthorizedUser('update departments');
+        $this->actingAs($this->superAdmin());
         $department = Department::factory()->create();
 
         $component = Livewire::test(Form::class);
@@ -115,7 +115,7 @@ class FormTest extends TestCase
     /** @test */
     public function department_form_component_validates_required_fields_to_create_departments()
     {
-        $this->withAuthorizedUser('create departments');
+        $this->actingAs($this->superAdmin());
         $data = ['name' => ''];
         $component = Livewire::test(Form::class)
             ->set('department', new Department($data));
@@ -127,7 +127,7 @@ class FormTest extends TestCase
     /** @test */
     public function department_form_component_validates_required_fields_to_update_departments()
     {
-        $this->withAuthorizedUser('update departments');
+        $this->actingAs($this->superAdmin());
         $component = Livewire::test(Form::class)
             ->set('department', Department::factory()->create())
             ->set('department.name', '');
@@ -140,7 +140,8 @@ class FormTest extends TestCase
     public function department_form_component_validates_unique_fields_to_create_departments()
     {
         $department = Department::factory()->create();
-        $this->withAuthorizedUser('create departments');
+
+        $this->actingAs($this->superAdmin());
         $data = ['name' => $department->name];
         $component = Livewire::test(Form::class)
             ->set('department', new Department($data));
@@ -154,7 +155,8 @@ class FormTest extends TestCase
     {
         $department_1 = Department::factory()->create();
         $department_2 = Department::factory()->create();
-        $this->withAuthorizedUser('update departments');
+
+        $this->actingAs($this->superAdmin());
         $component = Livewire::test(Form::class);
 
         $component->set('department', $department_1);
@@ -171,7 +173,7 @@ class FormTest extends TestCase
     /** @test */
     public function department_form_component_creates_department()
     {
-        $this->withAuthorizedUser('create departments');
+        $this->actingAs($this->superAdmin());
         $department = Department::factory()->make();
         $component = Livewire::test(Form::class);
         $component->emit('createDepartment', new Department());
@@ -195,7 +197,7 @@ class FormTest extends TestCase
     /** @test */
     public function department_form_component_updates_department()
     {
-        $this->withAuthorizedUser('update departments');
+        $this->actingAs($this->superAdmin());
         $department = Department::factory()->create();
 
         $component = Livewire::test(Form::class);

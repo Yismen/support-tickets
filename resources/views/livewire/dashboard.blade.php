@@ -9,7 +9,5 @@
     @elseif($user->isDepartmentAgent())
     <h3>Department Agent Dashboard</h3>
     <p>Load the corresponding livewire componenet residing under the dashboard namespace</p>
-    @else
-    <livewire:support::ticket.user.index />
     @endif
 </div>

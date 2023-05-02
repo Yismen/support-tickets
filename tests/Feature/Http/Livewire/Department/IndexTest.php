@@ -14,7 +14,7 @@ class IndexTest extends TestCase
     /** @test */
     public function department_index_component_requires_authorization()
     {
-        $this->withoutAuthorizedUser();
+        $this->actingAs($this->user());
 
         $component = Livewire::test(Index::class);
 
@@ -32,7 +32,7 @@ class IndexTest extends TestCase
     /** @test */
     public function departments_index_works_for_authorized_users_and_renders_correct_view()
     {
-        $this->withAuthorizedUser('view departments');
+        $this->actingAs($this->superAdmin());
 
         $component = Livewire::test(Index::class);
 
@@ -43,7 +43,7 @@ class IndexTest extends TestCase
     /** @test */
     public function departments_index_works_for_super_admin_users_and_renders_correct_view()
     {
-        $this->withSuperUser();
+        $this->actingAs($this->superAdmin());
 
         $component = Livewire::test(Index::class);
 

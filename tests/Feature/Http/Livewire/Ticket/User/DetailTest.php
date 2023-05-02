@@ -15,7 +15,7 @@ class DetailTest extends TestCase
     /** @test */
     public function ticket_detail_requires_authorization()
     {
-        // $this->withSuperUser();
+        // $this->actingAs($this->user());
 
         $ticket = Ticket::factory()->create();
         $component = Livewire::test(Detail::class);
@@ -28,7 +28,7 @@ class DetailTest extends TestCase
     /** @test */
     public function ticket_detail_component_grants_access_to_super_admin()
     {
-        $this->withSuperUser();
+        $this->actingAs($this->superAdmin());
         $ticket = Ticket::factory()->create();
 
         $component = Livewire::test(Detail::class);
@@ -40,7 +40,7 @@ class DetailTest extends TestCase
     /** @test */
     public function ticket_detail_component_grants_access_to_authorized_users()
     {
-        $this->withAuthorizedUser('view tickets');
+        $this->actingAs($this->superAdmin());
         $ticket = Ticket::factory()->create();
 
         $component = Livewire::test(Detail::class);
@@ -52,7 +52,7 @@ class DetailTest extends TestCase
     /** @test */
     public function ticket_detail_component_responds_to_wants_show_ticket_event()
     {
-        $this->withAuthorizedUser('view tickets');
+        $this->actingAs($this->superAdmin());
         $ticket = Ticket::factory()->create();
 
         $component = Livewire::test(Detail::class);

@@ -24,7 +24,7 @@ class IndexTest extends TestCase
     /** @test */
     public function users_tickets_index_works_for_authorized_users_and_renders_correct_view()
     {
-        $this->withoutAuthorizedUser();
+        $this->actingAs($this->user());
 
         $component = Livewire::test(Index::class);
 
@@ -36,7 +36,7 @@ class IndexTest extends TestCase
     /** @test */
     public function user_tickets_index_only_shows_tickets_for_current_user()
     {
-        $this->withoutAuthorizedUser();
+        $this->actingAs($this->user());
         $ticket_for_user = Ticket::factory()->create(['created_by' => auth()->user()->id]);
         $ticket_for_oter_user = Ticket::factory()->create(['created_by' => UserFactory::new()->create()]);
 

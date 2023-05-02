@@ -28,7 +28,7 @@ class DashboardTest extends TestCase
     /** @test */
     public function dashboard_route_requires_authentication()
     {
-        $response = $this->get(route('support.tickets'));
+        $response = $this->get(route('support.my_tickets'));
 
         $response->assertRedirect(route('login'));
     }

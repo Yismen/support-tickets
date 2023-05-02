@@ -13,7 +13,7 @@ class Dashboard extends Component
 
     public function render()
     {
-        // $this->authorize('interact-with-support-admin');
+        $this->authorize('view-dashboards');
 
         return view('support::livewire.dashboard', [
             // 'departments' => DepartmentFilesService::count(),

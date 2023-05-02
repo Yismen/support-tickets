@@ -3,6 +3,17 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            @can('view-dashboards')
+            <li class="nav-item">
+                <a href="{{ route('support.dashboard') }}"
+                    class="nav-link {{ (request()->is('support/dashboard*') || request()->is('support/admin') || request()->is('support')) ? 'active' : '' }}">
+                    <i class="nav-icon fa fa-dashboard"></i>
+                    <p>
+                        {{ str(__('support::messages.dashboard'))->headline() }}
+                    </p>
+                </a>
+            </li>
+            @endcan
 
             @can('viewAny', \Dainsys\Support\Models\Department::class)
             <li class="nav-item">
@@ -45,11 +56,11 @@
             @endcan
 
             <li class="nav-item">
-                <a href="{{ route('support.tickets') }}"
-                    class="nav-link {{ (request()->is('support/tickets*')) ? 'active' : '' }}">
+                <a href="{{ route('support.my_tickets') }}"
+                    class="nav-link {{ (request()->is('support/my_tickets*')) ? 'active' : '' }}">
                     <i class="nav-icon fa fa-ticket"></i>
                     <p>
-                        {{ str(__('support::messages.tickets'))->headline() }}
+                        {{ str(__('support::messages.my_tickets'))->headline() }}
                     </p>
                 </a>
             </li>

@@ -16,7 +16,7 @@ class IndexTest extends TestCase
     /** @test */
     public function super_admin_index_component_requires_authorization()
     {
-        $this->withoutAuthorizedUser();
+        $this->actingAs($this->user());
 
         $component = Livewire::test(Index::class);
 
@@ -34,7 +34,7 @@ class IndexTest extends TestCase
     /** @test */
     public function super_admins_index_works_for_authorized_users_and_renders_correct_view()
     {
-        $this->withAuthorizedUser('view super admins');
+        $this->actingAs($this->superAdmin());
 
         $component = Livewire::test(Index::class);
 
@@ -45,7 +45,7 @@ class IndexTest extends TestCase
     /** @test */
     public function super_admins_index_works_for_super_admin_users_and_renders_correct_view()
     {
-        $this->withSuperUser();
+        $this->actingAs($this->superAdmin());
         $users = UserFactory::new()->count(2)->create();
 
         $component = Livewire::test(Index::class);
@@ -57,7 +57,7 @@ class IndexTest extends TestCase
     /** @test */
     public function super_admins_index_shows_all_users_except_authenticated_user()
     {
-        $this->withSuperUser();
+        $this->actingAs($this->superAdmin());
         $user = UserFactory::new()->create();
 
         $component = Livewire::test(Index::class);
@@ -69,7 +69,7 @@ class IndexTest extends TestCase
     /** @test */
     // public function super_admins_index_add_super_users()
     // {
-    //     $this->withSuperUser();
+    //     $this->actingAs($this->superAdmin());
     //     $regular_user = UserFactory::new()->create();
 
     //     $component = Livewire::test(Index::class, [
@@ -83,7 +83,7 @@ class IndexTest extends TestCase
     /** @test */
     // public function super_admins_index_removes_super_users()
     // {
-    //     $this->withSuperUser();
+    //     $this->actingAs($this->superAdmin());
     //     $regular_user = UserFactory::new()->create();
 
     //     $component = Livewire::test(Index::class, [

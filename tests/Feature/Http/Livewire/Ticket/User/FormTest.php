@@ -39,7 +39,7 @@ class FormTest extends TestCase
     /** @test */
     public function ticket_form_component_allows_any_user_to_create_ticket()
     {
-        $this->withoutAuthorizedUser();
+        $this->actingAs($this->user());
         $ticket = Ticket::factory()->create();
 
         $component = Livewire::test(Form::class);
@@ -51,7 +51,7 @@ class FormTest extends TestCase
     /** @test */
     public function ticket_form_allows_users_to_update_their_tickets()
     {
-        $this->withoutAuthorizedUser();
+        $this->actingAs($this->user());
         $ticket_1 = Ticket::factory()->create(['created_by' => auth()->user()->id]);
         $ticket_2 = Ticket::factory()->create(['created_by' => UserFactory::new()->create()]);
 
@@ -64,7 +64,7 @@ class FormTest extends TestCase
     /** @test */
     public function ticket_form_prevent_users_from_updating_tickets_for_other_users()
     {
-        $this->withoutAuthorizedUser();
+        $this->actingAs($this->user());
         $ticket_1 = Ticket::factory()->create(['created_by' => auth()->user()->id]);
         $ticket_2 = Ticket::factory()->create(['created_by' => UserFactory::new()->create()]);
 
@@ -73,10 +73,11 @@ class FormTest extends TestCase
 
         $component->assertForbidden();
     }
+
     /** @test */
     public function ticket_form_component_responds_to_create_ticket_event()
     {
-        $this->withAuthorizedUser('create tickets');
+        $this->actingAs($this->superAdmin());
         $ticket = new Ticket();
 
         $component = Livewire::test(Form::class);
@@ -91,7 +92,7 @@ class FormTest extends TestCase
     /** @test */
     public function ticket_form_component_responds_to_update_ticket_event()
     {
-        $this->withAuthorizedUser('update tickets');
+        $this->actingAs($this->superAdmin());
         $ticket = Ticket::factory()->create();
 
         $component = Livewire::test(Form::class);
@@ -106,7 +107,7 @@ class FormTest extends TestCase
     /** @test */
     public function ticket_form_component_validates_required_fields_to_create_tickets()
     {
-        $this->withAuthorizedUser('create tickets');
+        $this->actingAs($this->superAdmin());
         $data = ['department_id' => Department::factory()->create()];
         $component = Livewire::test(Form::class)
             ->set('ticket.reason_id', null);
@@ -118,7 +119,7 @@ class FormTest extends TestCase
     /** @test */
     public function ticket_form_component_validates_required_fields_to_update_tickets()
     {
-        $this->withAuthorizedUser('update tickets');
+        $this->actingAs($this->superAdmin());
         $component = Livewire::test(Form::class)
             ->set('ticket.department_id', '')
             ->set('ticket.reason_id', '');
@@ -130,7 +131,7 @@ class FormTest extends TestCase
     /** @test */
     public function ticket_form_component_creates_ticket()
     {
-        $this->withAuthorizedUser('create tickets');
+        $this->actingAs($this->superAdmin());
         $ticket = Ticket::factory()->make();
         $component = Livewire::test(Form::class);
         $component->emit('createTicket', new Ticket());
@@ -157,7 +158,7 @@ class FormTest extends TestCase
     /** @test */
     public function ticket_form_component_updates_ticket()
     {
-        $this->withAuthorizedUser('update tickets');
+        $this->actingAs($this->superAdmin());
         $ticket = Ticket::factory()->create();
 
         $component = Livewire::test(Form::class);

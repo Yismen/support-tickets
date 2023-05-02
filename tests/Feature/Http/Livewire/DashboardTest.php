@@ -4,6 +4,7 @@ namespace Dainsys\Support\Feature\Http\Livewire\SuperAdmin;
 
 use Livewire\Livewire;
 use Dainsys\Support\Tests\TestCase;
+use Dainsys\Support\Models\Department;
 use Dainsys\Support\Models\SuperAdmin;
 use Dainsys\Support\Models\DepartmentRole;
 use Dainsys\Support\Http\Livewire\Dashboard;
@@ -15,20 +16,20 @@ class DashboardTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function dashboard_component_renders_correctly_for_regular_users()
-    {
-        $this->actingAs(UserFactory::new()->create());
+    // public function dashboard_component_renders_correctly_for_regular_users()
+    // {
+    //     $this->actingAs($this->user());
 
-        $component = Livewire::test(Dashboard::class);
+    //     $component = Livewire::test(Dashboard::class);
 
-        $component->assertSee('My Tickets');
-    }
+    //     $component->assertSee('My Tickets');
+    // }
 
     /** @test */
     public function dashboard_component_renders_correctly_for_department_agent()
     {
-        $user = DepartmentRole::factory()->agent()->create()->user;
-        $this->actingAs($user);
+        $department = Department::factory()->create();
+        $this->actingAs($this->departmentAgent($department));
 
         $component = Livewire::test(Dashboard::class);
 
@@ -38,8 +39,8 @@ class DashboardTest extends TestCase
     /** @test */
     public function dashboard_component_renders_correctly_for_department_admin()
     {
-        $user = DepartmentRole::factory()->admin()->create()->user;
-        $this->actingAs($user);
+        $department = Department::factory()->create();
+        $this->actingAs($this->departmentAdmin($department));
 
         $component = Livewire::test(Dashboard::class);
 
@@ -49,8 +50,7 @@ class DashboardTest extends TestCase
     /** @test */
     public function dashboard_component_renders_correctly_for_super_admin()
     {
-        $user = SuperAdmin::factory()->create()->user;
-        $this->actingAs($user);
+        $this->actingAs($this->superAdmin());
 
         $component = Livewire::test(Dashboard::class);
 

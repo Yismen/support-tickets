@@ -1,15 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Dainsys\Support\Http\Controllers\HomeController;
 
 Route::middleware(['web', 'auth'])
     ->group(function () {
         Route::as('support.')
             ->prefix('support')
             ->group(function () {
-                Route::get('', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('home');
-                Route::get('admin', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('admin');
-                Route::get('tickets', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('tickets');
+                Route::get('', HomeController::class)->name('home');
+                // Route::get('', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('home');
+                Route::get('admin', HomeController::class)->name('admin');
+                Route::get('my_tickets', \Dainsys\Support\Http\Livewire\Ticket\User\Index::class)->name('my_tickets');
+                Route::get('dashboard', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('dashboard');
 
                 Route::as('admin.')
                     ->group(function () {

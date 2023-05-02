@@ -72,7 +72,7 @@ class TicketTest extends TestCase
     public function tickets_model_updates_expected_at_when_priority_is_normal()
     {
         $ticket = Ticket::factory()->create(['created_at' => now()]);
-        
+
         $ticket->reason->update(['priority' => TicketPrioritiesEnum::Normal]);
         $ticket->touch();
 
@@ -114,7 +114,7 @@ class TicketTest extends TestCase
 
         $ticket->reason->update(['priority' => TicketPrioritiesEnum::Emergency]);
         $ticket->touch();
-        
+
         $this->assertDatabaseHas(Ticket::class, [
             'expected_at' => $this->ensureNotWeekend(now()->addMinutes(30)),
         ]);

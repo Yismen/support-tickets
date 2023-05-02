@@ -25,6 +25,7 @@ return [
     'priority' => 'priority',
     'role' => 'role',
     'for' => 'for',
+    'my_tickets' => 'my_tickets',
     'super_admins' => 'super_admins',
     'department_roles' => 'department_roles',
     'department_role' => 'department_role',

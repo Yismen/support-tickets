@@ -35,6 +35,12 @@ class SupportServiceProvider extends AuthServiceProvider
         //     return $user->isSuperAdmin() ? true : null;
         // });
 
+        Gate::define('view-dashboards', function (\Illuminate\Foundation\Auth\User $user) {
+            return $user->isSuperAdmin()
+                || $user->isDepartmentAdmin()
+                || $user->isDepartmentAgent();
+        });
+
         if ($this->app->runningInConsole() && !app()->isProduction()) {
             $this->commands([
                 InstallCommand::class,

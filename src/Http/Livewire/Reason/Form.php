@@ -69,11 +69,11 @@ class Form extends Component
 
         $this->reason->save();
 
+        flasher('Reason created!', 'success');
+
         $this->dispatchBrowserEvent('closeAllModals');
 
         $this->emit('reasonUpdated');
-
-        flasher('Reason created!', 'success');
     }
 
     public function update()
@@ -83,13 +83,13 @@ class Form extends Component
 
         $this->reason->save();
 
+        flasher('Reason updated!', 'success');
+
         $this->dispatchBrowserEvent('closeAllModals');
 
         $this->editing = false;
 
         $this->emit('reasonUpdated');
-
-        flasher('Reason updated!', 'success');
     }
 
     protected function getRules()
