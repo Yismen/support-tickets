@@ -1,5 +1,10 @@
 <div>
-    <form wire:submit.prevent="{{ $editing ? 'update' : 'store' }}">
+    <div wire:loading wire:target='store,update'>
+        <div class="pl-4">
+            Updating Reply...
+        </div>
+    </div>
+    <form wire:submit.prevent="{{ $editing ? 'update' : 'store' }}" wire:loading.remove>
         <div class="form-group p-2">
             <x-support::inputs.text-area :field="'reply.content'" rows="2" modifier=".{{ $modifier }}">
                 Leave a Reply

@@ -3,15 +3,19 @@
 namespace Dainsys\Support;
 
 use Livewire\Livewire;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Event;
 use Dainsys\Support\Models\Department;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Console\Scheduling\Schedule;
+use Dainsys\Support\Events\ReplyCreatedEvent;
 use Dainsys\Support\Policies\DepartmentPolicy;
 use Dainsys\Support\Console\Commands\InstallCommand;
 use Dainsys\Support\Console\Commands\CreateSuperUser;
 use Dainsys\Support\Console\Commands\UpdateTicketStatus;
+use Dainsys\Support\Listeners\SendReplyCreatedNotification;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider;
 
 class SupportServiceProvider extends AuthServiceProvider
@@ -26,30 +30,13 @@ class SupportServiceProvider extends AuthServiceProvider
         Paginator::useBootstrap();
 
         $this->registerPolicies();
-        $this->registerEvents();
+
+        $this->bootEvents();
         $this->bootPublishableAssets();
         $this->bootLoads();
         $this->bootLivewireComponents();
-
-        // Gate::before(function ($user, $ability) {
-        //     return $user->isSuperAdmin() ? true : null;
-        // });
-
-        Gate::define('view-dashboards', function (\Illuminate\Foundation\Auth\User $user) {
-            return $user->isSuperAdmin()
-                || $user->isDepartmentAdmin()
-                || $user->isDepartmentAgent();
-        });
-
-        if ($this->app->runningInConsole() && !app()->isProduction()) {
-            $this->commands([
-                InstallCommand::class,
-                CreateSuperUser::class,
-                UpdateTicketStatus::class,
-            ]);
-        }
-
-        $this->registerSchedulledCommands();
+        $this->bootGates();
+        $this->boostCommandsAndSchedules();
     }
 
     public function register()
@@ -58,6 +45,19 @@ class SupportServiceProvider extends AuthServiceProvider
             __DIR__ . '/../config/support.php',
             'support'
         );
+    }
+
+    protected function bootGates()
+    {
+        // Gate::before(function ($user, $ability) {
+        //     return $user->isSuperAdmin() ? true : null;
+        // });
+
+        Gate::define('view-dashboards', function (User $user) {
+            return $user->isSuperAdmin()
+                || $user->isDepartmentAdmin()
+                || $user->isDepartmentAgent();
+        });
     }
 
     protected function bootPublishableAssets()
@@ -88,8 +88,16 @@ class SupportServiceProvider extends AuthServiceProvider
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'support');
     }
 
-    protected function registerSchedulledCommands()
+    protected function boostCommandsAndSchedules()
     {
+        if ($this->app->runningInConsole() && !app()->isProduction()) {
+            $this->commands([
+                InstallCommand::class,
+                CreateSuperUser::class,
+                UpdateTicketStatus::class,
+            ]);
+        }
+
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
             $schedule->command(UpdateTicketStatus::class)
                ->timezone('America/New_York')
@@ -97,8 +105,10 @@ class SupportServiceProvider extends AuthServiceProvider
         });
     }
 
-    protected function registerEvents()
+    protected function bootEvents()
     {
+        // Event::listen(ReplyCreatedEvent::class,  SendReplyCreatedNotification::class);
+        Event::listen(ReplyCreatedEvent::class, SendReplyCreatedNotification::class);
     }
 
     protected function bootLivewireComponents()

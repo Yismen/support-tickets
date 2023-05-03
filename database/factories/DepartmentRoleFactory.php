@@ -3,8 +3,8 @@
 namespace Dainsys\Support\Database\Factories;
 
 use Dainsys\Support\Models\Department;
-use Dainsys\Support\Enums\DepartmentRolesEnum;
 use Dainsys\Support\Models\DepartmentRole;
+use Dainsys\Support\Enums\DepartmentRolesEnum;
 use Orchestra\Testbench\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -25,8 +25,8 @@ class DepartmentRoleFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => UserFactory::new()->create(),
-            'department_id' => Department::factory()->create(),
+            'user_id' => UserFactory::new(),
+            'department_id' => Department::factory(),
             'role' => DepartmentRolesEnum::Agent->value,
         ];
     }

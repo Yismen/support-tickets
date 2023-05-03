@@ -7,8 +7,12 @@ use Illuminate\Foundation\Auth\User;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Dainsys\Support\Enums\TicketStatusesEnum;
+use Dainsys\Support\Events\TicketCreatedEvent;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
+use Dainsys\Support\Events\TicketAssignedEvent;
+use Dainsys\Support\Events\TicketCompletedEvent;
 use Dainsys\Support\Database\Factories\TicketFactory;
+use Dainsys\Support\Models\Traits\HasShortDescription;
 
 class Ticket extends AbstractModel implements Auditable
 {
@@ -17,9 +21,10 @@ class Ticket extends AbstractModel implements Auditable
     use \Dainsys\Support\Models\Traits\HasManyReplies;
     use \Dainsys\Support\Models\Traits\BelongsToAgent;
     use \Dainsys\Support\Traits\EnsureDateNotWeekend;
-    use \Dainsys\Support\Models\Traits\BelongsToUser;
+    use \Dainsys\Support\Models\Traits\BelongsToOwner;
     use \Illuminate\Database\Eloquent\SoftDeletes;
     use \OwenIt\Auditing\Auditable;
+    use HasShortDescription;
 
     protected $fillable = ['created_by', 'department_id', 'reason_id', 'description', 'status', 'assigned_to', 'assigned_at', 'expected_at', 'completed_at'];
 
@@ -28,6 +33,10 @@ class Ticket extends AbstractModel implements Auditable
         'expected_at' => 'datetime',
         'completed_at' => 'datetime',
         'status' => TicketStatusesEnum::class,
+    ];
+
+    protected $dispatchesEvents = [
+        'created' => TicketCreatedEvent::class
     ];
 
     protected static function newFactory(): TicketFactory
@@ -54,11 +63,6 @@ class Ticket extends AbstractModel implements Auditable
         });
     }
 
-    public function getShortDescriptionAttribute()
-    {
-        return str($this->attributes['description'] ?? '')->limit(25);
-    }
-
     public function assignTo(User|int $agent)
     {
         if (is_integer($agent)) {
@@ -70,6 +74,8 @@ class Ticket extends AbstractModel implements Auditable
             'assigned_at' => now(),
             'status' => TicketStatusesEnum::InProgress,
         ]);
+
+        TicketAssignedEvent::dispatch($this, $agent);
     }
 
     public function complete()
@@ -78,6 +84,8 @@ class Ticket extends AbstractModel implements Auditable
             'status' => $this->getStatus(),
             'completed_at' => now(),
         ]);
+
+        TicketCompletedEvent::dispatch($this);
     }
 
     public function scopeIncompleted(Builder $query): Builder
@@ -88,7 +96,6 @@ class Ticket extends AbstractModel implements Auditable
     protected function getExpectedDate(): Carbon
     {
         $date = $this->created_at ?? now();
-        // $this->load('reason');
 
         switch ($this->reason->priority) {
             case TicketPrioritiesEnum::Normal:

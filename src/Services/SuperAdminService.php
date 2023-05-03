@@ -2,7 +2,7 @@
 
 namespace Dainsys\Support\Services;
 
-use Illuminate\Foundation\Auth\User;
+use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Dainsys\Support\Models\SuperAdmin;
 

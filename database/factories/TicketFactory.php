@@ -26,11 +26,11 @@ class TicketFactory extends Factory
     public function definition()
     {
         return [
-            'created_by' => UserFactory::new()->create(),
+            'created_by' => UserFactory::new(),
             'department_id' => Department::factory(),
             'reason_id' => Reason::factory(),
             'description' => $this->faker->sentence(4),
-            // 'assigned_to' => UserFactory::new()->create(),
+            // 'assigned_to' => UserFactory::new(),
             // 'assigned_at' => now(),
             // 'expected_at' => now(),
             // 'completed_at' => now(),

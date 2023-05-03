@@ -4,10 +4,14 @@ namespace Dainsys\Support\Tests\Feature\Models;
 
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Tests\TestCase;
+use Illuminate\Support\Facades\Event;
 use Dainsys\Support\Models\Department;
 use Dainsys\Support\Enums\TicketStatusesEnum;
+use Dainsys\Support\Events\TicketCreatedEvent;
 use Orchestra\Testbench\Factories\UserFactory;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
+use Dainsys\Support\Events\TicketAssignedEvent;
+use Dainsys\Support\Events\TicketCompletedEvent;
 use Dainsys\Support\Traits\EnsureDateNotWeekend;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -15,6 +19,18 @@ class TicketTest extends TestCase
 {
     use RefreshDatabase;
     use EnsureDateNotWeekend;
+
+    protected $fake_event = true;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        // if ($this->fake_event === true) {
+        //     // dd("asdfasdf");
+        //     Event::fake();
+        // }
+    }
 
     /** @test */
     public function tickets_model_interacts_with_db_table()
@@ -41,7 +57,7 @@ class TicketTest extends TestCase
     {
         $ticket = Ticket::factory()->create();
 
-        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, $ticket->user());
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, $ticket->owner());
     }
 
     /** @test */
@@ -224,5 +240,37 @@ class TicketTest extends TestCase
         $this->assertDatabaseHas(Ticket::class, [
             'status' => TicketStatusesEnum::CompletedExpired,
         ]);
+    }
+
+    /** @test */
+    public function ticket_model_emit_event_ticket_created()
+    {
+        Event::fake();
+        $ticket = Ticket::factory()->create();
+
+        Event::assertDispatched(TicketCreatedEvent::class);
+    }
+
+    /** @test */
+    public function ticket_model_emit_event_ticket_assigned()
+    {
+        Event::fake();
+        $user = $this->user();
+        $ticket = Ticket::factory()->create();
+
+        $ticket->assignTo($user);
+
+        Event::assertDispatched(TicketAssignedEvent::class);
+    }
+
+    /** @test */
+    public function ticket_model_emit_event_ticket_completed()
+    {
+        Event::fake();
+        $ticket = Ticket::factory()->create();
+
+        $ticket->complete();
+
+        Event::assertDispatched(TicketCompletedEvent::class);
     }
 }

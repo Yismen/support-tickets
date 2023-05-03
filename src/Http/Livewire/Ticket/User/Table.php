@@ -36,7 +36,7 @@ class Table extends AbstractDataTableComponent
             ->with([
                 'department',
                 'reason',
-                'user',
+                'owner',
                 'agent',
                 // 'replies'
             ])

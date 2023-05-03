@@ -5,6 +5,7 @@ namespace Dainsys\Support\Traits;
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Models\Department;
 use Dainsys\Support\Models\SuperAdmin;
+use Illuminate\Notifications\Notifiable;
 use Dainsys\Support\Models\DepartmentRole;
 use Dainsys\Support\Enums\DepartmentRolesEnum;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasSupportTickets
 {
+    use Notifiable;
     public function superAdmin(): HasOne
     {
         return $this->hasOne(SuperAdmin::class);
