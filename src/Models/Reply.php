@@ -19,7 +19,7 @@ class Reply extends AbstractModel
     protected $notifiables = [];
 
     protected $dispatchesEvents = [
-        'created' => ReplyCreatedEvent::class
+        'created' => ReplyCreatedEvent::class,
     ];
 
     protected static function newFactory(): ReplyFactory
@@ -29,7 +29,7 @@ class Reply extends AbstractModel
 
     public function getNotifiables(): array
     {
-        if (! $this->ticket) {
+        if (!$this->ticket) {
             return $this->notifiables;
         }
         $ticket = $this->ticket->load([

@@ -13,9 +13,12 @@ abstract class AbstractDataTableComponent extends DataTableComponent
 
     public function configure(): void
     {
-        $records = $this->builder()->getModel()->count();
+        $records = $this->builder()->count();
 
         $this->withDefaultSorting();
+        $this->setFilterLayoutSlideDown();
+
+        $this->setRefreshTime(120000); // 2 minutes
 
         $this->setPrimaryKey('id');
         $this->setColumnSelectDisabled();
@@ -27,7 +30,6 @@ abstract class AbstractDataTableComponent extends DataTableComponent
         $this->setConfigurableAreas([
             'before-toolbar' => [
                 'support::tables.header', [
-                    'module' => $this->module,
                     'count' => $records,
                 ],
             ],
@@ -87,5 +89,10 @@ abstract class AbstractDataTableComponent extends DataTableComponent
     public function disableShowButton()
     {
         $this->show_button = false;
+    }
+
+    protected function tableTitle(): string
+    {
+        return str($this->module)->headline()->plural() . ' ' . __('support::messages.table');
     }
 }

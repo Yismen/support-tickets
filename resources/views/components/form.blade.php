@@ -11,7 +11,6 @@
 
     @if($footer)
     <div class="mt-3 border-top p-2">
-
         @if ($editing)
         <x-support::button type="submit" color="warning" class="btn-sm">
             {{ str(__('support::messages.update'))->upper() }}

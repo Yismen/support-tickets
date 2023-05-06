@@ -5,11 +5,13 @@ namespace Dainsys\Support\Http\Livewire\Ticket\User;
 use Dainsys\Support\Models\Reason;
 use Dainsys\Support\Models\Ticket;
 use Illuminate\Database\Eloquent\Builder;
+use Dainsys\Support\Enums\TicketStatusesEnum;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Dainsys\Support\Services\DepartmentService;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Dainsys\Support\Http\Livewire\AbstractDataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
+use Rappasoft\LaravelLivewireTables\Views\Filters\MultiSelectFilter;
 
 class Table extends AbstractDataTableComponent
 {
@@ -123,6 +125,13 @@ class Table extends AbstractDataTableComponent
                     TicketPrioritiesEnum::asArray()
                 )->filter(function (Builder $builder, int $value) {
                     $builder->where('priority', $value);
+                }),
+            MultiSelectFilter::make('Status')
+                // ->setFirstOption('All Status')
+                ->options(
+                    TicketStatusesEnum::asArray()
+                )->filter(function (Builder $builder, array $value) {
+                    $builder->whereIn('status', $value);
                 }),
         ];
     }

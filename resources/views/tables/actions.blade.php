@@ -1,4 +1,4 @@
-<div class="d-inline-block">
+<div class="d-flex">
     @if ($column->getComponent()->show_button)
     @include('support::tables.show')
     @endif

@@ -1,5 +1,6 @@
 <?php
 
+use Dainsys\Support\Models\Reply;
 use Dainsys\Support\Models\Ticket;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Schema;
@@ -15,10 +16,10 @@ class CreateSupportRepliesTable extends Migration
      */
     public function up()
     {
-        Schema::create(supportTableName('replies'), function (Blueprint $table) {
+        Schema::create(resolve(Reply::class)->getTable(), function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Ticket::class);
+            $table->foreignIdFor(User::class)->constrained(resolve(User::class)->getTable());
+            $table->foreignIdFor(Ticket::class)->constrained(resolve(Ticket::class)->getTable());
             $table->text('content');
 
             $table->timestamps();
@@ -32,6 +33,6 @@ class CreateSupportRepliesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(supportTableName('replies'));
+        Schema::dropIfExists(resolve(Reply::class)->getTable());
     }
 }

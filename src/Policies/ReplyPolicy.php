@@ -40,9 +40,7 @@ class ReplyPolicy
      */
     public function create(User $user, Reply $reply, $ticket): bool
     {
-        return $user->isSuperAdmin()
-            || $ticket->created_by === $user->id
-            || $ticket->assigned_to === $user->id;
+        return $ticket->created_by === $user->id || $ticket->assigned_to === $user->id;
     }
 
     /**

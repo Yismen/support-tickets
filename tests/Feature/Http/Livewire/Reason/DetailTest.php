@@ -24,9 +24,9 @@ class DetailTest extends TestCase
     }
 
     /** @test */
-    public function reason_detail_component_grants_access_to_super_admin()
+    public function reason_detail_component_grants_access_to_support_super_admin()
     {
-        $this->actingAs($this->superAdmin());
+        $this->actingAs($this->supportSuperAdmin());
         $reason = Reason::factory()->create();
 
         $component = Livewire::test(Detail::class);
@@ -38,7 +38,7 @@ class DetailTest extends TestCase
     /** @test */
     public function reason_detail_component_grants_access_to_authorized_users()
     {
-        $this->actingAs($this->superAdmin());
+        $this->actingAs($this->supportSuperAdmin());
         $reason = Reason::factory()->create();
 
         $component = Livewire::test(Detail::class);
@@ -50,7 +50,7 @@ class DetailTest extends TestCase
     /** @test */
     public function reason_detail_component_responds_to_wants_show_reason_event()
     {
-        $this->actingAs($this->superAdmin());
+        $this->actingAs($this->supportSuperAdmin());
         $reason = Reason::factory()->create();
 
         $component = Livewire::test(Detail::class);

@@ -69,7 +69,7 @@ class Form extends Component
 
         $this->reason->save();
 
-        flasher('Reason created!', 'success');
+        supportFlash('Reason created!', 'success');
 
         $this->dispatchBrowserEvent('closeAllModals');
 
@@ -83,7 +83,7 @@ class Form extends Component
 
         $this->reason->save();
 
-        flasher('Reason updated!', 'success');
+        supportFlash('Reason updated!', 'success');
 
         $this->dispatchBrowserEvent('closeAllModals');
 

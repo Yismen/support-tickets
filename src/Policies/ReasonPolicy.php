@@ -18,7 +18,7 @@ class ReasonPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isSuperAdmin();
+        return $user->isSupportSuperAdmin();
     }
 
     /**
@@ -30,7 +30,7 @@ class ReasonPolicy
      */
     public function view(User $user, Reason $reason): bool
     {
-        return $user->isSuperAdmin();
+        return $user->isSupportSuperAdmin();
     }
 
     /**
@@ -41,7 +41,7 @@ class ReasonPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isSuperAdmin();
+        return $user->isSupportSuperAdmin();
     }
 
     /**
@@ -53,7 +53,7 @@ class ReasonPolicy
      */
     public function update(User $user, Reason $reason): bool
     {
-        return $user->isSuperAdmin() || $user->isDepartmentAdmin($reason->department);
+        return $user->isSupportSuperAdmin() || $user->isDepartmentAdmin($reason->department);
     }
 
     /**
@@ -65,7 +65,7 @@ class ReasonPolicy
      */
     public function delete(User $user, Reason $reason): bool
     {
-        return $user->isSuperAdmin();
+        return $user->isSupportSuperAdmin();
     }
 
     /**
@@ -77,7 +77,7 @@ class ReasonPolicy
      */
     public function restore(User $user, Reason $reason): bool
     {
-        return $user->isSuperAdmin();
+        return $user->isSupportSuperAdmin();
     }
 
     /**
@@ -89,6 +89,6 @@ class ReasonPolicy
      */
     public function forceDelete(User $user, Reason $reason): bool
     {
-        return $user->isSuperAdmin();
+        return $user->isSupportSuperAdmin();
     }
 }

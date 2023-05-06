@@ -16,8 +16,8 @@
            ]) }}
         ></textarea>
 
-        <x-support::inputs.error :field="$field" />
     </div>
+    <x-support::inputs.error :field="$field" />
 
 
     @if ($editor)

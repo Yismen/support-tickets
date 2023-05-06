@@ -17,6 +17,7 @@ class Form extends Component
 
     public $modifier = 'lazy';
     protected $listeners = [
+        'ticketUpdated' => '$refresh',
         'showReplyForm' => 'create',
         'showReplyEdit' => 'edit',
     ];
@@ -29,7 +30,7 @@ class Form extends Component
 
     public function render()
     {
-        $this->authorize('view', $this->reply);
+        // $this->authorize('create', $this->reply);
 
         return view('support::livewire.reply.form')
         ->layout('support::layouts.app');
@@ -56,7 +57,7 @@ class Form extends Component
             'content' => $this->reply->content,
         ]);
 
-        flasher('Reply created!');
+        supportFlash('Reply created!');
 
         $this->reply = new Reply();
 
@@ -80,7 +81,7 @@ class Form extends Component
             'content' => $this->reply['content']
         ]);
 
-        flasher('Reply updated!');
+        supportFlash('Reply updated!');
 
         $this->reply = new Reply();
 

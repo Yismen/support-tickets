@@ -20,7 +20,7 @@ Route::middleware(['web', 'auth'])
 
                         Route::get('reasons', \Dainsys\Support\Http\Livewire\Reason\Index::class)->name('reasons.index');
 
-                        Route::get('super_admins', \Dainsys\Support\Http\Livewire\SuperAdmin\Index::class)->name('super_admins.index');
+                        Route::get('support_super_admins', \Dainsys\Support\Http\Livewire\SupportSuperAdmin\Index::class)->name('support_super_admins.index');
 
                         Route::get('department_roles', \Dainsys\Support\Http\Livewire\DepartmentRole\Index::class)->name('department_roles.index');
                     });

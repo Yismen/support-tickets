@@ -5,7 +5,6 @@ namespace Dainsys\Support\Console\Commands;
 use Illuminate\Console\Command;
 use Dainsys\Support\Models\Ticket;
 use Illuminate\Database\Eloquent\Collection;
-use Dainsys\Support\Jobs\UpdateTicketStatusJob;
 
 class UpdateTicketStatus extends Command
 {
@@ -42,9 +41,9 @@ class UpdateTicketStatus extends Command
      */
     public function handle()
     {
-        $this->tickets = Ticket::incompleted()->get();
-        
-        $this->tickets->each(function(Ticket $ticket) {
+        $this->tickets = Ticket::incompleted()->with('reason')->get();
+
+        $this->tickets->each(function (Ticket $ticket) {
             $ticket->touch();
         });
 

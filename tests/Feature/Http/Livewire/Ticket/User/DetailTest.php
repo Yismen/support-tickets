@@ -26,9 +26,9 @@ class DetailTest extends TestCase
     }
 
     /** @test */
-    public function ticket_detail_component_grants_access_to_super_admin()
+    public function ticket_detail_component_grants_access_to_support_super_admin()
     {
-        $this->actingAs($this->superAdmin());
+        $this->actingAs($this->supportSuperAdmin());
         $ticket = Ticket::factory()->create();
 
         $component = Livewire::test(Detail::class);
@@ -40,7 +40,7 @@ class DetailTest extends TestCase
     /** @test */
     public function ticket_detail_component_grants_access_to_authorized_users()
     {
-        $this->actingAs($this->superAdmin());
+        $this->actingAs($this->supportSuperAdmin());
         $ticket = Ticket::factory()->create();
 
         $component = Livewire::test(Detail::class);
@@ -52,7 +52,7 @@ class DetailTest extends TestCase
     /** @test */
     public function ticket_detail_component_responds_to_wants_show_ticket_event()
     {
-        $this->actingAs($this->superAdmin());
+        $this->actingAs($this->supportSuperAdmin());
         $ticket = Ticket::factory()->create();
 
         $component = Livewire::test(Detail::class);

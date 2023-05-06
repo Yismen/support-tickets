@@ -32,7 +32,7 @@ class IndexTest extends TestCase
     /** @test */
     public function reasons_index_works_for_authorized_users_and_renders_correct_view()
     {
-        $this->actingAs($this->superAdmin());
+        $this->actingAs($this->supportSuperAdmin());
 
         $component = Livewire::test(Index::class);
 
@@ -41,9 +41,9 @@ class IndexTest extends TestCase
     }
 
     /** @test */
-    public function reasons_index_works_for_super_admin_users_and_renders_correct_view()
+    public function reasons_index_works_for_support_super_admin_users_and_renders_correct_view()
     {
-        $this->actingAs($this->superAdmin());
+        $this->actingAs($this->supportSuperAdmin());
 
         $component = Livewire::test(Index::class);
 

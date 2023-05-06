@@ -17,7 +17,7 @@ enum TicketStatusesEnum: int implements EnumContract
     {
         return match ($this) {
             self::Pending => '',
-            self::PendingExpired => 'text-bold text-warning',
+            self::PendingExpired => 'text-bold text-danger',
             self::InProgress => 'badge badge-info',
             self::InProgressExpired => 'badge badge-warning',
             self::Completed => 'badge badge-success',

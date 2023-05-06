@@ -21,12 +21,17 @@ class Department extends AbstractModel
         return DepartmentFactory::new();
     }
 
-    public function setTicketPrefixAttribute($prefix)
+    protected static function booted()
     {
-        $upper = str($prefix)->upper();
-        $prefix = str($upper)->endsWith('-') ? $upper : "{$upper}-";
+        parent::booted();
 
-        $this->attributes['ticket_prefix'] = $prefix;
+        static::saved(function ($model) {
+            $prefix = $model->ticket_prefix;
+            $upper = str($prefix)->upper();
+            $parsed = str($upper)->endsWith('-') ? $upper : "{$upper}-";
+
+            $model->updateQuietly(['ticket_prefix' => $parsed]);
+        });
     }
 
     public function roles(): HasMany
@@ -42,5 +47,43 @@ class Department extends AbstractModel
     public function agents(): HasMany
     {
         return  $this->roles()->where('role', DepartmentRolesEnum::Agent);
+    }
+
+    public function team(): HasMany
+    {
+        return  $this->roles();
+    }
+
+    public function getTicketsCompletedAttribute(): int
+    {
+        return $this->tickets()->completed()->count();
+    }
+
+    public function getTicketsIncompletedAttribute(): int
+    {
+        return $this->tickets()->incompleted()->count();
+    }
+
+    public function getTicketsCompliantsAttribute(): int
+    {
+        return $this->tickets()->compliant()->count();
+    }
+
+    public function getCompletionRateAttribute()
+    {
+        $total_tickets = $this->tickets()->count();
+
+        return $total_tickets > 0
+            ? $this->tickets_completed / $total_tickets
+            : 0;
+    }
+
+    public function getComplianceRateAttribute()
+    {
+        $total_tickets = $this->tickets()->completed()->count();
+
+        return $total_tickets > 0
+            ? $this->tickets_compliants / $total_tickets
+            : 0;
     }
 }

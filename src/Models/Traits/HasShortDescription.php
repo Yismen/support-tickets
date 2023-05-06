@@ -6,6 +6,6 @@ trait HasShortDescription
 {
     public function getShortDescriptionAttribute()
     {
-        return str($this->attributes['description'] ?? '')->limit(25);
+        return str(strip_tags($this->attributes['description']) ?? '')->limit(25);
     }
 }

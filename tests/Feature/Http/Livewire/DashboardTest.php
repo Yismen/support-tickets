@@ -1,14 +1,11 @@
 <?php
 
-namespace Dainsys\Support\Feature\Http\Livewire\SuperAdmin;
+namespace Dainsys\Support\Feature\Http\Livewire\SupportSuperAdmin;
 
 use Livewire\Livewire;
 use Dainsys\Support\Tests\TestCase;
 use Dainsys\Support\Models\Department;
-use Dainsys\Support\Models\SuperAdmin;
-use Dainsys\Support\Models\DepartmentRole;
 use Dainsys\Support\Http\Livewire\Dashboard;
-use Orchestra\Testbench\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DashboardTest extends TestCase
@@ -33,7 +30,7 @@ class DashboardTest extends TestCase
 
         $component = Livewire::test(Dashboard::class);
 
-        $component->assertSee('Department Agent Dashboard');
+        $component->assertSee('Department Dashboard');
     }
 
     /** @test */
@@ -44,16 +41,16 @@ class DashboardTest extends TestCase
 
         $component = Livewire::test(Dashboard::class);
 
-        $component->assertSee('Department Admin Dashboard');
+        $component->assertSee('Department Dashboard');
     }
 
     /** @test */
-    public function dashboard_component_renders_correctly_for_super_admin()
+    public function dashboard_component_renders_correctly_for_support_super_admin()
     {
-        $this->actingAs($this->superAdmin());
+        $this->actingAs($this->supportSuperAdmin());
 
         $component = Livewire::test(Dashboard::class);
 
-        $component->assertSee('Super Admin Dashboard');
+        $component->assertSee('Support Super Admin Dashboard');
     }
 }

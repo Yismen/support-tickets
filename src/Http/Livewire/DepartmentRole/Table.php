@@ -50,7 +50,7 @@ class Table extends AbstractDataTableComponent
     {
         return User::query()
             ->whereRaw(DB::raw('users.id != ' . auth()->user()->id))
-            ->whereDoesntHave('superAdmin')
+            ->whereDoesntHave('supportSuperAdmin')
             ->with('departmentRole.department')
             // ->withCount([
             //     'departments',
@@ -64,7 +64,9 @@ class Table extends AbstractDataTableComponent
             Column::make('Name')
                 ->sortable()
                 ->searchable(),
-
+            Column::make('Email')
+                ->sortable()
+                ->searchable(),
             Column::make('Department', 'departmentRole.department.name')
                 ->sortable()
                 ->searchable(),

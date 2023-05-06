@@ -76,7 +76,7 @@ class Form extends Component
 
         $this->emit('departmentUpdated');
 
-        flasher('Department Role updated!', 'success');
+        supportFlash('Department Role updated!', 'success');
     }
 
     protected function getRules()

@@ -29,7 +29,7 @@ class Index extends Component
         $this->authorize('viewAny', new DepartmentRole());
 
         return view('support::livewire.department_role.index', [
-            'users' => \App\Models\User::orderBy('name')->with('superAdmin')->get()
+            'users' => \App\Models\User::orderBy('name')->with('supportSuperAdmin')->get()
         ])
         ->layout('support::layouts.app');
     }
@@ -37,21 +37,20 @@ class Index extends Component
     public function updating($department_roles, $value)
     {
         $this->selected = $this->findCurrentUser($value);
-        $user = \App\Models\User::findOrFail($this->selected)->load('superAdmin');
+        $user = \App\Models\User::findOrFail($this->selected)->load('supportSuperAdmin');
 
-        // dd($value, $this->selected, $this->department_roles, auth()->user()->id, $user->id);
         if (auth()->user()->id === $user->id) {
-            return flasher('You can\' update your own user!', 'error');
+            return supportFlash('You can\' update your own user!', 'error');
         }
         if ($user->isDepartmentRole()) {
-            $user->superAdmin()->delete();
+            $user->supportSuperAdmin()->delete();
 
-            return flasher("User {$user->name} is not a super admin user anymore!", 'warning');
+            return supportFlash("User {$user->name} is not a support super admin user anymore!", 'warning');
         }
 
         $user->DepartmentRole()->create();
 
-        return flasher("Added {$user->name} as a super admin user!", 'success');
+        return supportFlash("Added {$user->name} as a support super admin user!", 'success');
     }
 
     protected function findCurrentUser(array $value): int

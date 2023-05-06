@@ -6,6 +6,7 @@ use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Tests\TestCase;
 use Illuminate\Support\Facades\Event;
 use Dainsys\Support\Models\Department;
+use Dainsys\Support\Models\DepartmentRole;
 use Dainsys\Support\Enums\TicketStatusesEnum;
 use Dainsys\Support\Events\TicketCreatedEvent;
 use Orchestra\Testbench\Factories\UserFactory;
@@ -14,23 +15,14 @@ use Dainsys\Support\Events\TicketAssignedEvent;
 use Dainsys\Support\Events\TicketCompletedEvent;
 use Dainsys\Support\Traits\EnsureDateNotWeekend;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Dainsys\Support\Database\Factories\DepartmentFactory;
+use Dainsys\Support\Exceptions\DifferentDepartmentException;
+use Dainsys\Support\Database\Factories\DepartmentRoleFactory;
 
 class TicketTest extends TestCase
 {
     use RefreshDatabase;
     use EnsureDateNotWeekend;
-
-    protected $fake_event = true;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        // if ($this->fake_event === true) {
-        //     // dd("asdfasdf");
-        //     Event::fake();
-        // }
-    }
 
     /** @test */
     public function tickets_model_interacts_with_db_table()
@@ -47,6 +39,7 @@ class TicketTest extends TestCase
             'assigned_to',
             'assigned_at',
             // 'expected_at',
+            'image',
             'completed_at',
             'status',
         ]));
@@ -139,17 +132,29 @@ class TicketTest extends TestCase
     /** @test */
     public function tickets_model_can_assign_an_agent()
     {
-        $agent = UserFactory::new()->create();
         $department = Department::factory()->create();
         $ticket = Ticket::factory()->unassigned()->create(['department_id' => $department->id]);
+        $agent = DepartmentRole::factory()->agent()->create(['department_id' => $department->id]);
 
         $ticket->assignTo($agent);
 
         $this->assertDatabaseHas(Ticket::class, [
-            'assigned_to' => $agent->id,
+            'assigned_to' => $agent->user_id,
             'assigned_at' => now(),
             'status' => TicketStatusesEnum::InProgress,
         ]);
+    }
+
+    /** @test */
+    public function tickets_model_can_not_assign_tickets_to_agents_from_other_departments()
+    {
+        $this->expectException(DifferentDepartmentException::class);
+
+        $department = Department::factory()->create();
+        $agent = DepartmentRole::factory()->agent()->create(['department_id' => $department->id]);
+        $ticket = Ticket::factory()->unassigned()->create(['department_id' => DepartmentFactory::new()->create()]);
+
+        $ticket->assignTo($agent);
     }
 
     /** @test */
@@ -190,11 +195,12 @@ class TicketTest extends TestCase
     }
 
     /** @test */
-    public function tickets_model_update_status_to_in_status()
+    public function tickets_model_update_status_to_in_status_in_progress()
     {
         $ticket = Ticket::factory()->create();
+        $agent = DepartmentRoleFactory::new()->create(['department_id' => $ticket->department_id]);
 
-        $ticket->assignTo(UserFactory::new()->create());
+        $ticket->assignTo($agent);
         $ticket->touch();
 
         $this->assertDatabaseHas(Ticket::class, [
@@ -206,8 +212,9 @@ class TicketTest extends TestCase
     public function tickets_model_update_status_to_in_status_expired()
     {
         $ticket = Ticket::factory()->create();
+        $agent = DepartmentRoleFactory::new()->create(['department_id' => $ticket->department_id]);
 
-        $ticket->assignTo(UserFactory::new()->create());
+        $ticket->assignTo($agent);
         $this->travelTo(now()->addDays(40));
         $ticket->touch();
 
@@ -255,10 +262,10 @@ class TicketTest extends TestCase
     public function ticket_model_emit_event_ticket_assigned()
     {
         Event::fake();
-        $user = $this->user();
         $ticket = Ticket::factory()->create();
+        $agent = DepartmentRoleFactory::new()->create(['department_id' => $ticket->department_id]);
 
-        $ticket->assignTo($user);
+        $ticket->assignTo($agent);
 
         Event::assertDispatched(TicketAssignedEvent::class);
     }
@@ -272,5 +279,52 @@ class TicketTest extends TestCase
         $ticket->complete();
 
         Event::assertDispatched(TicketCompletedEvent::class);
+    }
+
+    /** @test */
+    public function ticket_model_get_completed_attribute()
+    {
+        Ticket::factory()->completed()->create();
+        Ticket::factory()->create();
+
+        $this->assertEquals(1, Ticket::completed()->count());
+    }
+
+    /** @test */
+    public function ticket_model_get_incompleted_attribute()
+    {
+        Ticket::factory()->incompleted()->create();
+        Ticket::factory()->create();
+
+        $this->assertEquals(2, Ticket::incompleted()->count());
+    }
+
+    /** @test */
+    public function ticket_model_get_is_assigned_to_agent_method()
+    {
+        $ticket = Ticket::factory()->unassigned()->create();
+        $agent = DepartmentRole::factory()->agent()->create(['department_id' => $ticket->department_id]);
+
+        $this->assertFalse($ticket->isAssignedTo($agent));
+
+        $ticket->assignTo($agent);
+    }
+
+    /** @test */
+    public function ticket_model_get_compliant_attribute()
+    {
+        Ticket::factory()->compliant()->create();
+        Ticket::factory()->create();
+
+        $this->assertEquals(1, Ticket::compliant()->count());
+    }
+
+    /** @test */
+    public function ticket_model_get_noncompliant_attribute()
+    {
+        Ticket::factory()->noncompliant()->create();
+        Ticket::factory()->create();
+
+        $this->assertEquals(1, Ticket::nonCompliant()->count());
     }
 }

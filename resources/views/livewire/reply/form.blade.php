@@ -1,4 +1,5 @@
 <div>
+    @can('create', [$reply, $ticket])
     <x-support::loading target="store,update" content="Updating Reply..." />
     <form wire:submit.prevent="{{ $editing ? 'update' : 'store' }}" wire:loading.remove>
         <div class="form-group p-2">
@@ -33,4 +34,5 @@
         });
     </script>
     @endpush
+    @endcan
 </div>
