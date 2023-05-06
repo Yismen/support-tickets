@@ -13,6 +13,7 @@ use Dainsys\Support\Events\TicketAssignedEvent;
 use Dainsys\Support\Events\TicketCompletedEvent;
 use Dainsys\Support\Database\Factories\TicketFactory;
 use Dainsys\Support\Models\Traits\HasShortDescription;
+use Dainsys\Support\Exceptions\DifferentDepartmentException;
 
 class Ticket extends AbstractModel implements Auditable
 {
@@ -46,6 +47,8 @@ class Ticket extends AbstractModel implements Auditable
 
     protected static function booted()
     {
+        parent::booted();
+
         static::created(function ($model) {
             $model->updateQuietly([
                 'status' => TicketStatusesEnum::Pending,
@@ -63,14 +66,22 @@ class Ticket extends AbstractModel implements Auditable
         });
     }
 
-    public function assignTo(User|int $agent)
+    public function assignTo(DepartmentRole|User|int $agent)
     {
         if (is_integer($agent)) {
-            $agent = User::findOrFail($agent);
+            $agent = DepartmentRole::findOrFail($agent);
+        }
+
+        if ($agent instanceof User) {
+            $agent = DepartmentRole::where('user_id', $agent->id)->firstOrFail();
+        }
+
+        if ($agent->department_id !== $this->department_id) {
+            throw new DifferentDepartmentException();
         }
 
         $this->updateQuietly([
-            'assigned_to' => $agent->id,
+            'assigned_to' => $agent->user_id,
             'assigned_at' => now(),
             'status' => TicketStatusesEnum::InProgress,
         ]);
@@ -88,9 +99,31 @@ class Ticket extends AbstractModel implements Auditable
         TicketCompletedEvent::dispatch($this);
     }
 
-    public function scopeIncompleted(Builder $query): Builder
+    public function close(string $comment)
     {
-        return $query->where('completed_at', null);
+        $this->replies()->createQuietly([
+            'user_id' => auth()->user()->id,
+            'content' => $comment
+        ]);
+
+        $this->complete();
+    }
+
+    public function isAssigned(): bool
+    {
+        return !is_null($this->assigned_to);
+    }
+
+    public function isAssignedTo(DepartmentRole|User|int $agent): bool
+    {
+        if (is_integer($agent)) {
+            $agent = DepartmentRole::findOrFail($agent);
+        }
+
+        if ($agent instanceof User) {
+            $agent = DepartmentRole::where('user_id', $agent->id)->firstOrFail();
+        }
+        return $this->assigned_to === $agent->user_id;
     }
 
     protected function getExpectedDate(): Carbon
@@ -120,14 +153,14 @@ class Ticket extends AbstractModel implements Auditable
     public function getStatus(): TicketStatusesEnum
     {
         // Pendig
-        if ($this->assigned_at == null && $this->completed_at == null) {
+        if ($this->assigned_to == null && $this->completed_at == null) {
             return $this->expected_at > now()
                 ? TicketStatusesEnum::Pending
                 : TicketStatusesEnum::PendingExpired;
         }
 
         //    In Status
-        if ($this->assigned_at && $this->completed_at == null) {
+        if ($this->assigned_to && $this->completed_at == null) {
             return $this->expected_at > now()
             ? TicketStatusesEnum::InProgress
             : TicketStatusesEnum::InProgressExpired;
@@ -137,5 +170,25 @@ class Ticket extends AbstractModel implements Auditable
         return $this->expected_at > $this->completed_at
             ? TicketStatusesEnum::Completed
             : TicketStatusesEnum::CompletedExpired;
+    }
+
+    public function scopeIncompleted(Builder $query): Builder
+    {
+        return $query->where('completed_at', null);
+    }
+
+    public function scopeCompleted(Builder $query): Builder
+    {
+        return $query->where('completed_at', '!=', null);
+    }
+
+    public function scopeCompliant(Builder $query): Builder
+    {
+        return $query->whereColumn('completed_at', '<', 'expected_at');
+    }
+
+    public function scopeNonCompliant(Builder $query): Builder
+    {
+        return $query->whereColumn('completed_at', '>', 'expected_at');
     }
 }

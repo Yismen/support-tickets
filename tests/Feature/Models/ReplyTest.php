@@ -92,7 +92,7 @@ class ReplyTest extends TestCase
         Event::fake();
         $ticket = Ticket::factory()->create();
         $agent = DepartmentRole::factory()->admin()->create(['department_id' => $ticket->department_id]);
-        $ticket->assignTo($agent->user);
+        $ticket->assignTo($agent);
         $reply = Reply::factory()->create(['ticket_id' => $ticket->id]);
 
         $this->assertEquals($agent->id, $reply->getNotifiables()[0]->id);

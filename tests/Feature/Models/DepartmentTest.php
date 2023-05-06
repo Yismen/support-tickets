@@ -2,6 +2,7 @@
 
 namespace Dainsys\Support\Tests\Feature\Models;
 
+use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Tests\TestCase;
 use Dainsys\Support\Models\Department;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,7 +17,6 @@ class DepartmentTest extends TestCase
         $data = Department::factory()->make();
 
         Department::create($data->toArray());
-
 
         $this->assertDatabaseHas(supportTableName('departments'), $data->only([
             'name', 'ticket_prefix', 'description'
@@ -47,5 +47,46 @@ class DepartmentTest extends TestCase
         $this->assertDatabaseHas(Department::class, [
             'ticket_prefix' => 'A1AA-'
         ]);
+    }
+
+    /** @test */
+    public function department_model_set_tickets_completed_attribute()
+    {
+        $department = Department::factory()->create();
+        Ticket::factory()->completed()->create(['department_id' => $department->id]);
+        Ticket::factory()->create(['department_id' => $department->id]);
+        Ticket::factory()->create();
+
+        $this->assertEquals(1, $department->tickets_completed);
+    }
+
+    /** @test */
+    public function department_model_set_tickets_incompleted_attribute()
+    {
+        $department = Department::factory()->create();
+        Ticket::factory()->completed()->create(['department_id' => $department->id]);
+        Ticket::factory()->create(['department_id' => $department->id]);
+
+        $this->assertEquals(1, $department->tickets_incompleted);
+    }
+
+    /** @test */
+    public function department_model_set_completion_rate_attribute()
+    {
+        $department = Department::factory()->create();
+        Ticket::factory()->completed()->create(['department_id' => $department->id]);
+        Ticket::factory()->create(['department_id' => $department->id, 'completed_at' => now()->addDays(100)]);
+
+        $this->assertEquals(0.5, $department->compliance_rate);
+    }
+
+    /** @test */
+    public function department_model_set_compliance_rate_attribute()
+    {
+        $department = Department::factory()->create();
+        Ticket::factory()->compliant()->create(['department_id' => $department->id]);
+        Ticket::factory()->noncompliant()->create(['department_id' => $department->id]);
+
+        $this->assertEquals(0.5, $department->compliance_rate);
     }
 }

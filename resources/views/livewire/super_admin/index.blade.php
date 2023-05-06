@@ -8,20 +8,19 @@
                     <div class="row">
                         @foreach ($users->split(4) as $split)
                         <div class="col-sm-6 col-lg-3">
+                            @foreach ($split as $user)
+                            @if (auth()->user()->id !== $user->id)
                             <div class='info-box bg-gradient-navy'>
                                 <div class="info-box-content">
-                                    @foreach ($split as $user)
-                                    @if (auth()->user()->id !== $user->id)
                                     <x-support::inputs.switch field="super_admins" :value='(int)$user->id'>
                                         <span
-                                            class="{{  in_array($user->id, $super_admins) ? 'text-success text-uppercase' : 'text-light' }}">{{
+                                            class="{{  in_array($user->id, $super_admins) ? 'text-success text-uppercase' : '' }}">{{
                                             $user->name }}</span>
                                     </x-support::inputs.switch>
-                                    @endif
-                                    @endforeach
                                 </div>
-
                             </div>
+                            @endif
+                            @endforeach
                         </div>
                         @endforeach
                     </div>

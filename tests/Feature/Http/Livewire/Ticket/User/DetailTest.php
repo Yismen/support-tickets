@@ -30,7 +30,7 @@ class DetailTest extends TestCase
     {
         $this->actingAs($this->superAdmin());
         $ticket = Ticket::factory()->create();
-
+        
         $component = Livewire::test(Detail::class);
         $component->emit('showTicket', $ticket);
 

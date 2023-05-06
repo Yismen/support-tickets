@@ -30,9 +30,9 @@ class TicketPolicy
      */
     public function view(User $user, Ticket $ticket): bool
     {
-        return $user->isSuperAdmin()
-            // || $user->isDepartmentAdmin($ticket->department)
-            || $user->id === $ticket->created_by
+        return $user->id === $ticket->created_by
+            || $user->isDepartmentAdmin($ticket->department)
+            || $user->isDepartmentAgent($ticket->department)
             ;
     }
 
@@ -56,10 +56,7 @@ class TicketPolicy
      */
     public function update(User $user, Ticket $ticket): bool
     {
-        return $user->isSuperAdmin()
-            // || $user->isDepartmentAdmin($ticket->department)
-            || $user->id === $ticket->created_by
-            ;
+        return $user->id === $ticket->created_by;
     }
 
     /**
@@ -71,10 +68,7 @@ class TicketPolicy
      */
     public function delete(User $user, Ticket $ticket): bool
     {
-        return $user->isSuperAdmin()
-            // || $user->isDepartmentAdmin($ticket->department)
-            || $user->id === $ticket->created_by
-            ;
+        return $user->id === $ticket->created_by;
     }
 
     /**
@@ -86,7 +80,7 @@ class TicketPolicy
      */
     public function restore(User $user, Ticket $ticket): bool
     {
-        return $user->isSuperAdmin();
+        return false;
     }
 
     /**
@@ -98,6 +92,6 @@ class TicketPolicy
      */
     public function forceDelete(User $user, Ticket $ticket): bool
     {
-        return $user->isSuperAdmin();
+        return $user->id === $ticket->created_by;
     }
 }

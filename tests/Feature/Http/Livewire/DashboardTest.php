@@ -5,10 +5,7 @@ namespace Dainsys\Support\Feature\Http\Livewire\SuperAdmin;
 use Livewire\Livewire;
 use Dainsys\Support\Tests\TestCase;
 use Dainsys\Support\Models\Department;
-use Dainsys\Support\Models\SuperAdmin;
-use Dainsys\Support\Models\DepartmentRole;
 use Dainsys\Support\Http\Livewire\Dashboard;
-use Orchestra\Testbench\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DashboardTest extends TestCase
@@ -33,7 +30,7 @@ class DashboardTest extends TestCase
 
         $component = Livewire::test(Dashboard::class);
 
-        $component->assertSee('Department Agent Dashboard');
+        $component->assertSee('Department Dashboard');
     }
 
     /** @test */
@@ -44,7 +41,7 @@ class DashboardTest extends TestCase
 
         $component = Livewire::test(Dashboard::class);
 
-        $component->assertSee('Department Admin Dashboard');
+        $component->assertSee('Department Dashboard');
     }
 
     /** @test */

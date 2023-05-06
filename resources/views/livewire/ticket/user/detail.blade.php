@@ -1,6 +1,6 @@
 <div>
-    <x-support::modal title="{{ str(__('support::messages.ticket'))->headline() }}" modal-name="TicketDetails"
-        event-name="{{ $this->modal_event_name_detail }}" class="modal-lg">
+    <x-support::modal title="{{ str(__('support::messages.ticket'))->headline() }} - #{{ $ticket?->id }}"
+        modal-name="TicketDetails" event-name="{{ $this->modal_event_name_detail }}" class="modal-lg">
         <table class="table table-striped table-inverse table-sm">
             <tbody class="thead-inverse">
                 <tr>
@@ -32,6 +32,13 @@
                     <td class="text-left {{ $ticket->reason?->priority->class() }}">{{ $ticket->reason?->priority->name
                         }}</td>
                 </tr>
+                @if ($ticket->owner?->id !== auth()->user()?->id)
+                <tr>
+                    <th class="text-right">{{ str(__('support::messages.owner'))->headline() }}:</th>
+                    <td class="text-left">{{ $ticket->owner?->name
+                        }}</td>
+                </tr>
+                @endif
                 <tr>
                     <th class="text-right">{{ str(__('support::messages.status'))->headline() }}:</th>
                     <td class="text-left {{ $ticket->status?->class() }}">{{ str($ticket->status?->name)->headline() }}
@@ -49,52 +56,45 @@
         </table>
 
         <section id="replies" style="background-color: #f9f9f9;">
-            <div wire:ignore.self>
-                <livewire:support::reply.form ticket='{{ $ticket }}' :key="'replies-form'" modifier="lazy" />
-            </div>
+            {{-- <div wire:ignore.self> --}}
+                @can('create', [new Dainsys\Support\Models\Reply(), $ticket])
+                <livewire:support::reply.form ticket='{{ $ticket }}' :key="'replies-form'" modifier="lazy"
+                    wire:key="reply-ticket-{{ $ticket?->id }}" />
+                @endcan
+                {{--
+            </div> --}}
 
-            @if ($ticket?->replies->count())
-            <div class="px-3 mb-4 border-top pt-2">
-                <h5 class="text-bold text-dark">
-                    {{ str(__('support::messages.replies'))->headline() }}
-                    <span class="badge badge-primary badge-btn">{{ $ticket->replies->count() }}</span>
-                </h5>
-                @foreach ($replies as $reply)
-                <div class="text-sm border-bottom">
-                    <div class="p-2
-                        @can('update', $reply)
-                            ml-5 bg-light
-                        @else
-                            mr-5 bg-cyan
-                        @endcan
-                    ">
-                        <div class="d-flex justify-content-between">
-                            <div class="text-bold text-uppercase">{{ $reply->user->name }}</div>
-                            <div class="text-xs">{{ $reply->updated_at?->diffForHumans() }}</div>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            {{ $reply->content }}
-                            @can('update', $reply)
-                            <div class="">
-                                <a wire:click.prevent='editReply({{ $reply->id }})'
-                                    class="btn btn-link text-warning text-bold">{{
-                                    str(__("support::messages.edit"))->headline() }}</a>
-                            </div>
-                            @endcan
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-
-            {{ $replies->links() }}
-            @endif
+            @include('support::livewire.ticket.user.replies')
         </section>
 
         <x-slot name="footer">
-            <button class="btn btn-warning btn-sm" wire:click='$emit("updateTicket", {{ $ticket->id }})'>
+            @can('own-ticket', $ticket)
+            <button class="btn btn-warning btn-sm" wire:click='$emit("updateTicket", {{ $ticket?->id }})'>
                 {{ str(__('support::messages.edit'))->upper() }}
             </button>
+
+            @else
+
+            @if ($ticket->isAssigned())
+
+            @if ($ticket->isAssignedTo(auth()->user()))
+
+            @can('close-ticket', $ticket)
+            <livewire:support::ticket.close :ticket='$ticket' :wire:key="'replies-form-{{ $ticket?->id }}'"
+                modifier="lazy" wire:key="close-ticket-{{ $ticket?->id }}" />
+            @endcan
+            @else
+
+            Assigned to other
+            @endif
+
+            @else
+            <button class="btn btn-sm btn-warning" wire:click='$emit("grabTicket", {{ $ticket }})'>{{
+                str(__('support::messages.grab'). ' '.
+                __('support::messages.ticket'))->headline()
+                }}</button>
+            @endif
+            @endcan
         </x-slot>
     </x-support::modal>
 </div>

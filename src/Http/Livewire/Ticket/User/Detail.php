@@ -17,6 +17,8 @@ class Detail extends Component
     protected $listeners = [
         'showTicket',
         'replyUpdated',
+        'wantsGragTicket',
+        'ticketUpdated' => '$refresh',
     ];
     public string $modal_event_name_detail = 'showTicketDetailModal';
 
@@ -24,6 +26,7 @@ class Detail extends Component
 
     public function mount()
     {
+        $this->authorize('viewAny', new Ticket());
         $this->ticket = new Ticket();
     }
 
@@ -57,5 +60,10 @@ class Detail extends Component
     public function replyUpdated()
     {
         $this->resetPage('repliesPage');
+    }
+
+    public function wantsGrabTicket(Ticket $ticket)
+    {
+        $this->emitTo(\Dainsys\Support\Http\Livewire\Ticket\User\Form::class, 'grabTicket', $ticket);
     }
 }

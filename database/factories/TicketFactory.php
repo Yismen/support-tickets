@@ -85,4 +85,22 @@ class TicketFactory extends Factory
             ];
         });
     }
+
+    public function compliant()
+    {
+        return $this->state(function (array $aatributes) {
+            return [
+                'completed_at' => now(),
+            ];
+        });
+    }
+
+    public function noncompliant()
+    {
+        return $this->state(function (array $aatributes) {
+            return [
+                'completed_at' => now()->addDays(50),
+            ];
+        });
+    }
 }

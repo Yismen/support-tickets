@@ -64,7 +64,9 @@ class Table extends AbstractDataTableComponent
             Column::make('Name')
                 ->sortable()
                 ->searchable(),
-
+            Column::make('Email')
+                ->sortable()
+                ->searchable(),
             Column::make('Department', 'departmentRole.department.name')
                 ->sortable()
                 ->searchable(),
