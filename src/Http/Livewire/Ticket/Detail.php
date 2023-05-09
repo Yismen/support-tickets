@@ -1,6 +1,6 @@
 <?php
 
-namespace Dainsys\Support\Http\Livewire\Ticket\User;
+namespace Dainsys\Support\Http\Livewire\Ticket;
 
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -38,7 +38,7 @@ class Detail extends Component
     {
         $this->assign_to = $this->ticket->assigned_to;
 
-        return view('support::livewire.ticket.user.detail', [
+        return view('support::livewire.ticket.detail', [
             'replies' => $this->ticket->replies()->latest()->with('user')->paginate(5, '*', 'repliesPage'),
             'team' => $this->ticket?->department?->team->load('user')->pluck('user.name', 'user_id')->toArray() ?: []
         ])

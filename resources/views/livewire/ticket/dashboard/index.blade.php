@@ -1,7 +1,7 @@
 <div>
     <x-support::loading />
-    <livewire:support::ticket.user.detail />
-    <livewire:support::ticket.user.form />
+    <livewire:support::ticket.detail />
+    <livewire:support::ticket.form />
 
     <div class="row">
         <div class="col-12">

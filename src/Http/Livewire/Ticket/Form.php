@@ -1,6 +1,6 @@
 <?php
 
-namespace Dainsys\Support\Http\Livewire\Ticket\User;
+namespace Dainsys\Support\Http\Livewire\Ticket;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -43,7 +43,7 @@ class Form extends Component
 
     public function render()
     {
-        return view('support::livewire.ticket.user.form', [
+        return view('support::livewire.ticket.form', [
             'departments' => DepartmentService::list(),
             'reasons' => ReasonService::listForDeaprtment($this->ticket->department_id),
             'priorities' => TicketPrioritiesEnum::asArray()

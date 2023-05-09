@@ -11,7 +11,7 @@ Route::middleware(['web', 'auth'])
                 Route::get('', HomeController::class)->name('home');
                 // Route::get('', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('home');
                 Route::get('admin', HomeController::class)->name('admin');
-                Route::get('my_tickets', \Dainsys\Support\Http\Livewire\Ticket\User\Index::class)->name('my_tickets');
+                Route::get('my_tickets', \Dainsys\Support\Http\Livewire\Ticket\Index::class)->name('my_tickets');
                 Route::get('dashboard', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('dashboard');
 
                 Route::as('admin.')

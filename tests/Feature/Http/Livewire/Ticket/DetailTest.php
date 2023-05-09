@@ -1,12 +1,12 @@
 <?php
 
-namespace Dainsys\Support\Feature\Http\Livewire\Ticket\User;
+namespace Dainsys\Support\Feature\Http\Livewire\Ticket\Index;
 
 use Livewire\Livewire;
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Tests\TestCase;
+use Dainsys\Support\Http\Livewire\Ticket\Detail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Dainsys\Support\Http\Livewire\Ticket\User\Detail;
 
 class DetailTest extends TestCase
 {

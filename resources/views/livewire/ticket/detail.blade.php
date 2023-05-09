@@ -77,19 +77,19 @@
                 {{--
             </div> --}}
 
-            @include('support::livewire.ticket.user.replies')
+            @include('support::livewire.ticket.replies')
         </section>
 
         <x-slot name="footer" wire:key="ticket-footer-{{ $ticket->id }}">
             {{-- Is current user the ticket's owner. Owner should not work tickets themself --}}
             @if(auth()->user()->isSupportSuperAdmin())
-            @include('support::livewire.ticket.user.actions._super_admin')
+            @include('support::livewire.ticket.actions._super_admin')
             @elseif($ticket->created_by === auth()->user()->id)
-            @include('support::livewire.ticket.user.actions._owner')
+            @include('support::livewire.ticket.actions._owner')
             @elseif(auth()->user()->isDepartmentAdmin($ticket->department ?: new \Dainsys\Support\Models\Department()))
-            @include('support::livewire.ticket.user.actions._admin')
+            @include('support::livewire.ticket.actions._admin')
             @elseif(auth()->user()->isDepartmentAgent($ticket->department ?: new \Dainsys\Support\Models\Department()))
-            @include('support::livewire.ticket.user.actions._agent')
+            @include('support::livewire.ticket.actions._agent')
             @endif
         </x-slot>
     </x-support::modal>

@@ -13,6 +13,6 @@
         <li>ticket outstanding (pending expired or assigned expired)</li>
     </ul>
     @elseif($user->isDepartmentAdmin($user->departmentRole->department)||$user->isDepartmentAgent($user->departmentRole->department))
-    <livewire:support::ticket.department.index :department='auth()->user()->department' />
+    <livewire:support::ticket.dashboard.index :department='auth()->user()->department' />
     @endif
 </div>

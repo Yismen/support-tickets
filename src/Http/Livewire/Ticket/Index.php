@@ -1,6 +1,6 @@
 <?php
 
-namespace Dainsys\Support\Http\Livewire\Ticket\User;
+namespace Dainsys\Support\Http\Livewire\Ticket;
 
 use Livewire\Component;
 use Dainsys\Support\Models\Ticket;
@@ -19,7 +19,7 @@ class Index extends Component
     {
         $this->authorize('viewAny', new Ticket());
 
-        return view('support::livewire.ticket.user.index', [
+        return view('support::livewire.ticket.index', [
             // 'tickets' => TicketService::list()
         ])
         ->layout('support::layouts.app');

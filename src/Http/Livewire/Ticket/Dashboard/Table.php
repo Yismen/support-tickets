@@ -1,6 +1,6 @@
 <?php
 
-namespace Dainsys\Support\Http\Livewire\Ticket\Department;
+namespace Dainsys\Support\Http\Livewire\Ticket\Dashboard;
 
 use App\Models\User;
 use Dainsys\Support\Models\Reason;

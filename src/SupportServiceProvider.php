@@ -158,13 +158,13 @@ class SupportServiceProvider extends AuthServiceProvider
         Livewire::component('support::department_role.table', \Dainsys\Support\Http\Livewire\DepartmentRole\Table::class);
         Livewire::component('support::department_role.form', \Dainsys\Support\Http\Livewire\DepartmentRole\Form::class);
 
-        Livewire::component('support::ticket.user.table', \Dainsys\Support\Http\Livewire\Ticket\User\Table::class);
-        Livewire::component('support::ticket.user.index', \Dainsys\Support\Http\Livewire\Ticket\User\Index::class);
-        Livewire::component('support::ticket.user.detail', \Dainsys\Support\Http\Livewire\Ticket\User\Detail::class);
-        Livewire::component('support::ticket.user.form', \Dainsys\Support\Http\Livewire\Ticket\User\Form::class);
+        Livewire::component('support::ticket.table', \Dainsys\Support\Http\Livewire\Ticket\Table::class);
+        Livewire::component('support::ticket.index', \Dainsys\Support\Http\Livewire\Ticket\Index::class);
+        Livewire::component('support::ticket.detail', \Dainsys\Support\Http\Livewire\Ticket\Detail::class);
+        Livewire::component('support::ticket.form', \Dainsys\Support\Http\Livewire\Ticket\Form::class);
 
-        Livewire::component('support::ticket.department.index', \Dainsys\Support\Http\Livewire\Ticket\Department\Index::class);
-        Livewire::component('support::ticket.department.table', \Dainsys\Support\Http\Livewire\Ticket\Department\Table::class);
+        Livewire::component('support::ticket.dashboard.index', \Dainsys\Support\Http\Livewire\Ticket\Dashboard\Index::class);
+        Livewire::component('support::ticket.department.table', \Dainsys\Support\Http\Livewire\Ticket\Dashboard\Table::class);
 
         Livewire::component('support::ticket.close', \Dainsys\Support\Http\Livewire\Ticket\CloseTicket::class);
 

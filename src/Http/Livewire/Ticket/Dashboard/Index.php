@@ -1,6 +1,6 @@
 <?php
 
-namespace Dainsys\Support\Http\Livewire\Ticket\Department;
+namespace Dainsys\Support\Http\Livewire\Ticket\Dashboard;
 
 use Livewire\Component;
 use Dainsys\Support\Models\Department;
@@ -27,7 +27,7 @@ class Index extends Component
     {
         $this->authorize('view-dashboards');
 
-        return view('support::livewire.ticket.department.index', [
+        return view('support::livewire.ticket.dashboard.index', [
             'department' => $this->department,
             'total_tickets' => $this->department->tickets()->count(),
             'tickets_open' => $this->department->tickets_incompleted,
