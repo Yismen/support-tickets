@@ -17,7 +17,7 @@
         "livewire/livewire": "^2.10",
         "owen-it/laravel-auditing": "^13.0",
         "rappasoft/laravel-livewire-tables": "^2.8",
-        "php-flasher/flasher-sweetalert-laravel": "dev-main"
+        "php-flasher/flasher-sweetalert-laravel": "^1.1",
     },
     "require-dev": {
         "orchestra/testbench": "7.x-dev",

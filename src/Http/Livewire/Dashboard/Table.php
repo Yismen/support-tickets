@@ -166,6 +166,17 @@ class Table extends AbstractDataTableComponent
                 )->filter(function (Builder $builder, int $value) {
                     $builder->where('priority', $value);
                 }),
+            SelectFilter::make('Completion Status')
+                ->options(
+                    [
+                        '' => 'All',
+                        'completed' => 'Completed',
+                        'incompleted' => 'No Completed',
+
+                    ]
+                )->filter(function (Builder $builder, string $value) {
+                    $builder->$value();
+                }),
             MultiSelectFilter::make('Status')
                 ->options(
                     TicketStatusesEnum::asArray()
