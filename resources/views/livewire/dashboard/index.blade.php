@@ -59,6 +59,45 @@
             </x-support::infographic>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    total tickets by category, sorted by count, only top 10
+                    <livewire:support::charts.weekly-tickets height="150px" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    Weekly total tickets
+                    <livewire:support::charts.weekly-tickets height="150px" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    weekly completion rate
+                    <livewire:support::charts.weekly-tickets height="150px" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    weekly compliance rate
+                    <livewire:support::charts.weekly-tickets height="150px" />
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="card">
         <div class="card-body">
             <livewire:support::dashboard.table :department='$department'
