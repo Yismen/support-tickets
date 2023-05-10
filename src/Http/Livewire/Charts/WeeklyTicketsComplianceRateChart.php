@@ -7,7 +7,7 @@ use Dainsys\Support\Services\TicketService;
 use Asantibanez\LivewireCharts\Models\BaseChartModel;
 use Asantibanez\LivewireCharts\Models\LineChartModel;
 
-class WeeklyTicketsCompletionRateChart extends BaseChart
+class WeeklyTicketsComplianceRateChart extends BaseChart
 {
     public $department;
 
@@ -31,7 +31,7 @@ class WeeklyTicketsCompletionRateChart extends BaseChart
             $date = now()->subWeeks($index);
             $title = $date->copy()->endOfWeek()->format('Y-M-d');
             $service = new TicketService();
-            $rate = $service->completionWeeksAgo($index, [
+            $rate = $service->complianceWeeksAgo($index, [
                 'department_id' => $this->department?->id
             ]);
 

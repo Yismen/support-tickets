@@ -3,7 +3,7 @@
         <livewire:livewire-column-chart :column-chart-model="$chart" />
     </div>
 
-    @push('scripts')
+    @pushOnce('scripts')
     @livewireChartsScripts
-    @endpush
+    @endpushOnce
 </div>

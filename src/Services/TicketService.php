@@ -81,6 +81,49 @@ class TicketService
         });
     }
 
+    /**
+     * Count for many weeks ago
+     *
+     * @param  integer $week Amount of weeks ago to query
+     * @return void
+     */
+    public function complianceWeeksAgo(int $week, array $constraints = [], string $column = 'created_at'): float
+    {
+        $cache_key = join('-', [
+            'weekly-tickets-compliance-rate',
+            $week,
+            join('-', array_keys($constraints)),
+            join('-', array_values($constraints)),
+        ]);
+
+        return Cache::rememberForever($cache_key, function () use ($week, $constraints) {
+            $total = Ticket::query()
+                ->ofWeeksAgo($week, 'completed_at')
+                ->when(count($constraints) > 0, function ($query) use ($constraints) {
+                    foreach ($constraints as $key => $value) {
+                        if (!is_null($value)) {
+                            $query->where($key, $value);
+                        }
+                    }
+                })
+                ->count();
+
+            $compliants = Ticket::query()
+                ->ofWeeksAgo($week, 'completed_at')
+                ->compliant()
+                ->when(count($constraints) > 0, function ($query) use ($constraints) {
+                    foreach ($constraints as $key => $value) {
+                        if (!is_null($value)) {
+                            $query->where($key, $value);
+                        }
+                    }
+                })
+                ->count();
+
+            return $total > 0 ? $compliants / $total : 1;
+        });
+    }
+
     public static function byDepartment(Department|null|int $department = null): Builder
     {
         $department = $department instanceof Department

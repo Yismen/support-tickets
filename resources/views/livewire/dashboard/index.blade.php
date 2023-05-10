@@ -92,8 +92,7 @@
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-body">
-                    weekly compliance rate
-                    <livewire:support::charts.weekly-tickets-count :department='$department' height="200px"
+                    <livewire:support::charts.weekly-tickets-compliance-rate :department='$department' height="200px"
                         key="weekly-tickets-{{ $department?->id }}" />
                 </div>
             </div>
