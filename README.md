@@ -9,7 +9,7 @@
           1. optionally, you add the following line to your `composer` file, under the `scripts` and `post-update-cmd` key, to publish the assets every time you update your composer dependencies: `@php artisan vendor:publish --tag=support:assets --force --ansi`.
     2. If you may want to customize the migrations before next step, first publish them: `@php artisan vendor:publish --force --tag=support:migrations`.
     3. Run the migrations: `php artisan migrate`.   
- 3. Only super admin users are allowed to interact with the app. You can register them using any of the following options:
+ 3. Only support super admin users are allowed to interact with the app. You can register them using any of the following options:
     1. Using the register method of your `AuthServiceProvider`: `\Dainsys\Support\Support::registerSuperUsers(["super@user1.com", "super@user2.com"]);`.
     2. In your `.env` file, `SUPPORT_SUPER_USERS='super@user1.com,super@user2.com'`
 ##### Configure your application
@@ -26,7 +26,7 @@
 
 
 
-Users with role 'super admin', 'support management' or permission to interact with models like 'create departments' or 'update departments'
+Users with role 'support super admin', 'support management' or permission to interact with models like 'create departments' or 'update departments'
     use \Dainsys\Support\Traits\HasSupport;
 
 ```

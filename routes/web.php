@@ -11,8 +11,8 @@ Route::middleware(['web', 'auth'])
                 Route::get('', HomeController::class)->name('home');
                 // Route::get('', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('home');
                 Route::get('admin', HomeController::class)->name('admin');
-                Route::get('my_tickets', \Dainsys\Support\Http\Livewire\Ticket\User\Index::class)->name('my_tickets');
-                Route::get('dashboard', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('dashboard');
+                Route::get('my_tickets', \Dainsys\Support\Http\Livewire\Ticket\Index::class)->name('my_tickets');
+                Route::get('dashboard', \Dainsys\Support\Http\Livewire\Dashboard\Index::class)->name('dashboard');
 
                 Route::as('admin.')
                     ->group(function () {
@@ -20,7 +20,7 @@ Route::middleware(['web', 'auth'])
 
                         Route::get('reasons', \Dainsys\Support\Http\Livewire\Reason\Index::class)->name('reasons.index');
 
-                        Route::get('super_admins', \Dainsys\Support\Http\Livewire\SuperAdmin\Index::class)->name('super_admins.index');
+                        Route::get('support_super_admins', \Dainsys\Support\Http\Livewire\SupportSuperAdmin\Index::class)->name('support_super_admins.index');
 
                         Route::get('department_roles', \Dainsys\Support\Http\Livewire\DepartmentRole\Index::class)->name('department_roles.index');
                     });

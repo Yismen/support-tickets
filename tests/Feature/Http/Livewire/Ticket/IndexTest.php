@@ -1,13 +1,13 @@
 <?php
 
-namespace Dainsys\Support\Feature\Http\Livewire\Ticket\User;
+namespace Dainsys\Support\Feature\Http\Livewire\Ticket\Index;
 
 use Livewire\Livewire;
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Tests\TestCase;
 use Orchestra\Testbench\Factories\UserFactory;
+use Dainsys\Support\Http\Livewire\Ticket\Index;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Dainsys\Support\Http\Livewire\Ticket\User\Index;
 
 class IndexTest extends TestCase
 {
@@ -29,8 +29,8 @@ class IndexTest extends TestCase
         $component = Livewire::test(Index::class);
 
         $component->assertOk();
-        $component->assertViewIs('support::livewire.ticket.user.index');
-        $component->assertSeeLivewire('support::ticket.user.table');
+        $component->assertViewIs('support::livewire.ticket.index');
+        $component->assertSeeLivewire('support::ticket.table');
     }
 
     /** @test */

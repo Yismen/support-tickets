@@ -18,7 +18,7 @@ class DepartmentRolePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isSuperAdmin();
+        return $user->isSupportSuperAdmin();
     }
 
     /**
@@ -30,7 +30,7 @@ class DepartmentRolePolicy
      */
     public function view(User $user, DepartmentRole $department): bool
     {
-        return $user->isSuperAdmin();
+        return $user->isSupportSuperAdmin();
     }
 
     /**
@@ -41,7 +41,7 @@ class DepartmentRolePolicy
      */
     public function create(User $user): bool
     {
-        return $user->isSuperAdmin();
+        return $user->isSupportSuperAdmin();
     }
 
     /**
@@ -53,7 +53,7 @@ class DepartmentRolePolicy
      */
     public function update(User $user, DepartmentRole $department): bool
     {
-        return $user->isSuperAdmin();
+        return $user->isSupportSuperAdmin();
     }
 
     /**
@@ -65,7 +65,7 @@ class DepartmentRolePolicy
      */
     public function delete(User $user, DepartmentRole $department): bool
     {
-        return $user->isSuperAdmin();
+        return $user->isSupportSuperAdmin();
     }
 
     /**
@@ -77,7 +77,7 @@ class DepartmentRolePolicy
      */
     public function restore(User $user, DepartmentRole $department): bool
     {
-        return $user->isSuperAdmin();
+        return $user->isSupportSuperAdmin();
     }
 
     /**
@@ -89,6 +89,6 @@ class DepartmentRolePolicy
      */
     public function forceDelete(User $user, DepartmentRole $department): bool
     {
-        return $user->isSuperAdmin();
+        return $user->isSupportSuperAdmin();
     }
 }

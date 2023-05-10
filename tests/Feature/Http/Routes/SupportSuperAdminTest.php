@@ -5,14 +5,14 @@ namespace Dainsys\Support\Feature\Http\Routes;
 use Dainsys\Support\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class SuperAdminTest extends TestCase
+class SupportSuperAdminTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
     public function reasons_index_route_requires_authentication()
     {
-        $response = $this->get(route('support.admin.super_admins.index'));
+        $response = $this->get(route('support.admin.support_super_admins.index'));
 
         $response->assertRedirect(route('login'));
     }

@@ -3,7 +3,10 @@
 namespace Dainsys\Support\Models;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Storage;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Dainsys\Support\Enums\TicketStatusesEnum;
@@ -11,6 +14,7 @@ use Dainsys\Support\Events\TicketCreatedEvent;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Dainsys\Support\Events\TicketAssignedEvent;
 use Dainsys\Support\Events\TicketCompletedEvent;
+use Dainsys\Support\Services\ImageCreatorService;
 use Dainsys\Support\Database\Factories\TicketFactory;
 use Dainsys\Support\Models\Traits\HasShortDescription;
 use Dainsys\Support\Exceptions\DifferentDepartmentException;
@@ -27,7 +31,7 @@ class Ticket extends AbstractModel implements Auditable
     use \OwenIt\Auditing\Auditable;
     use HasShortDescription;
 
-    protected $fillable = ['created_by', 'department_id', 'reason_id', 'description', 'status', 'assigned_to', 'assigned_at', 'expected_at', 'completed_at'];
+    protected $fillable = ['created_by', 'department_id', 'reason_id', 'description', 'status', 'assigned_to', 'assigned_at', 'expected_at', 'completed_at', 'image'];
 
     protected $casts = [
         'assigned_at' => 'datetime',
@@ -64,6 +68,13 @@ class Ticket extends AbstractModel implements Auditable
                 'status' => $model->getStatus(),
             ]);
         });
+        static::deleting(function ($model) {
+            if ($model->image) {
+                $imageCreatorService = new ImageCreatorService();
+
+                $imageCreatorService->delete($model->image);
+            }
+        });
     }
 
     public function assignTo(DepartmentRole|User|int $agent)
@@ -80,10 +91,10 @@ class Ticket extends AbstractModel implements Auditable
             throw new DifferentDepartmentException();
         }
 
-        $this->updateQuietly([
+        $this->update([
             'assigned_to' => $agent->user_id,
             'assigned_at' => now(),
-            'status' => TicketStatusesEnum::InProgress,
+            'status' => $this->getStatus(),
         ]);
 
         TicketAssignedEvent::dispatch($this, $agent);
@@ -99,6 +110,16 @@ class Ticket extends AbstractModel implements Auditable
         TicketCompletedEvent::dispatch($this);
     }
 
+    public function reOpen()
+    {
+        $this->update([
+            'status' => $this->getStatus(),
+            'completed_at' => null,
+        ]);
+
+        // TicketCompletedEvent::dispatch($this);
+    }
+
     public function close(string $comment)
     {
         $this->replies()->createQuietly([
@@ -112,6 +133,16 @@ class Ticket extends AbstractModel implements Auditable
     public function isAssigned(): bool
     {
         return !is_null($this->assigned_to);
+    }
+
+    public function isAssignedToMe(): bool
+    {
+        return $this->assigned_to === auth()->user()->id;
+    }
+
+    public function isOpen(): bool
+    {
+        return is_null($this->completed_at);
     }
 
     public function isAssignedTo(DepartmentRole|User|int $agent): bool
@@ -150,6 +181,19 @@ class Ticket extends AbstractModel implements Auditable
         }
     }
 
+    public function updateImage($image, string $path = 'tickets', $name = null, int $resize = 400, int $quality = 90)
+    {
+        if ($image instanceof UploadedFile) {
+            $imageCreatorService = new ImageCreatorService();
+
+            $url = $imageCreatorService->make($image, $path, $name ?: $this->id, $resize, $quality);
+
+            $this->updateQuietly([
+                'image' => $url
+            ]);
+        }
+    }
+
     public function getStatus(): TicketStatusesEnum
     {
         // Pendig
@@ -162,8 +206,8 @@ class Ticket extends AbstractModel implements Auditable
         //    In Status
         if ($this->assigned_to && $this->completed_at == null) {
             return $this->expected_at > now()
-            ? TicketStatusesEnum::InProgress
-            : TicketStatusesEnum::InProgressExpired;
+                ? TicketStatusesEnum::InProgress
+                : TicketStatusesEnum::InProgressExpired;
         }
 
         // Completed
@@ -190,5 +234,10 @@ class Ticket extends AbstractModel implements Auditable
     public function scopeNonCompliant(Builder $query): Builder
     {
         return $query->whereColumn('completed_at', '>', 'expected_at');
+    }
+
+    public function getImagePathAttribute()
+    {
+        return Storage::url($this->image) . '?' . Str::random(5);
     }
 }

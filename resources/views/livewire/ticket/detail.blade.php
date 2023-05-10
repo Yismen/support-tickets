@@ -52,6 +52,19 @@
                     <th class="text-right">{{ str(__('support::messages.description'))->headline() }}:</th>
                     <td class="text-left">{!! $ticket->description !!}</td>
                 </tr>
+                @if ($ticket?->image)
+                <tr>
+                    <th class="text-right">{{ str(__('support::messages.image'))->headline() }}:</th>
+                    <td class="text-left">
+                        <a href="{{ $ticket->image_path }}" target="_image">
+                            <img src="{{ $ticket->image_path }}" alt="{{ $ticket->id }}" class="img img-thumbnail"
+                                style="max-width: 100px;
+                        max-height: 100px;">
+                        </a>
+                    </td>
+                </tr>
+
+                @endif
             </tbody>
         </table>
 
@@ -64,37 +77,21 @@
                 {{--
             </div> --}}
 
-            @include('support::livewire.ticket.user.replies')
+            @include('support::livewire.ticket.replies')
         </section>
 
-        <x-slot name="footer">
-            @can('own-ticket', $ticket)
-            <button class="btn btn-warning btn-sm" wire:click='$emit("updateTicket", {{ $ticket?->id }})'>
-                {{ str(__('support::messages.edit'))->upper() }}
-            </button>
-
-            @else
-
-            @if ($ticket->isAssigned())
-
-            @if ($ticket->isAssignedTo(auth()->user()))
-
-            @can('close-ticket', $ticket)
-            <livewire:support::ticket.close :ticket='$ticket' :wire:key="'replies-form-{{ $ticket?->id }}'"
-                modifier="lazy" wire:key="close-ticket-{{ $ticket?->id }}" />
-            @endcan
-            @else
-
-            Assigned to other
+        <x-slot name="footer" wire:key="ticket-footer-{{ $ticket->id }}">
+            {{-- Is current user the ticket's owner. Owner should not work tickets themself --}}
+            @if(auth()->user()->isSupportSuperAdmin())
+            @include('support::livewire.ticket.actions._super_admin')
+            @elseif($ticket->created_by === auth()->user()->id)
+            @include('support::livewire.ticket.actions._owner')
+            @elseif(auth()->user()->isDepartmentAdmin($ticket->department ?: new \Dainsys\Support\Models\Department()))
+            @include('support::livewire.ticket.actions._admin')
+            @elseif(auth()->user()->isDepartmentAgent($ticket->department ?: new \Dainsys\Support\Models\Department()))
+            @include('support::livewire.ticket.actions._agent')
             @endif
-
-            @else
-            <button class="btn btn-sm btn-warning" wire:click='$emit("grabTicket", {{ $ticket }})'>{{
-                str(__('support::messages.grab'). ' '.
-                __('support::messages.ticket'))->headline()
-                }}</button>
-            @endif
-            @endcan
         </x-slot>
     </x-support::modal>
+
 </div>

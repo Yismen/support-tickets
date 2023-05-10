@@ -49,6 +49,11 @@ class Department extends AbstractModel
         return  $this->roles()->where('role', DepartmentRolesEnum::Agent);
     }
 
+    public function team(): HasMany
+    {
+        return  $this->roles();
+    }
+
     public function getTicketsCompletedAttribute(): int
     {
         return $this->tickets()->completed()->count();

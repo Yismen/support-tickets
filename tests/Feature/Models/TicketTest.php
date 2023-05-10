@@ -24,18 +24,6 @@ class TicketTest extends TestCase
     use RefreshDatabase;
     use EnsureDateNotWeekend;
 
-    protected $fake_event = true;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        // if ($this->fake_event === true) {
-        //     // dd("asdfasdf");
-        //     Event::fake();
-        // }
-    }
-
     /** @test */
     public function tickets_model_interacts_with_db_table()
     {
@@ -51,6 +39,7 @@ class TicketTest extends TestCase
             'assigned_to',
             'assigned_at',
             // 'expected_at',
+            'image',
             'completed_at',
             'status',
         ]));

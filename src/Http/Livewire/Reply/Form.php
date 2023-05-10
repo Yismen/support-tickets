@@ -57,7 +57,7 @@ class Form extends Component
             'content' => $this->reply->content,
         ]);
 
-        flasher('Reply created!');
+        supportFlash('Reply created!');
 
         $this->reply = new Reply();
 
@@ -81,7 +81,7 @@ class Form extends Component
             'content' => $this->reply['content']
         ]);
 
-        flasher('Reply updated!');
+        supportFlash('Reply updated!');
 
         $this->reply = new Reply();
 

@@ -49,10 +49,10 @@ class TestCase extends OrchestraTestCase
         $this->loadLaravelMigrations();
     }
 
-    protected function superAdmin(): User
+    protected function supportSuperAdmin(): User
     {
         $user = $this->user();
-        $user->superAdmin()->create();
+        $user->supportSuperAdmin()->create();
 
         return $user;
     }

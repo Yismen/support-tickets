@@ -1,10 +1,10 @@
 <?php
 
-namespace Dainsys\Support\Http\Livewire\Ticket\User;
+namespace Dainsys\Support\Http\Livewire\Ticket;
 
-use Dainsys\Support\Models\Reason;
 use Dainsys\Support\Models\Ticket;
 use Illuminate\Database\Eloquent\Builder;
+use Dainsys\Support\Services\ReasonService;
 use Dainsys\Support\Enums\TicketStatusesEnum;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Dainsys\Support\Services\DepartmentService;
@@ -112,7 +112,7 @@ class Table extends AbstractDataTableComponent
                         '' => 'All',
 
                     ] +
-                    Reason::pluck('name', 'id')->toArray()
+                    ReasonService::list()->toArray()
                 )->filter(function (Builder $builder, int $value) {
                     $builder->where('reason_id', $value);
                 }),

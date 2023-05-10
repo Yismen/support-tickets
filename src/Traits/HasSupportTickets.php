@@ -4,9 +4,9 @@ namespace Dainsys\Support\Traits;
 
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Models\Department;
-use Dainsys\Support\Models\SuperAdmin;
 use Illuminate\Notifications\Notifiable;
 use Dainsys\Support\Models\DepartmentRole;
+use Dainsys\Support\Models\SupportSuperAdmin;
 use Dainsys\Support\Enums\DepartmentRolesEnum;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,14 +16,16 @@ trait HasSupportTickets
 {
     use Notifiable;
 
-    public function superAdmin(): HasOne
+    public function supportSuperAdmin(): HasOne
     {
-        return $this->hasOne(SuperAdmin::class);
+        return $this->hasOne(SupportSuperAdmin::class);
     }
 
-    public function isSuperAdmin(): bool
+    public function isSupportSuperAdmin(): bool
     {
-        return $this->superAdmin()->exists();
+        return \Illuminate\Support\Facades\Cache::remember('user_is_superadmin_' . $this->id, now()->addMinutes(30), function () {
+            return $this->supportSuperAdmin()->exists();
+        });
     }
 
     public function isDepartmentAdmin(Department $department): bool
@@ -38,7 +40,7 @@ trait HasSupportTickets
 
     public function hasDepartmentRole(Department $department, DepartmentRolesEnum $role): bool
     {
-        return $this->departmentRole->role === $role && $department->id === $this->departmentRole->department_id;
+        return $this->departmentRole?->role === $role && $department->id === $this->departmentRole->department_id;
     }
 
     public function hasAnyDepartmentRole(): bool
@@ -53,7 +55,6 @@ trait HasSupportTickets
 
     public function department(): BelongsTo
     {
-        // dd(new Department(['name' => null]));
         return $this->departmentRole?->department();
     }
 

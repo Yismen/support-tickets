@@ -68,7 +68,8 @@ class TicketPolicy
      */
     public function delete(User $user, Ticket $ticket): bool
     {
-        return $user->id === $ticket->created_by;
+        return $user->id === $ticket->created_by
+            && $ticket->isOpen();
     }
 
     /**

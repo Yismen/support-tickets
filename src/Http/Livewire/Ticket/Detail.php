@@ -1,11 +1,13 @@
 <?php
 
-namespace Dainsys\Support\Http\Livewire\Ticket\User;
+namespace Dainsys\Support\Http\Livewire\Ticket;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Validation\Rule;
 use Dainsys\Support\Models\Reply;
 use Dainsys\Support\Models\Ticket;
+use Dainsys\Support\Models\DepartmentRole;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Detail extends Component
@@ -13,6 +15,8 @@ class Detail extends Component
     use AuthorizesRequests;
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
+
+    public $assign_to;
 
     protected $listeners = [
         'showTicket',
@@ -32,8 +36,11 @@ class Detail extends Component
 
     public function render()
     {
-        return view('support::livewire.ticket.user.detail', [
+        $this->assign_to = $this->ticket->assigned_to;
+
+        return view('support::livewire.ticket.detail', [
             'replies' => $this->ticket->replies()->latest()->with('user')->paginate(5, '*', 'repliesPage'),
+            'team' => $this->ticket?->department?->team->load('user')->pluck('user.name', 'user_id')->toArray() ?: []
         ])
             ->layout('support::layouts.app');
     }
@@ -62,8 +69,45 @@ class Detail extends Component
         $this->resetPage('repliesPage');
     }
 
-    public function wantsGrabTicket(Ticket $ticket)
+    public function grabTicket()
     {
-        $this->emitTo(\Dainsys\Support\Http\Livewire\Ticket\User\Form::class, 'grabTicket', $ticket);
+        $this->authorize('grab-ticket', $this->ticket);
+
+        $this->ticket->assignTo(auth()->user());
+
+        $this->emit('ticketUpdated');
+
+        supportFlash('Ticket is now assigned to you!', 'success');
+    }
+
+    public function updatedAssignTo()
+    {
+        $this->validateOnly('assign_to', [
+            'assign_to' => [
+                'required',
+                Rule::exists(DepartmentRole::class, 'user_id'),
+            ]
+        ]);
+
+        $agent = DepartmentRole::where('user_id', $this->assign_to)->firstOrFail();
+
+        if ($agent) {
+            $agent->load('user');
+
+            $this->ticket->assignTo($agent);
+
+            $this->emit('ticketUpdated');
+
+            supportFlash("Ticket assigned to {$agent->user->name}!", 'success');
+        }
+    }
+
+    public function reOpen()
+    {
+        $this->ticket->reOpen();
+
+        $this->emit('ticketUpdated');
+
+        supportFlash('Ticket is now open!', 'warning');
     }
 }

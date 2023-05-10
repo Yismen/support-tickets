@@ -13,14 +13,14 @@ class HasSupportTicketsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function user_is_super_admin()
+    public function user_is_support_super_admin()
     {
         $not_valid_user = UserFactory::new()->create();
         $valid_user = UserFactory::new()->create();
-        $super_admin = $valid_user->superAdmin()->create();
+        $support_super_admin = $valid_user->supportSuperAdmin()->create();
 
-        $this->assertTrue($valid_user->isSuperAdmin());
-        $this->assertFalse($not_valid_user->isSuperAdmin());
+        $this->assertTrue($valid_user->isSupportSuperAdmin());
+        $this->assertFalse($not_valid_user->isSupportSuperAdmin());
     }
 
     /** @test */
@@ -42,14 +42,4 @@ class HasSupportTicketsTest extends TestCase
 
         $this->assertTrue($user->isDepartmentAgent($valid_department));
     }
-
-    /** @test */
-//     public function user_belongs_to_department()
-//     {
-//         $user = UserFactory::new()->create();
-//         // $department = Department::factory()->create();
-//         // $department_role = DepartmentRole::factory()->admin()->create(['user_id' => $user->id, 'department_id' => $department->id]);
-// dd($user->department());
-//         $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, $user->department());
-//     }
 }

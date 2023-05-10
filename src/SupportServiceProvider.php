@@ -51,7 +51,7 @@ class SupportServiceProvider extends AuthServiceProvider
     protected function bootGates()
     {
         Gate::before(function ($user, $ability) {
-            return $user->isSuperAdmin() ? true : null;
+            return $user->isSupportSuperAdmin() ? true : null;
         });
 
         Gate::define('own-ticket', function (User $user, Ticket $ticket) {
@@ -81,7 +81,7 @@ class SupportServiceProvider extends AuthServiceProvider
         });
 
         Gate::define('view-dashboards', function (User $user) {
-            return $user->isSuperAdmin()
+            return $user->isSupportSuperAdmin()
                 || $user->hasAnyDepartmentRole()
                 ;
         });
@@ -152,19 +152,19 @@ class SupportServiceProvider extends AuthServiceProvider
         Livewire::component('support::reason.detail', \Dainsys\Support\Http\Livewire\Reason\Detail::class);
         Livewire::component('support::reason.form', \Dainsys\Support\Http\Livewire\Reason\Form::class);
 
-        Livewire::component('support::super_admin.index', \Dainsys\Support\Http\Livewire\SuperAdmin\Index::class);
+        Livewire::component('support::support_super_admin.index', \Dainsys\Support\Http\Livewire\SupportSuperAdmin\Index::class);
 
         Livewire::component('support::department_role.index', \Dainsys\Support\Http\Livewire\DepartmentRole\Index::class);
         Livewire::component('support::department_role.table', \Dainsys\Support\Http\Livewire\DepartmentRole\Table::class);
         Livewire::component('support::department_role.form', \Dainsys\Support\Http\Livewire\DepartmentRole\Form::class);
 
-        Livewire::component('support::ticket.user.table', \Dainsys\Support\Http\Livewire\Ticket\User\Table::class);
-        Livewire::component('support::ticket.user.index', \Dainsys\Support\Http\Livewire\Ticket\User\Index::class);
-        Livewire::component('support::ticket.user.detail', \Dainsys\Support\Http\Livewire\Ticket\User\Detail::class);
-        Livewire::component('support::ticket.user.form', \Dainsys\Support\Http\Livewire\Ticket\User\Form::class);
+        Livewire::component('support::ticket.table', \Dainsys\Support\Http\Livewire\Ticket\Table::class);
+        Livewire::component('support::ticket.index', \Dainsys\Support\Http\Livewire\Ticket\Index::class);
+        Livewire::component('support::ticket.detail', \Dainsys\Support\Http\Livewire\Ticket\Detail::class);
+        Livewire::component('support::ticket.form', \Dainsys\Support\Http\Livewire\Ticket\Form::class);
 
-        Livewire::component('support::ticket.department.index', \Dainsys\Support\Http\Livewire\Ticket\Department\Index::class);
-        Livewire::component('support::ticket.department.table', \Dainsys\Support\Http\Livewire\Ticket\Department\Table::class);
+        Livewire::component('support::dashboard.index', \Dainsys\Support\Http\Livewire\Dashboard\Index::class);
+        Livewire::component('support::dashboard.table', \Dainsys\Support\Http\Livewire\Dashboard\Table::class);
 
         Livewire::component('support::ticket.close', \Dainsys\Support\Http\Livewire\Ticket\CloseTicket::class);
 

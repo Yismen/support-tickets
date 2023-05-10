@@ -21,4 +21,14 @@ enum TicketPrioritiesEnum: int implements EnumContract
             self::Emergency => 'badge badge-danger',
         };
     }
+
+    public function period()
+    {
+        return match ($this) {
+            self::Normal => '48 ' . __('support::messages.hours'),
+            self::Medium => '24 ' . __('support::messages.hours'),
+            self::High => '4 ' . __('support::messages.hours'),
+            self::Emergency => '30 ' . __('support::messages.minutes') ,
+        };
+    }
 }

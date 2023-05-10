@@ -22,7 +22,7 @@ class TicketAssignedEvent
         // notifiy ticket owner
         // notify ticket agent
         // notify department admin
-        // super admins
+        // support super admins
         $this->ticket = $ticket;
         $this->agent = $agent;
     }
