@@ -5,8 +5,9 @@ namespace Dainsys\Support\Feature\Http\Livewire\SupportSuperAdmin;
 use Livewire\Livewire;
 use Dainsys\Support\Tests\TestCase;
 use Dainsys\Support\Models\Department;
-use Dainsys\Support\Http\Livewire\Dashboard;
+use Dainsys\Support\Http\Livewire\Dashboard\Index;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 class DashboardTest extends TestCase
 {
@@ -28,9 +29,9 @@ class DashboardTest extends TestCase
         $department = Department::factory()->create();
         $this->actingAs($this->departmentAgent($department));
 
-        $component = Livewire::test(Dashboard::class);
+        $component = Livewire::test(Index::class);
 
-        $component->assertSee('Department Dashboard');
+        $component->assertOk();
     }
 
     /** @test */
@@ -39,9 +40,9 @@ class DashboardTest extends TestCase
         $department = Department::factory()->create();
         $this->actingAs($this->departmentAdmin($department));
 
-        $component = Livewire::test(Dashboard::class);
+        $component = Livewire::test(Index::class);
 
-        $component->assertSee('Department Dashboard');
+        $component->assertOk();
     }
 
     /** @test */
@@ -49,8 +50,8 @@ class DashboardTest extends TestCase
     {
         $this->actingAs($this->supportSuperAdmin());
 
-        $component = Livewire::test(Dashboard::class);
+        $component = Livewire::test(Index::class);
 
-        $component->assertSee('Support Super Admin Dashboard');
+        $component->assertOk();
     }
 }

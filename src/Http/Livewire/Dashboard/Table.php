@@ -1,16 +1,17 @@
 <?php
 
-namespace Dainsys\Support\Http\Livewire\Ticket\Dashboard;
+namespace Dainsys\Support\Http\Livewire\Dashboard;
 
 use App\Models\User;
-use Dainsys\Support\Models\Reason;
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Models\Department;
 use Illuminate\Database\Eloquent\Builder;
+use Dainsys\Support\Services\ReasonService;
 use Dainsys\Support\Enums\TicketStatusesEnum;
 use Dainsys\Support\Enums\DepartmentRolesEnum;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Dainsys\Support\Services\UserDepartmentRoleService;
 use Dainsys\Support\Http\Livewire\AbstractDataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\MultiSelectFilter;
@@ -25,10 +26,10 @@ class Table extends AbstractDataTableComponent
 
     protected $listeners = [
         'ticketUpdated' => '$refresh',
-        'informationUpdated' => '$refresh',
+        'dashboardUpdated' => '$refresh',
     ];
 
-    public function mount($department)
+    public function mount(Department $department)
     {
         $this->department = $department;
     }
@@ -37,12 +38,12 @@ class Table extends AbstractDataTableComponent
     {
         return Ticket::query()
             ->when(
-                auth()->user()->departmentRole->role === DepartmentRolesEnum::Agent,
+                auth()->user()->departmentRole?->role === DepartmentRolesEnum::Agent,
                 function ($query) {
                     $query->incompleted();
                 }
             )
-            ->when($this->department, function ($query) {
+            ->when($this->department->id, function ($query) {
                 $query->whereHas('department', function ($query) {
                     $query->where('id', $this->department->id);
                 });
@@ -141,7 +142,7 @@ class Table extends AbstractDataTableComponent
                         '' => 'All',
 
                     ] +
-                    Reason::pluck('name', 'id')->toArray()
+                    ReasonService::list()->toArray()
                 )->filter(function (Builder $builder, int $value) {
                     $builder->where('reason_id', $value);
                 }),
@@ -151,11 +152,7 @@ class Table extends AbstractDataTableComponent
                         '' => 'All',
 
                     ] +
-                    User::whereHas('departmentRole', function ($query) {
-                        $query->when($this->department, function ($query) {
-                            $query->where('department_id', $this->department->id);
-                        });
-                    })->pluck('name', 'id')->toArray()
+                    UserDepartmentRoleService::list($this->department)->toArray()
                 )->filter(function (Builder $builder, int $value) {
                     $builder->where('assigned_to', $value);
                 }),

@@ -3,6 +3,21 @@
     <livewire:support::ticket.detail />
     <livewire:support::ticket.form />
 
+
+
+    @if (auth()->user()->isSupportSuperAdmin())
+    <div class="row justify-content-end">
+        <div class="form-group col-4" wire:ignore>
+            <label for="">Filter by Department</label>
+            <select class="form-control" wire:model='selected'>
+                <option value="">All</option>
+                @foreach ($departments as $id => $name)
+                <option value="{{ $id }}">{{ $name }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    @else
     <div class="row">
         <div class="col-12">
             <h1 class="border-bottom pb-2 text-uppercase text-black-50 mb-3"
@@ -18,24 +33,7 @@
                 <i
                     class="fa {{ auth()->user()->isDepartmentAdmin($department) ? 'fa-cog text-primary' : 'fa-users text-secondary' }}"></i>
             </h1>
-            <h3 class="text-bold"> {{ $department->name }}</h3>
-        </div>
-    </div>
-
-    @if (auth()->user()->isSupportSuperAdmin())
-    <div class="">
-        <h5>Department filters</h5>
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <label class="btn btn-default" wire:model='department'>
-                <input type="radio" value="" checked> All
-            </label>
-
-            @foreach (\Dainsys\Support\Models\Department::orderBy('name')->get() as $department)
-            <label class="btn btn-secondary">
-                <input type="radio" value="{{ $department->id }}" wire:model='selected' :wire:key='$department->id'> {{
-                $department->name }}
-            </label>
-            @endforeach
+            <h3 class="text-bold"> {{ $department?->name }}</h3>
         </div>
     </div>
     @endif
@@ -63,8 +61,8 @@
     </div>
     <div class="card">
         <div class="card-body">
-            <livewire:support::ticket.department.table :department='$department'
-                :wire:key='"department-table-" . $department->id ?? null' />
+            <livewire:support::dashboard.table :department='$department'
+                wire:key="department-table-{{ $department?->id ?? null }}" />
         </div>
     </div>
 </div>

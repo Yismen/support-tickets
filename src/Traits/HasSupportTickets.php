@@ -23,7 +23,9 @@ trait HasSupportTickets
 
     public function isSupportSuperAdmin(): bool
     {
-        return $this->supportSuperAdmin()->exists();
+        return \Illuminate\Support\Facades\Cache::remember('user_is_superadmin_' . $this->id, now()->addMinutes(30), function () {
+            return $this->supportSuperAdmin()->exists();
+        });
     }
 
     public function isDepartmentAdmin(Department $department): bool
