@@ -18,16 +18,17 @@ trait PeriodScope
     public function scopeOfWeeksAgo(
         Builder $query,
         int $amount,
-        $column = 'created_at'
+        string $column = 'created_at'
     ): Builder {
         return $this->handle(
             $query,
             now()->subWeeks($amount)->startOfWeek(),
             now()->subWeeks($amount)->endOfWeek(),
+            $column
         );
     }
 
-    protected function handle(Builder $query, Carbon $fromDate, Carbon $toDate, $column = 'created_at'): Builder
+    protected function handle(Builder $query, Carbon $fromDate, Carbon $toDate, string $column = 'created_at'): Builder
     {
         return $query->where(function ($query) use ($column, $fromDate, $toDate) {
             $query->whereDate($column, '>=', $fromDate)

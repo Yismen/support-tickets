@@ -3,17 +3,11 @@
 namespace Dainsys\Support\Http\Livewire\Charts;
 
 use Dainsys\Support\Services\TicketService;
+use Asantibanez\LivewireCharts\Models\BaseChartModel;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
 
-class WeeklyTiicketsCountChart extends BaseChart
+class WeeklyTicketsCountChart extends BaseChart
 {
-    public $department;
-
-    public function mount($department)
-    {
-        $this->department = $department;
-    }
-
     public function render()
     {
         $this->authorize('view-dashboards');
@@ -23,18 +17,19 @@ class WeeklyTiicketsCountChart extends BaseChart
         ]);
     }
 
+    protected function initChart(): BaseChartModel
+    {
+        return new ColumnChartModel();
+    }
+
     protected function createChart()
     {
-        $chart = new ColumnChartModel();
-        $chart->setTitle('Weekly Total Tickets');
-        $chart->withoutLegend();
-
         foreach (range(12, 0) as $index) {
             $date = now()->subWeeks($index);
             $title = $date->copy()->endOfWeek()->format('Y-M-d');
             $service = new TicketService();
 
-            $chart->addColumn(
+            $this->chart->addColumn(
                 $title,
                 $service->countWeeksAgo($index, [
                     'department_id' => $this->department?->id,
@@ -43,6 +38,6 @@ class WeeklyTiicketsCountChart extends BaseChart
             );
         }
 
-        return $chart;
+        return $this->chart;
     }
 }

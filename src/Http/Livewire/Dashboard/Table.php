@@ -10,6 +10,7 @@ use Dainsys\Support\Services\ReasonService;
 use Dainsys\Support\Enums\TicketStatusesEnum;
 use Dainsys\Support\Enums\DepartmentRolesEnum;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
+use Dainsys\Support\Services\DepartmentService;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Dainsys\Support\Services\UserDepartmentRoleService;
 use Dainsys\Support\Http\Livewire\AbstractDataTableComponent;
@@ -96,17 +97,17 @@ class Table extends AbstractDataTableComponent
                 ->sortable()
                 ->searchable(),
             Column::make('Department', 'department.name')
-                ->hideIf(!is_null($this->department))
+                ->hideIf(!is_null($this->department->id))
                 ->sortable()
                 ->searchable(),
             Column::make('Reason', 'reason.name')
                 ->sortable()
                 ->searchable(),
-            Column::make('Description')
-                ->format(fn ($value, $row) => $row->short_description)
-                ->html()
-                ->sortable()
-                ->searchable(),
+            // Column::make('Description')
+            //     ->format(fn ($value, $row) => $row->short_description)
+            //     ->html()
+            //     ->sortable()
+            //     ->searchable(),
             Column::make('Owner', 'owner.name')
                 ->sortable()
                 ->searchable(),
@@ -136,6 +137,18 @@ class Table extends AbstractDataTableComponent
     public function filters(): array
     {
         return [
+            SelectFilter::make('Department')
+                ->options(
+                    [
+                        '' => 'All',
+
+                    ] +
+                    DepartmentService::list()->toArray()
+                )->filter(function (Builder $builder, int $value) {
+                    $builder->whereHas('department', function ($query) use ($value) {
+                        $query->where('id', $value);
+                    });
+                }),
             SelectFilter::make('Reason')
                 ->options(
                     [
@@ -177,13 +190,13 @@ class Table extends AbstractDataTableComponent
                 )->filter(function (Builder $builder, string $value) {
                     $builder->$value();
                 }),
-            MultiSelectFilter::make('Status')
-                ->options(
-                    TicketStatusesEnum::asArray()
-                )
-                ->filter(function (Builder $builder, array $values) {
-                    $builder->whereIn('status', $values);
-                })
+            // MultiSelectFilter::make('Status')
+            //     ->options(
+            //         TicketStatusesEnum::asArray()
+            //     )
+            //     ->filter(function (Builder $builder, array $values) {
+            //         $builder->whereIn('status', $values);
+            //     })
         ];
     }
 

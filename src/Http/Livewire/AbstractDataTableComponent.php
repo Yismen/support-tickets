@@ -71,6 +71,19 @@ abstract class AbstractDataTableComponent extends DataTableComponent
         return $this->getBuilder();
     }
 
+    /**
+     * @return self
+     */
+    public function hiddenFromAll(bool $value): self
+    {
+        dd('asdfsdf');
+        $this->hiddenFromMenus = true;
+        $this->hiddenFromPills = true;
+        $this->hiddenFromFilterCount = true;
+
+        return $this;
+    }
+
     protected function withDefaultSorting()
     {
         $this->setDefaultSort('name', 'asc');
