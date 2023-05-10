@@ -34,7 +34,7 @@ class TestCase extends OrchestraTestCase
             \Flasher\Laravel\FlasherServiceProvider::class,
             \OwenIt\Auditing\AuditingServiceProvider::class,
             \Rappasoft\LaravelLivewireTables\LaravelLivewireTablesServiceProvider::class,
-
+            \Asantibanez\LivewireCharts\LivewireChartsServiceProvider::class,
             \Dainsys\Support\SupportServiceProvider::class,
         ];
     }

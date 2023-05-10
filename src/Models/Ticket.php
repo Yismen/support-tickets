@@ -16,12 +16,13 @@ use Dainsys\Support\Events\TicketAssignedEvent;
 use Dainsys\Support\Events\TicketCompletedEvent;
 use Dainsys\Support\Services\ImageCreatorService;
 use Dainsys\Support\Database\Factories\TicketFactory;
-use Dainsys\Support\Models\Traits\HasShortDescription;
 use Dainsys\Support\Exceptions\DifferentDepartmentException;
 
 class Ticket extends AbstractModel implements Auditable
 {
     use \Dainsys\Support\Models\Traits\BelongsToDepartment;
+    use \Dainsys\Support\Models\Traits\HasShortDescription;
+    use \Dainsys\Support\Models\Scopes\Dates\PeriodScope;
     use \Dainsys\Support\Models\Traits\BelongsToReason;
     use \Dainsys\Support\Models\Traits\HasManyReplies;
     use \Dainsys\Support\Models\Traits\BelongsToAgent;
@@ -29,7 +30,6 @@ class Ticket extends AbstractModel implements Auditable
     use \Dainsys\Support\Models\Traits\BelongsToOwner;
     use \Illuminate\Database\Eloquent\SoftDeletes;
     use \OwenIt\Auditing\Auditable;
-    use HasShortDescription;
 
     protected $fillable = ['created_by', 'department_id', 'reason_id', 'description', 'status', 'assigned_to', 'assigned_at', 'expected_at', 'completed_at', 'image'];
 

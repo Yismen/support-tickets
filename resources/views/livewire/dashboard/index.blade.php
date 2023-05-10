@@ -65,7 +65,7 @@
             <div class="card">
                 <div class="card-body">
                     total tickets by category, sorted by count, only top 10
-                    <livewire:support::charts.weekly-tickets height="150px" />
+                    <livewire:support::charts.weekly-tickets-count :department='$department' height="200px" />
                 </div>
             </div>
         </div>
@@ -73,8 +73,8 @@
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-body">
-                    Weekly total tickets
-                    <livewire:support::charts.weekly-tickets height="150px" />
+                    <livewire:support::charts.weekly-tickets-count :department='$department' height="200px"
+                        key="weekly-tickets-{{ $department?->id }}" />
                 </div>
             </div>
         </div>
@@ -83,7 +83,7 @@
             <div class="card">
                 <div class="card-body">
                     weekly completion rate
-                    <livewire:support::charts.weekly-tickets height="150px" />
+                    <livewire:support::charts.weekly-tickets-count :department='$department' height="200px" />
                 </div>
             </div>
         </div>
@@ -92,7 +92,7 @@
             <div class="card">
                 <div class="card-body">
                     weekly compliance rate
-                    <livewire:support::charts.weekly-tickets height="150px" />
+                    <livewire:support::charts.weekly-tickets-count :department='$department' height="200px" />
                 </div>
             </div>
         </div>

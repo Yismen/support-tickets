@@ -13,6 +13,11 @@ class Index extends Component
     use AuthorizesRequests;
 
     public $department;
+    public $selected;
+    protected $listeners = [
+        'ticketUpdated' => '$refresh',
+        'grabTicket'
+    ];
 
     public function mount()
     {
@@ -29,26 +34,6 @@ class Index extends Component
         $this->selected = $this->department->id;
     }
 
-    public $selected;
-
-    public function updatedSelected($value)
-    {
-        if (empty($value)) {
-            $this->selected = null;
-        }
-
-        $this->department = is_null($this->selected)
-        ? new Department()
-        : Department::find($this->selected);
-
-        $this->emit('dashboardUpdated');
-    }
-
-    protected $listeners = [
-        'ticketUpdated' => '$refresh',
-        'grabTicket'
-    ];
-
     public function render()
     {
         $this->authorize('view-dashboards');
@@ -62,5 +47,18 @@ class Index extends Component
             'compliance_rate' => TicketService::complianceRate($this->selected),
         ])
         ->layout('support::layouts.app');
+    }
+
+    public function updatedSelected($value)
+    {
+        if (empty($value)) {
+            $this->selected = null;
+        }
+
+        $this->department = is_null($this->selected)
+        ? new Department()
+        : Department::find($this->selected);
+
+        $this->emit('dashboardUpdated');
     }
 }
