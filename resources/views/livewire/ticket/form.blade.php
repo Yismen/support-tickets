@@ -1,7 +1,7 @@
 <div>
     @php
 
-    $title = $editing ? join(" ", [ __('Edit'), __('Ticket'), "#".$ticket->id, $ticket->name]) : join(" ",
+    $title = $editing ? join(" ", [ __('Edit'), __('Ticket'), " - #", $ticket->reference]) : join(" ",
     [__('Create'),
     __('New'), __('Ticket') ])
     @endphp

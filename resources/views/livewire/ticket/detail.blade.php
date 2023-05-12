@@ -1,5 +1,5 @@
 <div>
-    <x-support::modal title="{{ str(__('support::messages.ticket'))->headline() }} - #{{ $ticket?->id }}"
+    <x-support::modal title="{{ str(__('support::messages.ticket'))->headline() }} - #{{ $ticket?->reference }}"
         modal-name="TicketDetails" event-name="{{ $this->modal_event_name_detail }}" class="modal-lg">
         <table class="table table-striped table-inverse table-sm">
             <tbody class="thead-inverse">

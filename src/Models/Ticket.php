@@ -31,7 +31,7 @@ class Ticket extends AbstractModel implements Auditable
     use \Illuminate\Database\Eloquent\SoftDeletes;
     use \OwenIt\Auditing\Auditable;
 
-    protected $fillable = ['created_by', 'department_id', 'reason_id', 'description', 'status', 'assigned_to', 'assigned_at', 'expected_at', 'completed_at', 'image'];
+    protected $fillable = ['created_by', 'department_id', 'reason_id', 'description', 'status', 'assigned_to', 'assigned_at', 'expected_at', 'completed_at', 'reference', 'image'];
 
     protected $casts = [
         'assigned_at' => 'datetime',
@@ -55,9 +55,10 @@ class Ticket extends AbstractModel implements Auditable
 
         static::created(function ($model) {
             $model->updateQuietly([
-                'status' => TicketStatusesEnum::Pending,
+                // 'status' => TicketStatusesEnum::Pending,
                 'assigned_to' => null,
-                'assigned_at' => null
+                'assigned_at' => null,
+                'reference' => $model->getReference(),
             ]);
         });
         static::saved(function ($model) {
@@ -157,30 +158,6 @@ class Ticket extends AbstractModel implements Auditable
         return $this->assigned_to === $agent->user_id;
     }
 
-    protected function getExpectedDate(): Carbon
-    {
-        $date = $this->created_at ?? now();
-
-        switch ($this->reason->priority) {
-            case TicketPrioritiesEnum::Normal:
-                return $this->ensureNotWeekend($date->copy()->addDays(2));
-                break;
-            case TicketPrioritiesEnum::Medium:
-                return $this->ensureNotWeekend($date->copy()->addDay());
-                break;
-            case TicketPrioritiesEnum::High:
-                return $this->ensureNotWeekend($date->copy()->addMinutes(4 * 60));
-                break;
-            case TicketPrioritiesEnum::Emergency:
-                return $this->ensureNotWeekend($date->copy()->addMinutes(30));
-                break;
-
-            default:
-                return $this->ensureNotWeekend($date->copy()->addDays(2));
-                break;
-        }
-    }
-
     public function updateImage($image, string $path = 'tickets', $name = null, int $resize = 400, int $quality = 90)
     {
         if ($image instanceof UploadedFile) {
@@ -239,5 +216,40 @@ class Ticket extends AbstractModel implements Auditable
     public function getImagePathAttribute()
     {
         return Storage::url($this->image) . '?' . Str::random(5);
+    }
+
+    protected function getExpectedDate(): Carbon
+    {
+        $date = $this->created_at ?? now();
+
+        switch ($this->reason->priority) {
+            case TicketPrioritiesEnum::Normal:
+                return $this->ensureNotWeekend($date->copy()->addDays(2));
+                break;
+            case TicketPrioritiesEnum::Medium:
+                return $this->ensureNotWeekend($date->copy()->addDay());
+                break;
+            case TicketPrioritiesEnum::High:
+                return $this->ensureNotWeekend($date->copy()->addMinutes(4 * 60));
+                break;
+            case TicketPrioritiesEnum::Emergency:
+                return $this->ensureNotWeekend($date->copy()->addMinutes(30));
+                break;
+
+            default:
+                return $this->ensureNotWeekend($date->copy()->addDays(2));
+                break;
+        }
+    }
+
+    protected function getReference(): string
+    {
+        $latest_reference = self::query()->orderBy('reference', 'desc')->where('department_id', $this->department_id)->first()->reference;
+        
+        if ($latest_reference) {
+            return ++$latest_reference;
+        }
+
+        return $this->department->ticket_prefix . '000001';
     }
 }

@@ -28,6 +28,7 @@ class CreateSupportTicketsTable extends Migration
             $table->dateTime('assigned_at')->nullable();
             $table->dateTime('expected_at')->nullable();
             $table->dateTime('completed_at')->nullable();
+            $table->string('reference', 50)->nullable();
             $table->text('image')->nullable();
             $table->integer('status')->default(TicketStatusesEnum::Pending->value);
 

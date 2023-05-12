@@ -94,7 +94,8 @@ class Table extends AbstractDataTableComponent
     {
         return [
 
-            Column::make('id')
+            Column::make('Reference')
+                ->format(fn ($value) => $value . '#')
                 ->sortable()
                 ->searchable(),
             Column::make('Department', 'department.name')

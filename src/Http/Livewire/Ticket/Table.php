@@ -61,7 +61,8 @@ class Table extends AbstractDataTableComponent
     public function columns(): array
     {
         return [
-            Column::make('id')
+            Column::make('Reference')
+                ->format(fn ($value) => $value . '#')
                 ->sortable()
                 ->searchable(),
             Column::make('Reason', 'reason.name')

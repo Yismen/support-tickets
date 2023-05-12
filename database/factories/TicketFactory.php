@@ -34,6 +34,7 @@ class TicketFactory extends Factory
             // 'assigned_at' => now(),
             // 'expected_at' => now(),
             // 'completed_at' => now(),
+            // 'reference' => 'watever',
             'status' => TicketStatusesEnum::Pending->value,
         ];
     }
