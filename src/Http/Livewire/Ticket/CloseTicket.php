@@ -6,17 +6,16 @@ use Livewire\Component;
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Traits\WithRealTimeValidation;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Dainsys\Support\Http\Livewire\Traits\HasSweetAlertConfirmation;
 
 class CloseTicket extends Component
 {
     use AuthorizesRequests;
     use WithRealTimeValidation;
+    use HasSweetAlertConfirmation;
 
     public Ticket $ticket;
     public string $comment;
-    protected $listeners = [
-        'sweetalertConfirmed',
-    ];
 
     public function mount(Ticket $ticket)
     {
@@ -30,25 +29,30 @@ class CloseTicket extends Component
         ->layout('support::layouts.app');
     }
 
+    protected function confirmationsContract(): array
+    {
+        return [
+            'close_ticket' => 'closeTicketConfirmed'
+        ];
+    }
+
     public function closeTicket()
     {
         $this->authorize('close-ticket', $this->ticket);
 
         $this->validate();
 
-        supportConfirm('close_ticket', 'Are you sure you want to close this ticket?');
+        $this->confirm('close_ticket', 'Are you sure you want to close this ticket?');
     }
 
-    public function sweetalertConfirmed(array $payload)
+    public function closeTicketConfirmed()
     {
-        $event_name = $payload['envelope']['notification']['options']['confirmation_name'] ?? null;
+        $this->authorize('close-ticket', $this->ticket);
 
-        if ($event_name === 'close_ticket') {
-            $this->ticket->close($this->comment);
+        $this->ticket->close($this->comment);
 
-            $this->emit('ticketUpdated');
-            $this->emit('showTicket', $this->ticket);
-        }
+        $this->emit('ticketUpdated');
+        $this->emit('showTicket', $this->ticket);
     }
 
     protected function getRules()

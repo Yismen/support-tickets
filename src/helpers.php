@@ -23,19 +23,3 @@ if (function_exists('supportFlash') === false) {
         return flasher($message, $type, $options);
     }
 }
-
-if (function_exists('supportConfirm') === false) {
-    function supportConfirm(string $confirmation_name, string|null $message = 'Are you sure')
-    {
-        return sweetalert()
-            ->showDenyButton(
-                $showDenyButton = true,
-                $denyButtonText = 'No',
-                $denyButtonColor = null,
-                $denyButtonAriaLabel = null
-            )
-            ->timer(0)
-            ->option('confirmation_name', str($confirmation_name)->kebab())
-            ->addInfo($message);
-    }
-}

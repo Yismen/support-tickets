@@ -9,11 +9,13 @@ use Dainsys\Support\Models\Reply;
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Models\DepartmentRole;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Dainsys\Support\Http\Livewire\Traits\HasSweetAlertConfirmation;
 
 class Detail extends Component
 {
     use AuthorizesRequests;
     use WithPagination;
+    use HasSweetAlertConfirmation;
     protected $paginationTheme = 'bootstrap';
 
     public $assign_to;
@@ -43,6 +45,13 @@ class Detail extends Component
             'team' => $this->ticket?->department?->team->load('user')->pluck('user.name', 'user_id')->toArray() ?: []
         ])
             ->layout('support::layouts.app');
+    }
+
+    protected function confirmationsContract(): array
+    {
+        return [
+            'reopen_ticket' => 'confirmReopen'
+        ];
     }
 
     public function showTicket(Ticket $ticket)
@@ -104,6 +113,13 @@ class Detail extends Component
 
     public function reOpen()
     {
+        $this->confirm('reopen_ticket');
+    }
+
+    public function confirmReopen()
+    {
+        $this->authorize('reopen-ticket', $this->ticket);
+
         $this->ticket->reOpen();
 
         $this->emit('ticketUpdated');

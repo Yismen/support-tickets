@@ -16,17 +16,18 @@ use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Dainsys\Support\Services\DepartmentService;
 use Dainsys\Support\Traits\WithRealTimeValidation;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Dainsys\Support\Http\Livewire\Traits\HasSweetAlertConfirmation;
 
 class Form extends Component
 {
     use AuthorizesRequests;
     use WithRealTimeValidation;
     use WithFileUploads;
+    use HasSweetAlertConfirmation;
 
     protected $listeners = [
         'createTicket',
         'updateTicket',
-        'sweetalertConfirmed',
     ];
 
     public bool $editing = false;
@@ -49,6 +50,14 @@ class Form extends Component
             'priorities' => TicketPrioritiesEnum::asArray()
         ])
         ->layout('support::layouts.app');
+    }
+
+    protected function confirmationsContract(): array
+    {
+        return [
+            'delete_ticket' => 'deleteTicketConfirmed',
+            'remove_image' => 'deleteImageConfirmed',
+        ];
     }
 
     public function createTicket($ticket = null)
@@ -133,25 +142,12 @@ class Form extends Component
     {
         $this->authorize('delete', $this->ticket);
 
-        supportConfirm('delete_ticket', 'Are you sure you want to delete this ticket?');
+        $this->confirm('delete_ticket');
     }
 
     public function removeImage()
     {
-        supportConfirm('remove_image', 'Are you sure you want to delete this image from the ticket?');
-    }
-
-    public function sweetalertConfirmed(array $payload)
-    {
-        $event_name = $payload['envelope']['notification']['options']['confirmation_name'] ?? null;
-
-        if ($event_name === 'delete_ticket') {
-            $this->confirmDeleteTicket();
-        }
-
-        if ($event_name === 'remove_image') {
-            $this->confirmDeleteImage();
-        }
+        $this->confirm('remove_image', 'Are you sure you want to delete this image from the ticket?');
     }
 
     protected function getRules()
@@ -173,7 +169,7 @@ class Form extends Component
         ];
     }
 
-    protected function confirmDeleteImage()
+    protected function deleteImageConfirmed()
     {
         if ($this->ticket->image) {
             $this->ticket->updateQuietly(['image' => null]);
@@ -185,7 +181,7 @@ class Form extends Component
         $this->reset(['image']);
     }
 
-    protected function confirmDeleteTicket()
+    protected function deleteTicketConfirmed()
     {
         $this->authorize('delete', $this->ticket);
 
