@@ -10,6 +10,34 @@ use Illuminate\Database\Eloquent\Builder;
 
 class TicketService
 {
+    /**
+     * Count for many weeks ago
+     *
+     * @param  integer $week Amount of weeks ago to query
+     * @return void
+     */
+    public function countWeeksAgo(int $week, array $constraints = [], string $column = 'created_at')
+    {
+        $cache_key = join('-', [
+            'weekly-tickets-count',
+            $week,
+            join('-', array_keys($constraints)),
+            join('-', array_values($constraints)),
+        ]);
+        return Cache::rememberForever($cache_key, function () use ($week, $constraints) {
+            return Ticket::query()
+            ->ofWeeksAgo($week)
+            ->when(count($constraints) > 0, function ($query) use ($constraints) {
+                foreach ($constraints as $key => $value) {
+                    if (!is_null($value)) {
+                        $query->where($key, $value);
+                    }
+                }
+            })
+            ->count();
+        });
+    }
+
     public static function byDepartment(Department|null|int $department = null): Builder
     {
         $department = $department instanceof Department

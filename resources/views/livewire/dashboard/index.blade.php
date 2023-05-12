@@ -1,68 +1,58 @@
 <div>
-    <x-support::loading />
     <livewire:support::ticket.detail />
     <livewire:support::ticket.form />
 
+    @include('support::livewire.dashboard._header')
+    <div wire:poll.{{ config('support.polling_miliseconds') }}ms>
+        @include('support::livewire.dashboard._infographics')
 
+        @include('support::livewire.dashboard._charts')
+    </div>
+    {{-- Table --}}
+    @include('support::livewire.dashboard._table')
+    @push("styles")
+    <style>
+        .filter-fixed {
+            background: aqua;
+            padding: 10px;
+            border-radius: 5px;
+            position: fixed;
+            top: 50px;
+            z-index: 100;
+            transition: all .5s;
+        }
+    </style>
+    @endPush
 
-    @if (auth()->user()->isSupportSuperAdmin())
-    <div class="row justify-content-end">
-        <div class="form-group col-4" wire:ignore>
-            <label for="">Filter by Department</label>
-            <select class="form-control" wire:model='selected'>
-                <option value="">All</option>
-                @foreach ($departments as $id => $name)
-                <option value="{{ $id }}">{{ $name }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-    @else
-    <div class="row">
-        <div class="col-12">
-            <h1 class="border-bottom pb-2 text-uppercase text-black-50 mb-3"
-                title="You Are {{ auth()->user()->departmentRole->role->name }}">
-                {{
-                join(' ',
-                [
+    @push('scripts')
+    <script>
+        (function() {
+            const element = document.getElementById('filter-fixed') ;
+            // const position = element.getBoundingClientRect().bottom;
+            const height = element.offsetHeight ;        
 
-                str(__('support::messages.department'))->headline(),
-                str(__('support::messages.dashboard'))->headline(),
-                ])
-                }}
-                <i
-                    class="fa {{ auth()->user()->isDepartmentAdmin($department) ? 'fa-cog text-primary' : 'fa-users text-secondary' }}"></i>
-            </h1>
-            <h3 class="text-bold"> {{ $department?->name }}</h3>
-        </div>
-    </div>
-    @endif
+            document.addEventListener('scroll',  function(e) {
+                updateClass();
 
-    <div class="row">
-        <div class="col-sm-6 col-md-4 col-lg-3">
-            <x-support::infographic :count='$total_tickets' icon="fa fa-ticket">Total Tickets</x-support::infographic>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3">
-            <x-support::infographic :count=' $tickets_open' icon="fa fa-face-grin-wink">Tickets Open
-            </x-support::infographic>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3">
-            <x-support::infographic count=' {{ number_format($completion_rate * 100, 0) }}%' icon="fa fa-percent">
-                Completion
-                Rate
-            </x-support::infographic>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3">
-            <x-support::infographic count='{{ number_format($compliance_rate * 100, 0) }}%' icon="fa fa-percent">
-                Compliance
-                Rate
-            </x-support::infographic>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-body">
-            <livewire:support::dashboard.table :department='$department'
-                wire:key="department-table-{{ $department?->id ?? null }}" />
-        </div>
-    </div>
+                const currentPosition = scrollY;
+            })
+
+            let updateClass = function(){
+                const scrolledPoss = window.scrollY;
+
+                if (scrolledPoss > height * .9) {
+                    element.classList.add('filter-fixed');
+                } else {
+                    element.classList.remove('filter-fixed');
+                    
+                }
+
+            }
+            Livewire.hook('message.processed', (message, component) => {
+                updateClass();
+            })
+
+        })()  
+    </script>
+    @endPush
 </div>

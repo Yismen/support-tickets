@@ -1,6 +1,6 @@
 <?php
 
-namespace Dainsys\Support\Scopes;
+namespace Dainsys\Support\Models\Scopes\Global;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;

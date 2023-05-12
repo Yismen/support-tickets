@@ -18,7 +18,7 @@ abstract class AbstractDataTableComponent extends DataTableComponent
         $this->withDefaultSorting();
         $this->setFilterLayoutSlideDown();
 
-        $this->setRefreshTime(120000); // 2 minutes
+        $this->setRefreshTime(config('support.polling_miliseconds'));
 
         $this->setPrimaryKey('id');
         $this->setColumnSelectDisabled();
@@ -69,6 +69,19 @@ abstract class AbstractDataTableComponent extends DataTableComponent
         }
 
         return $this->getBuilder();
+    }
+
+    /**
+     * @return self
+     */
+    public function hiddenFromAll(bool $value): self
+    {
+        dd('asdfsdf');
+        $this->hiddenFromMenus = true;
+        $this->hiddenFromPills = true;
+        $this->hiddenFromFilterCount = true;
+
+        return $this;
     }
 
     protected function withDefaultSorting()

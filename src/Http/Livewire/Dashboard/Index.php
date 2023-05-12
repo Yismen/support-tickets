@@ -5,14 +5,19 @@ namespace Dainsys\Support\Http\Livewire\Dashboard;
 use Livewire\Component;
 use Dainsys\Support\Models\Department;
 use Dainsys\Support\Services\TicketService;
-use Dainsys\Support\Services\DepartmentService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Dainsys\Support\Services\Department\DepartmentListService;
 
 class Index extends Component
 {
     use AuthorizesRequests;
 
     public $department;
+    public $selected;
+    protected $listeners = [
+        'ticketUpdated' => '$refresh',
+        'grabTicket'
+    ];
 
     public function mount()
     {
@@ -29,7 +34,20 @@ class Index extends Component
         $this->selected = $this->department->id;
     }
 
-    public $selected;
+    public function render()
+    {
+        $this->authorize('view-dashboards');
+
+        return view('support::livewire.dashboard.index', [
+            'department' => $this->department,
+            'departments' => DepartmentListService::withTicketsOnly()->pluck('name', 'id')->toArray(),
+            'total_tickets' => TicketService::byDepartment($this->selected)->count(),
+            'tickets_open' => TicketService::byDepartment($this->selected)->incompleted()->count(),
+            'completion_rate' => TicketService::completionRate($this->selected),
+            'compliance_rate' => TicketService::complianceRate($this->selected),
+        ])
+        ->layout('support::layouts.app');
+    }
 
     public function updatedSelected($value)
     {
@@ -42,25 +60,5 @@ class Index extends Component
         : Department::find($this->selected);
 
         $this->emit('dashboardUpdated');
-    }
-
-    protected $listeners = [
-        'ticketUpdated' => '$refresh',
-        'grabTicket'
-    ];
-
-    public function render()
-    {
-        $this->authorize('view-dashboards');
-
-        return view('support::livewire.dashboard.index', [
-            'department' => $this->department,
-            'departments' => DepartmentService::list()->toArray(),
-            'total_tickets' => TicketService::byDepartment($this->selected)->count(),
-            'tickets_open' => TicketService::byDepartment($this->selected)->incompleted()->count(),
-            'completion_rate' => TicketService::completionRate($this->selected),
-            'compliance_rate' => TicketService::complianceRate($this->selected),
-        ])
-        ->layout('support::layouts.app');
     }
 }

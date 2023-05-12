@@ -169,5 +169,10 @@ class SupportServiceProvider extends AuthServiceProvider
         Livewire::component('support::ticket.close', \Dainsys\Support\Http\Livewire\Ticket\CloseTicket::class);
 
         Livewire::component('support::reply.form', \Dainsys\Support\Http\Livewire\Reply\Form::class);
+
+        Livewire::component('support::charts.weekly-tickets-count', \Dainsys\Support\Http\Livewire\Charts\WeeklyTicketsCountChart::class);
+        Livewire::component('support::charts.weekly-tickets-count-by-reason', \Dainsys\Support\Http\Livewire\Charts\WeeklyTicketsCountByReasonChart::class);
+        Livewire::component('support::charts.weekly-tickets-completion-rate', \Dainsys\Support\Http\Livewire\Charts\WeeklyTicketsCompletionRateChart::class);
+        Livewire::component('support::charts.weekly-tickets-compliance-rate', \Dainsys\Support\Http\Livewire\Charts\WeeklyTicketsComplianceRateChart::class);
     }
 }

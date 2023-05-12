@@ -4,8 +4,70 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d418037644a87dbfeaf38fd29a62fbd3",
+    "content-hash": "ceaf4c3c9a5b127a57db407dd3a15f39",
     "packages": [
+        {
+            "name": "asantibanez/livewire-charts",
+            "version": "v2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/asantibanez/livewire-charts.git",
+                "reference": "9f9554314eb1c75c0f152f13ee236ee336e966c3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/asantibanez/livewire-charts/zipball/9f9554314eb1c75c0f152f13ee236ee336e966c3",
+                "reference": "9f9554314eb1c75c0f152f13ee236ee336e966c3",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^7.0|^8.0|^9.0|^10.0",
+                "livewire/livewire": "^2.3",
+                "php": "^7.2|^7.3|^7.4|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^5.0|^6.0|^7.0|^8.0",
+                "phpunit/phpunit": "^8.0|^9.5.10"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Asantibanez\\LivewireCharts\\LivewireChartsServiceProvider"
+                    ],
+                    "aliases": {
+                        "LivewireCharts": "Asantibanez\\LivewireCharts\\LivewireChartsFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Asantibanez\\LivewireCharts\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrés Santibáñez",
+                    "email": "santibanez.andres@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Livewire Charts",
+            "homepage": "https://github.com/asantibanez/livewire-charts",
+            "keywords": [
+                "asantibanez",
+                "livewire-charts"
+            ],
+            "support": {
+                "issues": "https://github.com/asantibanez/livewire-charts/issues",
+                "source": "https://github.com/asantibanez/livewire-charts/tree/v2.5.0"
+            },
+            "time": "2023-02-01T18:16:56+00:00"
+        },
         {
             "name": "brick/math",
             "version": "v0.11.x-dev",
@@ -1118,12 +1180,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/ui.git",
-                "reference": "82ac453fb60d364c9bbbcc31c2fd887753173c16"
+                "reference": "a58ec468db4a340b33f3426c778784717a2c144b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/ui/zipball/82ac453fb60d364c9bbbcc31c2fd887753173c16",
-                "reference": "82ac453fb60d364c9bbbcc31c2fd887753173c16",
+                "url": "https://api.github.com/repos/laravel/ui/zipball/a58ec468db4a340b33f3426c778784717a2c144b",
+                "reference": "a58ec468db4a340b33f3426c778784717a2c144b",
                 "shasum": ""
             },
             "require": {
@@ -1173,7 +1235,7 @@
             "support": {
                 "source": "https://github.com/laravel/ui/tree/4.x"
             },
-            "time": "2023-02-17T09:18:14+00:00"
+            "time": "2023-05-09T19:47:28+00:00"
         },
         {
             "name": "league/commonmark",
@@ -2455,16 +2517,16 @@
         },
         {
             "name": "php-flasher/flasher-sweetalert-laravel",
-            "version": "dev-main",
+            "version": "v1.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-flasher/flasher-sweetalert-laravel.git",
-                "reference": "02e2ffee5631d2f50837f853a0d913213d109541"
+                "reference": "b3d552cbc5b0d61903e0e2c821ce492dde6928ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-flasher/flasher-sweetalert-laravel/zipball/02e2ffee5631d2f50837f853a0d913213d109541",
-                "reference": "02e2ffee5631d2f50837f853a0d913213d109541",
+                "url": "https://api.github.com/repos/php-flasher/flasher-sweetalert-laravel/zipball/b3d552cbc5b0d61903e0e2c821ce492dde6928ea",
+                "reference": "b3d552cbc5b0d61903e0e2c821ce492dde6928ea",
                 "shasum": ""
             },
             "require": {
@@ -2472,7 +2534,6 @@
                 "php-flasher/flasher-laravel": "^1.13",
                 "php-flasher/flasher-sweetalert": "^1.13"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -2527,7 +2588,7 @@
                 "yoeunes"
             ],
             "support": {
-                "source": "https://github.com/php-flasher/flasher-sweetalert-laravel/tree/main"
+                "source": "https://github.com/php-flasher/flasher-sweetalert-laravel/tree/v1.13.1"
             },
             "funding": [
                 {
@@ -2551,7 +2612,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2023-01-21T15:16:28+00:00"
+            "time": "2023-01-15T22:30:32+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -6110,16 +6171,16 @@
         },
         {
             "name": "mockery/mockery",
-            "version": "1.6.x-dev",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mockery/mockery.git",
-                "reference": "bac1765cb52bbd3364a870e920cb69cd859ee302"
+                "reference": "612a8f9839a296edd9e2c23334f39c2fd8457ee0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mockery/mockery/zipball/bac1765cb52bbd3364a870e920cb69cd859ee302",
-                "reference": "bac1765cb52bbd3364a870e920cb69cd859ee302",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/612a8f9839a296edd9e2c23334f39c2fd8457ee0",
+                "reference": "612a8f9839a296edd9e2c23334f39c2fd8457ee0",
                 "shasum": ""
             },
             "require": {
@@ -6131,23 +6192,18 @@
                 "phpunit/phpunit": "<8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^8.5 || ^9.3",
-                "psalm/plugin-phpunit": "^0.18",
-                "vimeo/psalm": "^5.9"
+                "phpunit/phpunit": "^8.5 || ^9.3"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4.x-dev"
+                    "dev-master": "1.6.x-dev"
                 }
             },
             "autoload": {
-                "files": [
-                    "library/helpers.php",
-                    "library/Mockery.php"
-                ],
-                "psr-4": {
-                    "Mockery\\": "library/Mockery"
+                "psr-0": {
+                    "Mockery": "library/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -6182,9 +6238,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mockery/mockery/issues",
-                "source": "https://github.com/mockery/mockery/tree/1.6.x"
+                "source": "https://github.com/mockery/mockery/tree/master"
             },
-            "time": "2023-05-03T12:55:29+00:00"
+            "time": "2023-05-09T15:00:16+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -8846,7 +8902,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "php-flasher/flasher-sweetalert-laravel": 20,
         "orchestra/testbench": 20,
         "nunomaduro/collision": 20
     },
