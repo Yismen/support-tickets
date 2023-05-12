@@ -3,7 +3,7 @@
         <livewire:livewire-line-chart :line-chart-model="$chart" />
     </div>
 
-    @pushOnce('scripts')
+    @pushOnce("scripts", "livewire-charts-script")
     @livewireChartsScripts
     @endpushOnce
 </div>

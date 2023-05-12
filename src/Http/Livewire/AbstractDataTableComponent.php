@@ -18,7 +18,7 @@ abstract class AbstractDataTableComponent extends DataTableComponent
         $this->withDefaultSorting();
         $this->setFilterLayoutSlideDown();
 
-        $this->setRefreshTime(120000); // 2 minutes
+        $this->setRefreshTime(config('support.polling_miliseconds'));
 
         $this->setPrimaryKey('id');
         $this->setColumnSelectDisabled();

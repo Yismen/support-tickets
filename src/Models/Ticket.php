@@ -100,16 +100,6 @@ class Ticket extends AbstractModel implements Auditable
         TicketAssignedEvent::dispatch($this, $agent);
     }
 
-    public function complete()
-    {
-        $this->update([
-            'status' => $this->getStatus(),
-            'completed_at' => now(),
-        ]);
-
-        TicketCompletedEvent::dispatch($this);
-    }
-
     public function reOpen()
     {
         $this->update([
@@ -118,6 +108,16 @@ class Ticket extends AbstractModel implements Auditable
         ]);
 
         // TicketCompletedEvent::dispatch($this);
+    }
+
+    public function complete()
+    {
+        $this->update([
+            'status' => $this->getStatus(),
+            'completed_at' => now(),
+        ]);
+
+        TicketCompletedEvent::dispatch($this);
     }
 
     public function close(string $comment)

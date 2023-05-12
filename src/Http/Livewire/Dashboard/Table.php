@@ -33,6 +33,7 @@ class Table extends AbstractDataTableComponent
     public function mount(Department $department)
     {
         $this->department = $department;
+        $this->table['filters']['completion_status'] = 'incompleted';
     }
 
     public function builder(): Builder

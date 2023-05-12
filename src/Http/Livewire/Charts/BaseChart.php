@@ -13,9 +13,12 @@ abstract class BaseChart extends Component
 
     public $department;
     public $height = '200px';
-    protected BaseChartModel $chart;
 
-    abstract public function render();
+    protected $listeners = [
+        'ticketUpdated' => '$refresh'
+    ];
+
+    protected BaseChartModel $chart;
 
     abstract protected function createChart();
 
@@ -24,6 +27,11 @@ abstract class BaseChart extends Component
     public function mount($department)
     {
         $this->department = $department;
+    }
+
+    public function render()
+    {
+        $this->authorize('view-dashboards');
 
         $this->chart = $this->initChart();
         $this->chart->setTitle($this->title());

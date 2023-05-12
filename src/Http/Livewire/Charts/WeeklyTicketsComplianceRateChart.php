@@ -3,7 +3,6 @@
 namespace Dainsys\Support\Http\Livewire\Charts;
 
 use Dainsys\Support\Enums\ColorsEnum;
-use Dainsys\Support\Services\TicketService;
 use Asantibanez\LivewireCharts\Models\BaseChartModel;
 use Asantibanez\LivewireCharts\Models\LineChartModel;
 
@@ -13,7 +12,7 @@ class WeeklyTicketsComplianceRateChart extends BaseChart
 
     public function render()
     {
-        $this->authorize('view-dashboards');
+        parent::render();
 
         return view('support::livewire.charts.weekly-tickets-completion-and-compliance-rate', [
             'chart' => $this->createChart()
@@ -28,15 +27,16 @@ class WeeklyTicketsComplianceRateChart extends BaseChart
     protected function createChart()
     {
         foreach (range(12, 0) as $index) {
+            $service = new \Dainsys\Support\Services\Ticket\ComplianceService();
             $date = now()->subWeeks($index);
             $title = $date->copy()->endOfWeek()->format('Y-M-d');
-            $service = new TicketService();
-            $rate = $service->complianceWeeksAgo($index, [
+
+            $rate = $service->weeksAgo($index, [
                 'department_id' => $this->department?->id
             ]);
 
             $formated_value = number_format($rate * 100, 0);
-            $context_color = ColorsEnum::contextColor(0.8, $rate);
+            $context_color = ColorsEnum::contextColor(0.9, $rate);
 
             $this->chart
                 ->setDataLabelsEnabled(false)

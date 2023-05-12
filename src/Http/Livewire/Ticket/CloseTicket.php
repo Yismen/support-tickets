@@ -13,8 +13,10 @@ class CloseTicket extends Component
     use WithRealTimeValidation;
 
     public Ticket $ticket;
-
     public string $comment;
+    protected $listeners = [
+        'sweetalertConfirmed',
+    ];
 
     public function mount(Ticket $ticket)
     {
@@ -30,14 +32,23 @@ class CloseTicket extends Component
 
     public function closeTicket()
     {
-        $this->validate();
-
         $this->authorize('close-ticket', $this->ticket);
 
-        $this->ticket->close($this->comment);
+        $this->validate();
 
-        $this->emit('ticketUpdated');
-        $this->emit('showTicket', $this->ticket);
+        supportConfirm('close_ticket', 'Are you sure you want to close this ticket?');
+    }
+
+    public function sweetalertConfirmed(array $payload)
+    {
+        $event_name = $payload['envelope']['notification']['options']['confirmation_name'] ?? null;
+
+        if ($event_name === 'close_ticket') {
+            $this->ticket->close($this->comment);
+
+            $this->emit('ticketUpdated');
+            $this->emit('showTicket', $this->ticket);
+        }
     }
 
     protected function getRules()

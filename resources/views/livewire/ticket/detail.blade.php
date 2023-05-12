@@ -68,7 +68,7 @@
             </tbody>
         </table>
 
-        <section id="replies" style="background-color: #f9f9f9;">
+        <section id="replies" style="background-color: rgb(178, 229, 255);" class="p-1">
             {{-- <div wire:ignore.self> --}}
                 @can('create', [new Dainsys\Support\Models\Reply(), $ticket])
                 <livewire:support::reply.form ticket='{{ $ticket }}' :key="'replies-form'" modifier="lazy"
@@ -77,19 +77,19 @@
                 {{--
             </div> --}}
 
-            @include('support::livewire.ticket.replies')
+            @include('support::livewire.ticket._replies')
         </section>
 
         <x-slot name="footer" wire:key="ticket-footer-{{ $ticket->id }}">
             {{-- Is current user the ticket's owner. Owner should not work tickets themself --}}
             @if(auth()->user()->isSupportSuperAdmin())
-            @include('support::livewire.ticket.actions._super_admin')
+            @include('support::livewire.ticket.roles._super_admin')
             @elseif($ticket->created_by === auth()->user()->id)
-            @include('support::livewire.ticket.actions._owner')
+            @include('support::livewire.ticket.roles._owner')
             @elseif(auth()->user()->isDepartmentAdmin($ticket->department ?: new \Dainsys\Support\Models\Department()))
-            @include('support::livewire.ticket.actions._admin')
+            @include('support::livewire.ticket.roles._admin')
             @elseif(auth()->user()->isDepartmentAgent($ticket->department ?: new \Dainsys\Support\Models\Department()))
-            @include('support::livewire.ticket.actions._agent')
+            @include('support::livewire.ticket.roles._agent')
             @endif
         </x-slot>
     </x-support::modal>

@@ -12,7 +12,7 @@
         id="{{ $modalName }}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true"
         wire:ignore.self>
         <div {{ $attributes->merge([
-            'class' => "modal-dialog modal-dialog-centered modal-dialog-scrollable"
+            'class' => "modal-dialog modal-dialog-centered"
             ]) }} role="document">
             <div class="modal-content">
                 <div class="modal-header">

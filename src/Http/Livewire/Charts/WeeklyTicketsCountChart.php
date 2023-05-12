@@ -10,7 +10,7 @@ class WeeklyTicketsCountChart extends BaseChart
 {
     public function render()
     {
-        $this->authorize('view-dashboards');
+        parent::render();
 
         return view('support::livewire.charts.weekly-tickets-count', [
             'chart' => $this->createChart()

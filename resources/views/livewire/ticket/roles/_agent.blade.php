@@ -8,9 +8,11 @@
             wire:key="close-ticket-{{ $ticket->id }}" />
     </div>
     @else
+
     <span class="badge badge-info ">
         Ticket currently assiged to {{ auth()->user()->name }}
     </span>
+
     @endif
 
     @else

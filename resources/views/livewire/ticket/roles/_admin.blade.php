@@ -7,18 +7,12 @@
     </div>
 
     <div class="d-flex justify-content-between mt-2 ">
-        <div class="bg-teal mb-3 p-2">
-            <x-support::inputs.select field="assign_to" :options='$team'>
-                Assign Ticket To:
-            </x-support::inputs.select>
-        </div>
+        @include('support::livewire.ticket._assign')
     </div>
+
     @else
-    <div class="align-self-end">
-        <button class="btn btn-sm btn-primary" wire:click.prevent='reOpen'>
-            Reopen Ticket
-        </button>
-    </div>
+
+    @include('support::livewire.ticket._reopen')
 
     <span class="{{ $ticket->status->class() }} mt-2">
         {{ str($ticket->status->name)->headline() }}

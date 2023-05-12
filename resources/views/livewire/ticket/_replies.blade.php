@@ -1,5 +1,6 @@
 @if ($ticket?->replies->count())
-<div class="px-3 mb-4 border-top pt-2">
+<div class="px-3 mb-4 border-top pt-2" style="max-height: 300px;
+overflow-y: auto;">
     <h5 class="text-bold text-dark">
         {{ str(__('support::messages.replies'))->headline() }}
         <span class="badge badge-primary badge-btn">{{ $ticket->replies->count() }}</span>

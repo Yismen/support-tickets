@@ -5,8 +5,8 @@ namespace Dainsys\Support\Http\Livewire\Dashboard;
 use Livewire\Component;
 use Dainsys\Support\Models\Department;
 use Dainsys\Support\Services\TicketService;
-use Dainsys\Support\Services\DepartmentService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Dainsys\Support\Services\Department\DepartmentListService;
 
 class Index extends Component
 {
@@ -40,7 +40,7 @@ class Index extends Component
 
         return view('support::livewire.dashboard.index', [
             'department' => $this->department,
-            'departments' => DepartmentService::list()->toArray(),
+            'departments' => DepartmentListService::withTicketsOnly()->pluck('name', 'id')->toArray(),
             'total_tickets' => TicketService::byDepartment($this->selected)->count(),
             'tickets_open' => TicketService::byDepartment($this->selected)->incompleted()->count(),
             'completion_rate' => TicketService::completionRate($this->selected),

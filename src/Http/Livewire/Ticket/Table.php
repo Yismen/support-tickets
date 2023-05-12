@@ -22,6 +22,16 @@ class Table extends AbstractDataTableComponent
         'informationUpdated' => '$refresh',
     ];
 
+    public function mount()
+    {
+        $this->table['filters']['status'] = [
+            TicketStatusesEnum::Pending->value,
+            TicketStatusesEnum::PendingExpired->value,
+            TicketStatusesEnum::InProgress->value,
+            TicketStatusesEnum::InProgressExpired->value,
+        ];
+    }
+
     public function builder(): Builder
     {
         return Ticket::query()
