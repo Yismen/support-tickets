@@ -5,6 +5,7 @@ namespace Dainsys\Support\Http\Livewire\Charts;
 use Dainsys\Support\Services\TicketService;
 use Asantibanez\LivewireCharts\Models\BaseChartModel;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
+use Dainsys\Support\Services\Ticket\OldestTicketService;
 
 class WeeklyTicketsCountChart extends BaseChart
 {
@@ -24,7 +25,9 @@ class WeeklyTicketsCountChart extends BaseChart
 
     protected function createChart()
     {
-        foreach (range(12, 0) as $index) {
+        $weeks_sinces_oldest_ticket = (new OldestTicketService())->weeksSinceOldestTicket(config('support.dashboard.weeks'));
+
+        foreach (range($weeks_sinces_oldest_ticket, 0) as $index) {
             $date = now()->subWeeks($index);
             $title = $date->copy()->endOfWeek()->format('Y-M-d');
             $service = new TicketService();

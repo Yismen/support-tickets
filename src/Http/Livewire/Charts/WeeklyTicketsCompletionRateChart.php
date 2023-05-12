@@ -5,6 +5,7 @@ namespace Dainsys\Support\Http\Livewire\Charts;
 use Dainsys\Support\Enums\ColorsEnum;
 use Asantibanez\LivewireCharts\Models\BaseChartModel;
 use Asantibanez\LivewireCharts\Models\LineChartModel;
+use Dainsys\Support\Services\Ticket\OldestTicketService;
 
 class WeeklyTicketsCompletionRateChart extends BaseChart
 {
@@ -26,7 +27,9 @@ class WeeklyTicketsCompletionRateChart extends BaseChart
 
     protected function createChart()
     {
-        foreach (range(12, 0) as $index) {
+        $weeks_sinces_oldest_ticket = (new OldestTicketService())->weeksSinceOldestTicket(config('support.dashboard.weeks'));
+
+        foreach (range($weeks_sinces_oldest_ticket, 0) as $index) {
             $service = new \Dainsys\Support\Services\Ticket\CompletionService();
             $date = now()->subWeeks($index);
             $title = $date->copy()->endOfWeek()->format('Y-M-d');
@@ -36,7 +39,7 @@ class WeeklyTicketsCompletionRateChart extends BaseChart
             ]);
 
             $formated_value = number_format($rate * 100, 0);
-            $context_color = ColorsEnum::contextColor(.9, $rate);
+            $context_color = ColorsEnum::contextColor(config('support.dashboard.context.good'), $rate);
 
             $this->chart
                 ->setDataLabelsEnabled(false)

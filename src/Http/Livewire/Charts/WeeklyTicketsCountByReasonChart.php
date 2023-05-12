@@ -4,7 +4,6 @@ namespace Dainsys\Support\Http\Livewire\Charts;
 
 use Dainsys\Support\Models\Reason;
 use Illuminate\Support\Facades\Cache;
-use Dainsys\Support\Services\TicketService;
 use Asantibanez\LivewireCharts\Models\BaseChartModel;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
 
@@ -48,20 +47,5 @@ class WeeklyTicketsCountByReasonChart extends BaseChart
         });
 
         return $this->chart;
-        // foreach (range(12, 0) as $index) {
-        //     $date = now()->subWeeks($index);
-        //     $title = $date->copy()->endOfWeek()->format('Y-M-d');
-        //     $service = new TicketService();
-
-        //     $this->chart->addColumn(
-        //         $title,
-        //         $service->countWeeksAgo($index, [
-        //             'department_id' => $this->department?->id,
-        //         ]),
-        //         $this->color($index)
-        //     );
-        // }
-
-        // return $this->chart;
     }
 }

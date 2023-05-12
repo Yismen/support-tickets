@@ -65,11 +65,11 @@ enum ColorsEnum : string
     {
         $percentage = $goal > 0 ? $result / $goal : 0;
 
-        if ($result >= .9) {
+        if ($result >= config('support.dashboard.context.good')) {
             return self::GREEN_500->value;
         }
 
-        if ($percentage >= .8) {
+        if ($percentage >= config('support.dashboard.context.regular')) {
             return self::ORANGE_500->value;
         }
 

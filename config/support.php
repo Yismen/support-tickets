@@ -23,4 +23,15 @@ return [
      * https://laravel-livewire.com/docs/2.x/polling. Adjust wiselly.
      */
     'polling_miliseconds' => 60000, // 2 minutes
+    /**
+     * Configurations to use in the dashboard
+     */
+    'dashboard' => [
+        // The max amount of weeks to show
+        'weeks' => 12,
+        'context' => [
+            'good' => 0.9,
+            'regular' => 0.75
+        ]
+    ]
 ];
