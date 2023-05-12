@@ -58,12 +58,13 @@ class Ticket extends AbstractModel implements Auditable
                 // 'status' => TicketStatusesEnum::Pending,
                 'assigned_to' => null,
                 'assigned_at' => null,
-                'reference' => $model->getReference(),
+                // 'reference' => $model->getReference(),
             ]);
         });
         static::saved(function ($model) {
             $model->updateQuietly([
                 'expected_at' => $model->getExpectedDate(),
+                'reference' => $model->getReference(),
             ]);
             $model->updateQuietly([
                 'status' => $model->getStatus(),
@@ -245,7 +246,7 @@ class Ticket extends AbstractModel implements Auditable
     protected function getReference(): string
     {
         $latest_reference = self::query()->orderBy('reference', 'desc')->where('department_id', $this->department_id)->first()->reference;
-        
+
         if ($latest_reference) {
             return ++$latest_reference;
         }

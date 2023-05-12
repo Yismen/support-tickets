@@ -26,11 +26,7 @@ class Department extends AbstractModel
         parent::booted();
 
         static::saved(function ($model) {
-            $prefix = $model->ticket_prefix;
-            $upper = str($prefix)->upper();
-            $parsed = str($upper)->endsWith('-') ? $upper : "{$upper}-";
-
-            $model->updateQuietly(['ticket_prefix' => $parsed]);
+            $model->updateQuietly(['ticket_prefix' => $model->getTicketPrefix()]);
         });
     }
 
@@ -85,5 +81,28 @@ class Department extends AbstractModel
         return $total_tickets > 0
             ? $this->tickets_compliants / $total_tickets
             : 0;
+    }
+
+    protected function getTicketPrefix(): string
+    {
+        $words = explode(' ', trim($this->attributes['name']), 2);
+        $count = count($words);
+
+        $parsed = $count === 1
+            ? str($words[0])->limit(4, '')->upper()
+            : join('', [
+                str($words[0])->limit(2, '')->upper(),
+                str($words[1] ?? '')->limit(2, '')->upper()
+            ]);
+
+        $parsed = str($parsed)->finish('-');
+        $exists = self::where('ticket_prefix', $parsed)->where('id', '!=', $this->id)->first();
+
+        if ($exists) {
+            $rand = str()->random(1);
+            return str($exists->ticket_prefix)->substrReplace(str($rand)->upper(), 4, 0);
+        }
+
+        return $parsed;
     }
 }

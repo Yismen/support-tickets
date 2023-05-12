@@ -66,13 +66,13 @@ enum ColorsEnum : string
         $percentage = $goal > 0 ? $result / $goal : 0;
 
         if ($result >= .9) {
-            return self::GREEN_900->value;
+            return self::GREEN_500->value;
         }
 
         if ($percentage >= .8) {
             return self::ORANGE_500->value;
         }
 
-        return self::RED_900->value;
+        return self::RED_500->value;
     }
 }

@@ -133,42 +133,40 @@ class TicketTest extends TestCase
     /** @test */
     public function ticket_model_updates_reference_correcly()
     {
-        $department_1 = Department::factory()->create(['ticket_prefix' => 'aaaa']);
-        $department_2 = Department::factory()->create(['ticket_prefix' => 'bbbb']);
+        $department_1 = Department::factory()->create();
+        $department_2 = Department::factory()->create();
         $ticket_1 = Ticket::factory()->create(['department_id' => $department_1->id]);
         $ticket_2 = Ticket::factory()->create(['department_id' => $department_2->id]);
         $ticket_3 = Ticket::factory()->create(['department_id' => $department_1->id]);
 
         $this->assertDatabaseHas(Ticket::class, [
             'id' => $ticket_1->id,
-            'reference' => 'AAAA-000001',
+            'reference' => $department_1->ticket_prefix . '000001',
         ]);
 
         $this->assertDatabaseHas(Ticket::class, [
             'id' => $ticket_2->id,
-            'reference' => 'BBBB-000001',
+            'reference' => $department_2->ticket_prefix . '000001',
         ]);
 
         $this->assertDatabaseHas(Ticket::class, [
             'id' => $ticket_3->id,
-            'reference' => 'AAAA-000002',
+            'reference' => $department_1->ticket_prefix . '000002',
         ]);
     }
 
     /** @test */
     // public function ticket_model_updates_reference_correcly_when_updated()
     // {
-    //     $department_1 = Department::factory()->create(['ticket_prefix' => 'aaaa']);
-    //     $department_2 = Department::factory()->create(['ticket_prefix' => 'bbbb']);
+    //     $department_1 = Department::factory()->create();
+    //     $department_2 = Department::factory()->create();
     //     $ticket = Ticket::factory()->create(['department_id' => $department_1->id]);
 
     //     $ticket->update(['department_id' => $department_2->id]);
 
-    //     // dd($ticket->toArray());
-
     //     $this->assertDatabaseHas(Ticket::class, [
     //         'id' => $ticket->id,
-    //         'reference' => 'BBBB-000001',
+    //         'reference' => $department_2->ticket_prefix . '000001',
     //     ]);
     // }
 

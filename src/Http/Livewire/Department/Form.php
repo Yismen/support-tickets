@@ -93,12 +93,6 @@ class Form extends Component
                 'required',
                 Rule::unique(supportTableName('departments'), 'name')->ignore($this->department->id ?? 0)
             ],
-            'department.ticket_prefix' => [
-                'required',
-                'min:3',
-                'max:8',
-                Rule::unique(Department::class, 'ticket_prefix')->ignore($this->department->id ?? 0),
-            ],
             'department.description' => [
                 'nullable'
             ]
