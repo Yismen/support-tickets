@@ -81,8 +81,7 @@ class SupportServiceProvider extends AuthServiceProvider
         });
 
         Gate::define('view-dashboards', function (User $user) {
-            return $user->isSupportSuperAdmin()
-                || $user->hasAnyDepartmentRole()
+            return $user->hasAnyDepartmentRole()
                 ;
         });
     }

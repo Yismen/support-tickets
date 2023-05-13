@@ -3597,12 +3597,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/error-handler.git",
-                "reference": "baa172c0fb18de574dd0e5ff9e6bb0e6e5a405d4"
+                "reference": "99d2d814a6351461af350ead4d963bd67451236f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/error-handler/zipball/baa172c0fb18de574dd0e5ff9e6bb0e6e5a405d4",
-                "reference": "baa172c0fb18de574dd0e5ff9e6bb0e6e5a405d4",
+                "url": "https://api.github.com/repos/symfony/error-handler/zipball/99d2d814a6351461af350ead4d963bd67451236f",
+                "reference": "99d2d814a6351461af350ead4d963bd67451236f",
                 "shasum": ""
             },
             "require": {
@@ -3663,7 +3663,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-05T11:55:14+00:00"
+            "time": "2023-05-10T12:03:13+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -3895,12 +3895,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "4e2744b1328316249b6f5691e264606a30910d4f"
+                "reference": "f7d3ff5061c16d06dc667a72e7ee93fc2c8b5880"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/4e2744b1328316249b6f5691e264606a30910d4f",
-                "reference": "4e2744b1328316249b6f5691e264606a30910d4f",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/f7d3ff5061c16d06dc667a72e7ee93fc2c8b5880",
+                "reference": "f7d3ff5061c16d06dc667a72e7ee93fc2c8b5880",
                 "shasum": ""
             },
             "require": {
@@ -3964,7 +3964,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-28T15:57:00+00:00"
+            "time": "2023-05-12T08:49:48+00:00"
         },
         {
             "name": "symfony/http-kernel",
@@ -3972,12 +3972,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "9fec16b9c73e45f2563aab24a72888c77dc49feb"
+                "reference": "0b4680c7df4d5ba50986c9190081c696bd5eee47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/9fec16b9c73e45f2563aab24a72888c77dc49feb",
-                "reference": "9fec16b9c73e45f2563aab24a72888c77dc49feb",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/0b4680c7df4d5ba50986c9190081c696bd5eee47",
+                "reference": "0b4680c7df4d5ba50986c9190081c696bd5eee47",
                 "shasum": ""
             },
             "require": {
@@ -4076,7 +4076,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-07T12:04:08+00:00"
+            "time": "2023-05-13T09:33:46+00:00"
         },
         {
             "name": "symfony/mailer",
@@ -7037,12 +7037,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "71b53aef431cb3bb5af542b171907bed662b2e17"
+                "reference": "17d621b3aff84d0c8b62539e269e87d8d5baa76e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/71b53aef431cb3bb5af542b171907bed662b2e17",
-                "reference": "71b53aef431cb3bb5af542b171907bed662b2e17",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/17d621b3aff84d0c8b62539e269e87d8d5baa76e",
+                "reference": "17d621b3aff84d0c8b62539e269e87d8d5baa76e",
                 "shasum": ""
             },
             "require": {
@@ -7116,7 +7116,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.8"
             },
             "funding": [
                 {
@@ -7132,7 +7132,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-09T06:51:41+00:00"
+            "time": "2023-05-11T05:14:45+00:00"
         },
         {
             "name": "pimple/pimple",
