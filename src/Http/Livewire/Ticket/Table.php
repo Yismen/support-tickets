@@ -52,9 +52,6 @@ class Table extends AbstractDataTableComponent
                 'agent',
                 // 'replies'
             ])
-            // ->withCount([
-            //     'tickets',
-            // ])
             ;
     }
 
@@ -65,10 +62,10 @@ class Table extends AbstractDataTableComponent
                 ->format(fn ($value) => '#' . $value)
                 ->sortable()
                 ->searchable(),
-            Column::make('Reason', 'reason.name')
+            Column::make('Department', 'department.name')
                 ->sortable()
                 ->searchable(),
-            Column::make('Department', 'department.name')
+            Column::make('Reason', 'reason.name')
                 ->sortable()
                 ->searchable(),
             Column::make('Priority', 'reason.priority')
@@ -76,27 +73,15 @@ class Table extends AbstractDataTableComponent
                 ->html()
                 ->searchable()
                 ->sortable(),
-            Column::make('Description')
-                ->format(fn ($value, $row) => $row->short_description)
-                ->html()
-                ->sortable()
-                ->searchable(),
             Column::make('Status')
                 ->format(fn ($value, $row) => "<span class='{$row->status->class()}'> " . str($row->status->name)->headline() . '</span>')
                 ->html()
-                // Return from the model
-                // pending: not assigned
-                // in status: assigned, not completed
-                // dued: assigned, not completed, time passed
-                // completed in time: completed within the timeframe
-                // completed outside of the timeframe
                 ->sortable()
                 ->searchable(),
-            // Column::make('Tickets', 'id')
-            //     ->format(fn ($value, $row) => view('support::tables.badge')->with(['value' => $row->tickets_count])),
-            // Column::make('Agent', 'agent.name')
-            //     ->sortable()
-            //     ->searchable(),
+            Column::make('Assigned To', 'agent.name')
+                ->format(fn ($value, $row) => $row->agent?->name)
+                ->sortable()
+                ->searchable(),
             Column::make('Actions', 'id')
                 ->view('support::tables.actions'),
         ];
