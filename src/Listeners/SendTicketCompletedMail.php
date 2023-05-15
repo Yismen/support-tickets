@@ -41,7 +41,9 @@ class SendTicketCompletedMail
             ->push($this->ticket->agent)
             ->push($this->ticket->owner)
             ->filter(function ($user) {
-                return $user?->email;
+                return $user?->email
+                // || $user->id !== auth()->user()->id
+                ;
             });
     }
 }

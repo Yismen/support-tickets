@@ -27,7 +27,7 @@ class OldestTicketService
     public function weeksSinceOldestTicket(int $limit): int
     {
         $diff = now()->endOfWeek()->diffInWeeks(
-            $this->getOldestTicket()?->created_at->endOfWeek()
+            $this->getOldestTicket()?->created_at?->endOfWeek()
         );
 
         return $diff < $limit ? $diff : $limit;

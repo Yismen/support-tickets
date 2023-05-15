@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Dainsys\Support\Enums\TicketStatusesEnum;
 use Dainsys\Support\Enums\DepartmentRolesEnum;
 use Dainsys\Support\Events\TicketCreatedEvent;
+use Dainsys\Support\Events\TicketDeletedEvent;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Dainsys\Support\Events\TicketAssignedEvent;
 use Dainsys\Support\Events\TicketCompletedEvent;
@@ -76,6 +77,9 @@ class Ticket extends AbstractModel implements Auditable
 
                 $imageCreatorService->delete($model->image);
             }
+        });
+        static::deleted(function ($model) {
+            TicketDeletedEvent::dispatch($model);
         });
     }
 

@@ -33,7 +33,9 @@ class SendTicketCreatedMail
                 return $user->id !== $ticket->created_by;
             })
             ->filter(function ($user) {
-                return $user?->email;
+                return $user?->email
+                // || $user->id !== auth()->user()->id
+                ;
             });
     }
 }

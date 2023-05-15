@@ -5,17 +5,17 @@ namespace Dainsys\Support\Listeners;
 use Dainsys\Support\Models\Ticket;
 use Illuminate\Support\Facades\Mail;
 use Dainsys\Support\Models\DepartmentRole;
-use Dainsys\Support\Mail\TicketAssignedMail;
+use Dainsys\Support\Mail\TicketDeletedMail;
 use Illuminate\Database\Eloquent\Collection;
 use Dainsys\Support\Models\SupportSuperAdmin;
 use Dainsys\Support\Enums\DepartmentRolesEnum;
-use Dainsys\Support\Events\TicketAssignedEvent;
+use Dainsys\Support\Events\TicketDeletedEvent;
 
-class SendTicketAssignedMail
+class SendTicketDeletedMail
 {
     protected Ticket $ticket;
 
-    public function handle(TicketAssignedEvent $event)
+    public function handle(TicketDeletedEvent $event)
     {
         $this->ticket = $event->ticket;
 
@@ -23,7 +23,7 @@ class SendTicketAssignedMail
 
         if ($recipients->count()) {
             Mail::to($recipients)
-                ->send(new TicketAssignedMail($this->ticket));
+                ->send(new TicketDeletedMail($this->ticket));
         }
     }
 

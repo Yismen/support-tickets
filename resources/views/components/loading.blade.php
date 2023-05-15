@@ -9,7 +9,7 @@
         ]) }}>
         @foreach (range(1, 3) as $val)
         @php
-        $width = rand(65, 95);
+        $width = rand(15, 95);
         @endphp
         <div style="width: {{ $width }}%;" class="loading-field my-1" id="loading-{{ $val }}">c</div>
         @endforeach
