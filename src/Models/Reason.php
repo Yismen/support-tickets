@@ -24,4 +24,9 @@ class Reason extends AbstractModel
     {
         return ReasonFactory::new();
     }
+
+    public function getNameWithPriorityAttribute()
+    {
+        return"{$this->name} - {$this->priority->name}";
+    }
 }

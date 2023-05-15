@@ -41,6 +41,7 @@
                 @endif
             </div>
         </x-support::form>
+        @if ($editing)
         <div class="border-top d-flex justify-content-end p-2">
             @can('delete', $ticket)
             <div>
@@ -50,5 +51,6 @@
             </div>
             @endcan
         </div>
+        @endif
     </x-support::modal>
 </div>

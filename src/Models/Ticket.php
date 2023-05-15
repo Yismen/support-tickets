@@ -6,10 +6,12 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Dainsys\Support\Enums\TicketStatusesEnum;
+use Dainsys\Support\Enums\DepartmentRolesEnum;
 use Dainsys\Support\Events\TicketCreatedEvent;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Dainsys\Support\Events\TicketAssignedEvent;
@@ -40,10 +42,6 @@ class Ticket extends AbstractModel implements Auditable
         'status' => TicketStatusesEnum::class,
     ];
 
-    protected $dispatchesEvents = [
-        'created' => TicketCreatedEvent::class
-    ];
-
     protected static function newFactory(): TicketFactory
     {
         return TicketFactory::new();
@@ -58,13 +56,15 @@ class Ticket extends AbstractModel implements Auditable
                 // 'status' => TicketStatusesEnum::Pending,
                 'assigned_to' => null,
                 'assigned_at' => null,
-                // 'reference' => $model->getReference(),
+                'reference' => $model->getReference(),
             ]);
+
+            TicketCreatedEvent::dispatch($model);
         });
+
         static::saved(function ($model) {
             $model->updateQuietly([
                 'expected_at' => $model->getExpectedDate(),
-                'reference' => $model->getReference(),
             ]);
             $model->updateQuietly([
                 'status' => $model->getStatus(),
@@ -99,7 +99,7 @@ class Ticket extends AbstractModel implements Auditable
             'status' => $this->getStatus(),
         ]);
 
-        TicketAssignedEvent::dispatch($this, $agent);
+        TicketAssignedEvent::dispatch($this);
     }
 
     public function reOpen()
@@ -217,6 +217,23 @@ class Ticket extends AbstractModel implements Auditable
     public function getImagePathAttribute()
     {
         return Storage::url($this->image) . '?' . Str::random(5);
+    }
+
+    public function getPriorityAttribute()
+    {
+        return Cache::rememberForever('ticket_priority_' . $this->id, function () {
+            return $this->reason->priority->value;
+        });
+    }
+
+    public function getMailPriorityAttribute()
+    {
+        return $this->priority > 5 ? 5 : 5 - $this->priority;
+    }
+
+    public function admins()
+    {
+        return $this->department->roles()->where('role', DepartmentRolesEnum::Admin)->with('user')->get();
     }
 
     protected function getExpectedDate(): Carbon

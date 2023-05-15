@@ -142,7 +142,7 @@ class Form extends Component
     {
         $this->authorize('delete', $this->ticket);
 
-        $this->confirm('delete_ticket');
+        $this->confirm('delete_ticket', 'Deleting tickets is not reversable. Are you really sure you want to delete this ticket?');
     }
 
     public function removeImage()

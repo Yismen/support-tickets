@@ -10,14 +10,14 @@ class ReasonService implements ServicesContract
     public static function list()
     {
         return Cache::rememberForever('reasons_list', function () {
-            return Reason::orderBy('name')->pluck('name', 'id');
+            return Reason::orderBy('name')->get()->pluck('name_with_priority', 'id');
         });
     }
 
     public static function listWithDeaprtment()
     {
         return Cache::rememberForever('reasons_list_with_department', function () {
-            return Reason::orderBy('name')->whereHas('department')->pluck('name', 'id');
+            return Reason::orderBy('name')->whereHas('department')->get()->pluck('name_with_priority', 'id');
         });
     }
 
@@ -31,7 +31,7 @@ class ReasonService implements ServicesContract
     public static function listForDeaprtment($department)
     {
         return Cache::rememberForever("reasons_list_for_department_{$department}", function () use ($department) {
-            return Reason::orderBy('name')->where('department_id', $department)->pluck('name', 'id');
+            return Reason::orderBy('name')->where('department_id', $department)->get()->pluck('name_with_priority', 'id');
         });
     }
 }

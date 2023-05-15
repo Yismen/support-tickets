@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Event;
 use Dainsys\Support\Models\DepartmentRole;
 use Dainsys\Support\Events\ReplyCreatedEvent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Dainsys\Support\Database\Factories\DepartmentRoleFactory;
 
 class ReplyTest extends TestCase
 {
@@ -82,7 +81,7 @@ class ReplyTest extends TestCase
         $ticket = Ticket::factory()->create();
         $reply = Reply::factory()->create(['ticket_id' => $ticket->id]);
         $admin = DepartmentRole::factory()->admin()->create(['department_id' => $ticket->department_id]);
-        
+
         $this->assertEquals($admin->id, $reply->getNotifiables()[0]->id);
     }
 
@@ -97,6 +96,4 @@ class ReplyTest extends TestCase
 
         $this->assertEquals($agent->id, $reply->getNotifiables()[0]->id);
     }
-
-
 }

@@ -62,7 +62,7 @@ class Table extends AbstractDataTableComponent
     {
         return [
             Column::make('Reference')
-                ->format(fn ($value) => $value . '#')
+                ->format(fn ($value) => '#' . $value)
                 ->sortable()
                 ->searchable(),
             Column::make('Reason', 'reason.name')
