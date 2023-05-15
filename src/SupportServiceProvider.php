@@ -11,16 +11,10 @@ use Illuminate\Support\Facades\Event;
 use Dainsys\Support\Models\Department;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Console\Scheduling\Schedule;
-use Dainsys\Support\Events\ReplyCreatedEvent;
-use Dainsys\Support\Events\TicketCreatedEvent;
 use Dainsys\Support\Policies\DepartmentPolicy;
-use Dainsys\Support\Events\TicketAssignedEvent;
 use Dainsys\Support\Console\Commands\InstallCommand;
-use Dainsys\Support\Listeners\SendTicketCreatedMail;
 use Dainsys\Support\Console\Commands\CreateSuperUser;
-use Dainsys\Support\Listeners\SendTicketAssignedMail;
 use Dainsys\Support\Console\Commands\UpdateTicketStatus;
-use Dainsys\Support\Listeners\SendReplyCreatedNotification;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider;
 
 class SupportServiceProvider extends AuthServiceProvider
@@ -137,9 +131,10 @@ class SupportServiceProvider extends AuthServiceProvider
 
     protected function bootEvents()
     {
-        Event::listen(ReplyCreatedEvent::class, SendReplyCreatedNotification::class);
-        Event::listen(TicketCreatedEvent::class, SendTicketCreatedMail::class);
-        Event::listen(TicketAssignedEvent::class, SendTicketAssignedMail::class);
+        Event::listen(\Dainsys\Support\Events\ReplyCreatedEvent::class, \Dainsys\Support\Listeners\SendReplyCreatedNotification::class);
+        Event::listen(\Dainsys\Support\Events\TicketCreatedEvent::class, \Dainsys\Support\Listeners\SendTicketCreatedMail::class);
+        Event::listen(\Dainsys\Support\Events\TicketAssignedEvent::class, \Dainsys\Support\Listeners\SendTicketAssignedMail::class);
+        Event::listen(\Dainsys\Support\Events\TicketCompletedEvent::class, \Dainsys\Support\Listeners\SendTicketCompletedMail::class);
     }
 
     protected function bootLivewireComponents()

@@ -26,10 +26,14 @@ class SendTicketCreatedMail
         $super_admins = SupportSuperAdmin::get()->map->user;
         $department_members = \Dainsys\Support\Models\DepartmentRole::query()->with('user')->where('department_id', $ticket->department_id)->get()->map->user;
 
-        return $super_admins
+        return (new Collection())
+            ->merge($super_admins)
             ->merge($department_members)
             ->filter(function ($user) use ($ticket) {
                 return $user->id !== $ticket->created_by;
+            })
+            ->filter(function ($user) {
+                return $user?->email;
             });
     }
 }

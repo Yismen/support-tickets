@@ -5,17 +5,17 @@ namespace Dainsys\Support\Listeners;
 use Dainsys\Support\Models\Ticket;
 use Illuminate\Support\Facades\Mail;
 use Dainsys\Support\Models\DepartmentRole;
-use Dainsys\Support\Mail\TicketAssignedMail;
 use Illuminate\Database\Eloquent\Collection;
+use Dainsys\Support\Mail\TicketCompletedMail;
 use Dainsys\Support\Models\SupportSuperAdmin;
 use Dainsys\Support\Enums\DepartmentRolesEnum;
-use Dainsys\Support\Events\TicketAssignedEvent;
+use Dainsys\Support\Events\TicketCompletedEvent;
 
-class SendTicketAssignedMail
+class SendTicketCompletedMail
 {
     protected Ticket $ticket;
 
-    public function handle(TicketAssignedEvent $event)
+    public function handle(TicketCompletedEvent $event)
     {
         $this->ticket = $event->ticket;
 
@@ -23,7 +23,7 @@ class SendTicketAssignedMail
 
         if ($recipients->count()) {
             Mail::to($recipients)
-                ->send(new TicketAssignedMail($this->ticket));
+                ->send(new TicketCompletedMail($this->ticket));
         }
     }
 
@@ -39,6 +39,9 @@ class SendTicketAssignedMail
             ->merge($super_admins)
             ->merge($department_admins)
             ->push($this->ticket->agent)
-            ->push($this->ticket->owner);
+            ->push($this->ticket->owner)
+            ->filter(function ($user) {
+                return $user?->email;
+            });
     }
 }
