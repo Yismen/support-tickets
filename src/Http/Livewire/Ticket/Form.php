@@ -178,7 +178,7 @@ class Form extends Component
                 Storage::delete([$this->ticket->image]);
             }
         }
-        $this->reset(['image']);
+        // $this->reset(['image']);
     }
 
     protected function deleteTicketConfirmed()

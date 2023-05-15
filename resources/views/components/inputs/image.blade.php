@@ -36,7 +36,16 @@
         }
         @endphp
         <div class="d-flex flex-column ml-2">
-            <span class="text-wrap text-bold text-cyan">New Preview</span>
+            <div class="d-flex justify-content-between align-content-center align-items-start">
+                <span class="text-wrap text-bold text-cyan ">
+                    New Preview
+                </span>
+                <span class="">
+                    <a href="#" class="btn btn-secondary btn-xs " title="Cancel"
+                        wire:click.prevent='$set("{{ $field }}", "")'> X
+                    </a>
+                </span>
+            </div>
             <img src="{{ $url }}" style="max-width: 100px; max-height: 118px;">
         </div>
         @endif

@@ -26,19 +26,25 @@
                     </div>
                 </div>
 
-                <x-support::inputs.text-area field="ticket.description" rows="10" :editor=true>
-                    {{ str(__('support::messages.description'))->headline() }}:
-                </x-support::inputs.text-area>
-
-                <x-support::inputs.image :image="$image" field="image" current-image="{{ $ticket->image }}">
-                    Ticket Image
-                </x-support::inputs.image>
-
-                @if ($image || $ticket->image)
-                <div class="d-flex justify-content-end">
-                    <a class="btn btn-danger btn-xs" wire:click.prevent='removeImage'>Remove Image</a>
+                <div class="row">
+                    <div class="col-sm-7">
+                        <x-support::inputs.text-area field="ticket.description" rows="10" :editor=true>
+                            {{ str(__('support::messages.description'))->headline() }}:
+                        </x-support::inputs.text-area>
+                    </div>
+                    <div class="col-sm-5">
+                        <x-support::inputs.image :image="$image" field="image" current-image="{{ $ticket->image }}">
+                            Ticket Image
+                        </x-support::inputs.image>
+                        @if ($ticket->image)
+                        <div class="d-flex">
+                            <a class="btn btn-danger btn-xs" wire:click.prevent='removeImage'>Remove Image</a>
+                        </div>
+                        @endif
+                    </div>
                 </div>
-                @endif
+
+
             </div>
         </x-support::form>
         @if ($editing)
