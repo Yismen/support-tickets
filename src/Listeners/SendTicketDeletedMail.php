@@ -35,15 +35,19 @@ class SendTicketDeletedMail
             ->where('role', DepartmentRolesEnum::Admin)
             ->where('department_id', $this->ticket->department_id)->get()->map->user;
 
-        return (new Collection())
+        $recipients = (new Collection())
             ->merge($super_admins)
             ->merge($department_admins)
             ->push($this->ticket->agent)
             ->push($this->ticket->owner)
             ->filter(function ($user) {
-                return $user?->email
-                // || $user->id !== auth()->user()->id
-                ;
+                return $user?->email;
+            });
+
+        return config('support.email.include_current_user', false)
+            ? $recipients
+            : $recipients->filter(function ($user) {
+                return $user->id !== auth()->user()?->id;
             });
     }
 }
