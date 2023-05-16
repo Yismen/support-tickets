@@ -15,9 +15,12 @@ class TicketCompletedMail extends Mailable implements ShouldQueue
 
     public Ticket $ticket;
 
-    public function __construct(Ticket $ticket)
+    public $comment;
+
+    public function __construct(Ticket $ticket, string $comment = '')
     {
         $this->ticket = $ticket;
+        $this->comment = $comment;
     }
 
     public function build()

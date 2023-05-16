@@ -14,16 +14,18 @@ use Dainsys\Support\Events\TicketCompletedEvent;
 class SendTicketCompletedMail
 {
     protected Ticket $ticket;
+    protected string $comment;
 
     public function handle(TicketCompletedEvent $event)
     {
         $this->ticket = $event->ticket;
+        $this->comment = $event->comment;
 
         $recipients = $this->recipients();
 
         if ($recipients->count()) {
             Mail::to($recipients)
-                ->send(new TicketCompletedMail($this->ticket));
+                ->send(new TicketCompletedMail($this->ticket, $this->comment));
         }
     }
 

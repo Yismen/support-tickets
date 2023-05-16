@@ -4,6 +4,10 @@
 Ticket #{{ $ticket->reference }}, created by {{ $ticket->owner->name }} {{ $ticket->created_at->diffForHumans() }}, has
 been {{ $ticket->status->name }} by {{ $user?->name }}!.
 
+@if (strlen($comment) > 0)
+> Comment: *"{{ $comment }}"*
+@endif
+
 **Title: {{ $ticket->reason->name }}**
 
 *Content:*

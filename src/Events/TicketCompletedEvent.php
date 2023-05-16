@@ -14,9 +14,11 @@ class TicketCompletedEvent
     use SerializesModels;
 
     public Ticket $ticket;
+    public string $comment;
 
-    public function __construct(Ticket $ticket)
+    public function __construct(Ticket $ticket, string $comment = '')
     {
         $this->ticket = $ticket;
+        $this->comment = $comment;
     }
 }

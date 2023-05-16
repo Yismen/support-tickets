@@ -117,14 +117,14 @@ class Ticket extends AbstractModel implements Auditable
         TicketReopenedEvent::dispatch($this);
     }
 
-    public function complete()
+    public function complete(string $comment = '')
     {
         $this->update([
             'status' => $this->getStatus(),
             'completed_at' => now(),
         ]);
 
-        TicketCompletedEvent::dispatch($this);
+        TicketCompletedEvent::dispatch($this, $comment);
     }
 
     public function close(string $comment)
@@ -134,7 +134,7 @@ class Ticket extends AbstractModel implements Auditable
             'content' => $comment
         ]);
 
-        $this->complete();
+        $this->complete($comment);
     }
 
     public function isAssigned(): bool

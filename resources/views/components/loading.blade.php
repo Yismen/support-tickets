@@ -1,6 +1,6 @@
 @props([
 'target' => null,
-'removeWhileLoading' => false,
+'removeWhileLoading' => true,
 'loadingText'
 ])
 <div class="w-100">
