@@ -16,6 +16,7 @@ use Dainsys\Support\Events\TicketCreatedEvent;
 use Dainsys\Support\Events\TicketDeletedEvent;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Dainsys\Support\Events\TicketAssignedEvent;
+use Dainsys\Support\Events\TicketReopenedEvent;
 use Dainsys\Support\Events\TicketCompletedEvent;
 use Dainsys\Support\Services\ImageCreatorService;
 use Dainsys\Support\Database\Factories\TicketFactory;
@@ -113,7 +114,7 @@ class Ticket extends AbstractModel implements Auditable
             'completed_at' => null,
         ]);
 
-        // TicketCompletedEvent::dispatch($this);
+        TicketReopenedEvent::dispatch($this);
     }
 
     public function complete()
