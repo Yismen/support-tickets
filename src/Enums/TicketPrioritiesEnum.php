@@ -2,31 +2,33 @@
 
 namespace Dainsys\Support\Enums;
 
-use Carbon\Carbon;
+use Dainsys\Support\Enums\Traits\AsArray;
 
-enum TicketPrioritiesEnum: int
+enum TicketPrioritiesEnum: int implements EnumContract
 {
-    case Normal = 0;
-    case Medium = 1;
-    case High = 2;
+    use AsArray;
+    case Normal = 1;
+    case Medium = 2;
+    case High = 3;
     case Emergency = 4;
 
-    public function expectedAt(): Carbon
+    public function class(): string
     {
         return match ($this) {
-            TicketPrioritiesEnum::Normal => self::ensureNotWeekend(now()->addDays(2)),
-            TicketPrioritiesEnum::Medium => self::ensureNotWeekend(now()->addDay()),
-            TicketPrioritiesEnum::High => self::ensureNotWeekend(now()->hours(4)),
-            TicketPrioritiesEnum::Emergency => self::ensureNotWeekend(now()->addMinutes(30)),
+            self::Normal => 'text-black',
+            self::Medium => 'badge badge-info',
+            self::High => 'badge badge-warning',
+            self::Emergency => 'badge badge-danger',
         };
     }
 
-    protected static function ensureNotWeekend(Carbon $date): Carbon
+    public function period()
     {
-        while ($date->isWeekend()) {
-            $date->addDay();
-        }
-
-        return $date;
+        return match ($this) {
+            self::Normal => '48 ' . __('support::messages.hours'),
+            self::Medium => '24 ' . __('support::messages.hours'),
+            self::High => '4 ' . __('support::messages.hours'),
+            self::Emergency => '30 ' . __('support::messages.minutes') ,
+        };
     }
 }

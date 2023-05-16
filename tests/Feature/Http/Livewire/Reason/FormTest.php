@@ -36,9 +36,9 @@ class FormTest extends TestCase
     }
 
     /** @test */
-    public function reason_form_component_grants_access_to_super_admin_to_create_reason()
+    public function reason_form_component_grants_access_to_support_super_admin_to_create_reason()
     {
-        $this->withSuperUser();
+        $this->actingAs($this->supportSuperAdmin());
         $reason = Reason::factory()->create();
 
         $component = Livewire::test(Form::class);
@@ -48,9 +48,9 @@ class FormTest extends TestCase
     }
 
     /** @test */
-    public function reason_form_component_grants_access_to_super_admin_to_update_reason()
+    public function reason_form_component_grants_access_to_support_super_admin_to_update_reason()
     {
-        $this->withSuperUser();
+        $this->actingAs($this->supportSuperAdmin());
         $reason = Reason::factory()->create();
 
         $component = Livewire::test(Form::class);
@@ -62,7 +62,7 @@ class FormTest extends TestCase
     /** @test */
     public function reason_form_component_grants_access_to_authorized_users_to_create_reason()
     {
-        $this->withAuthorizedUser('create reasons');
+        $this->actingAs($this->supportSuperAdmin());
         $reason = Reason::factory()->create();
 
         $component = Livewire::test(Form::class);
@@ -74,7 +74,7 @@ class FormTest extends TestCase
     /** @test */
     public function reason_form_component_grants_access_to_authorized_users_to_update_reason()
     {
-        $this->withAuthorizedUser('update reasons');
+        $this->actingAs($this->supportSuperAdmin());
         $reason = Reason::factory()->create();
 
         $component = Livewire::test(Form::class);
@@ -86,7 +86,7 @@ class FormTest extends TestCase
     /** @test */
     public function reason_form_component_responds_to_create_reason_event()
     {
-        $this->withAuthorizedUser('create reasons');
+        $this->actingAs($this->supportSuperAdmin());
         $reason = new Reason();
 
         $component = Livewire::test(Form::class);
@@ -101,7 +101,7 @@ class FormTest extends TestCase
     /** @test */
     public function reason_form_component_responds_to_update_reason_event()
     {
-        $this->withAuthorizedUser('update reasons');
+        $this->actingAs($this->supportSuperAdmin());
         $reason = Reason::factory()->create();
 
         $component = Livewire::test(Form::class);
@@ -116,19 +116,20 @@ class FormTest extends TestCase
     /** @test */
     public function reason_form_component_validates_required_fields_to_create_reasons()
     {
-        $this->withAuthorizedUser('create reasons');
+        $this->actingAs($this->supportSuperAdmin());
         $data = ['name' => '', 'department_id' => Department::factory()->create()];
         $component = Livewire::test(Form::class)
             ->set('reason', new Reason($data));
 
         $component->call('store');
+
         $component->assertHasErrors(['reason.name' => 'required']);
     }
 
     /** @test */
     public function reason_form_component_validates_required_fields_to_update_reasons()
     {
-        $this->withAuthorizedUser('update reasons');
+        $this->actingAs($this->supportSuperAdmin());
         $component = Livewire::test(Form::class)
             ->set('reason', Reason::factory()->create())
             ->set('reason.name', '');
@@ -141,7 +142,7 @@ class FormTest extends TestCase
     public function reason_form_component_validates_unique_fields_to_create_reasons()
     {
         $reason = Reason::factory()->create();
-        $this->withAuthorizedUser('create reasons');
+        $this->actingAs($this->supportSuperAdmin());
         $data = ['name' => $reason->name];
         $component = Livewire::test(Form::class)
             ->set('reason', new Reason($data));
@@ -155,7 +156,7 @@ class FormTest extends TestCase
     {
         $reason_1 = Reason::factory()->create();
         $reason_2 = Reason::factory()->create();
-        $this->withAuthorizedUser('update reasons');
+        $this->actingAs($this->supportSuperAdmin());
         $component = Livewire::test(Form::class);
 
         $component->set('reason', $reason_1);
@@ -172,11 +173,12 @@ class FormTest extends TestCase
     /** @test */
     public function reason_form_component_creates_reason()
     {
-        $this->withAuthorizedUser('create reasons');
+        $this->actingAs($this->supportSuperAdmin());
         $reason = Reason::factory()->make();
         $component = Livewire::test(Form::class);
         $component->emit('createReason', new Reason());
         $component->set('reason.name', $reason->name);
+        $component->set('reason.priority', $reason->priority);
         $component->set('reason.department_id', $reason->department_id);
 
         $component->call('store');
@@ -197,7 +199,7 @@ class FormTest extends TestCase
     /** @test */
     public function reason_form_component_updates_reason()
     {
-        $this->withAuthorizedUser('update reasons');
+        $this->actingAs($this->supportSuperAdmin());
         $reason = Reason::factory()->create();
 
         $component = Livewire::test(Form::class);

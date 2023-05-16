@@ -22,7 +22,6 @@ class Detail extends Component
     public function render()
     {
         // $this->authorize('view', $this->department);
-        // dd($this->department);
 
         return view('support::livewire.department.detail')
         ->layout('support::layouts.app');

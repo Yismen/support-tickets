@@ -2,6 +2,7 @@
 'field',
 'required' => true,
 'options',
+'placeholder' => true,
 ])
 <div class="mb-3">
     <x-support::inputs.label :field="$field" :required="$required" :label="$slot" />
@@ -12,7 +13,9 @@
         ])->merge([
         ]) }}
         >
+        @if ($placeholder)
         <option></option>
+        @endif
         @foreach ($options as $key => $value)
         <option value="{{ $key }}">{{ $value }}</option>
         @endforeach

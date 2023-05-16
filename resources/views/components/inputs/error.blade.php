@@ -1,10 +1,12 @@
 @props([
 'field',
-'textClass' => 'invalid-feedback'
+'textClass' => 'text-danger text-sm w-100'
 ])
 
 @error($field)
-<div class="{{ $textClass }}">
+<div {{ $attributes->merge([
+    'class' => "{$textClass}"
+    ]) }}>
     {{ $message }}
 </div>
 @enderror

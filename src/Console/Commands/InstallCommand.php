@@ -39,6 +39,7 @@ class InstallCommand extends Command
     {
         $this->call('vendor:publish', ['--tag' => 'support:assets', '--force' => true]);
         $this->call('vendor:publish', ['--tag' => 'support:views']);
+        $this->call('vendor:publish', ['--tag' => 'livewire-charts:public']);
         $this->call('migrate');
 
         if ($this->confirm('Would you like to scafold the auth ui?')) {

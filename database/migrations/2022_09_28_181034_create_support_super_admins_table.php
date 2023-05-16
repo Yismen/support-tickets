@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
+use Dainsys\Support\Models\SupportSuperAdmin;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateSupportSuperAdminsTable extends Migration
@@ -14,9 +15,9 @@ class CreateSupportSuperAdminsTable extends Migration
      */
     public function up()
     {
-        Schema::create(supportTableName('super_admins'), function (Blueprint $table) {
+        Schema::create(resolve(SupportSuperAdmin::class)->getTable(), function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(User::class)->constrained(resolve(User::class)->getTable());
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateSupportSuperAdminsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(supportTableName('super_admins'));
+        Schema::dropIfExists(resolve(SupportSuperAdmin::class)->getTable());
     }
 }

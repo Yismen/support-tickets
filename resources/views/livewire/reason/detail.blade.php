@@ -13,6 +13,10 @@
                     <td class="text-left">{{ $reason->department->name ?? '' }}</td>
                 </tr>
                 <tr>
+                    <th class="text-right">{{ str(__('support::messages.priority'))->headline() }}:</th>
+                    <td class="text-left">{{ $reason->priority ?? '' }}</td>
+                </tr>
+                <tr>
                     <th class="text-right">{{ str(__('support::messages.description'))->headline() }}:</th>
                     <td class="text-left">{{ $reason->description ?? '' }}</td>
                 </tr>

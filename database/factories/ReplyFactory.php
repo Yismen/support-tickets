@@ -24,8 +24,8 @@ class ReplyFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => UserFactory::new()->create(),
-            'ticket_id' => Ticket::factory()->create(),
+            'user_id' => UserFactory::new(),
+            'ticket_id' => Ticket::factory(),
             'content' => $this->faker->paragraph()
         ];
     }

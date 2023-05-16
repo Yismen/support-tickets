@@ -18,6 +18,11 @@
                     {{ str(__('support::messages.department'))->headline() }}:
                 </x-support::inputs.select>
 
+                <x-support::inputs.radio-group field='reason.priority' :options='$priorities' :placeholder=false
+                    class="form-check-inline">
+                    {{ str(__('support::messages.priority'))->headline() }}:
+                </x-support::inputs.radio-group>
+
                 <x-support::inputs.text-area field="reason.description" :required="false">
                     {{ str(__('support::messages.description'))->headline() }}:
                 </x-support::inputs.text-area>

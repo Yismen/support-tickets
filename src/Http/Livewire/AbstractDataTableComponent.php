@@ -2,17 +2,23 @@
 
 namespace Dainsys\Support\Http\Livewire;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 
 abstract class AbstractDataTableComponent extends DataTableComponent
 {
+    protected $create_button = true;
+    protected $show_button = true;
+    protected $edit_button = true;
+
     public function configure(): void
     {
-        $records = $this->builder()->getModel()->count();
+        $records = $this->builder()->count();
 
         $this->withDefaultSorting();
+        $this->setFilterLayoutSlideDown();
+
+        $this->setRefreshTime(config('support.polling_miliseconds'));
 
         $this->setPrimaryKey('id');
         $this->setColumnSelectDisabled();
@@ -24,7 +30,6 @@ abstract class AbstractDataTableComponent extends DataTableComponent
         $this->setConfigurableAreas([
             'before-toolbar' => [
                 'support::tables.header', [
-                    'module' => $this->module,
                     'count' => $records,
                 ],
             ],
@@ -71,10 +76,23 @@ abstract class AbstractDataTableComponent extends DataTableComponent
         $this->setDefaultSort('name', 'asc');
     }
 
-//     public function getTitle(): string
-//     {
-//         dd(str(get_class($this))->beforeLast('\\'));
+    public function disableCreateButton()
+    {
+        $this->create_button = false;
+    }
 
-//         return Str::of(get_class($this))->beforeLast('\\')->afterLast('\\')->plural()->headline()->__toString() . ' ' . Str::of(get_class($this))->afterLast('\\')->headline()->__toString();
-//     }
+    public function disableEditButton()
+    {
+        $this->edit_button = false;
+    }
+
+    public function disableShowButton()
+    {
+        $this->show_button = false;
+    }
+
+    protected function tableTitle(): string
+    {
+        return str($this->module)->headline()->plural() . ' ' . __('support::messages.table');
+    }
 }

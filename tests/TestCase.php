@@ -2,7 +2,10 @@
 
 namespace Dainsys\Support\Tests;
 
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
+use Dainsys\Support\Models\Department;
+use Dainsys\Support\Enums\DepartmentRolesEnum;
 use Orchestra\Testbench\Factories\UserFactory;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
@@ -31,7 +34,7 @@ class TestCase extends OrchestraTestCase
             \Flasher\Laravel\FlasherServiceProvider::class,
             \OwenIt\Auditing\AuditingServiceProvider::class,
             \Rappasoft\LaravelLivewireTables\LaravelLivewireTablesServiceProvider::class,
-
+            \Asantibanez\LivewireCharts\LivewireChartsServiceProvider::class,
             \Dainsys\Support\SupportServiceProvider::class,
         ];
     }
@@ -46,36 +49,34 @@ class TestCase extends OrchestraTestCase
         $this->loadLaravelMigrations();
     }
 
-    protected function withAuthenticatedUser()
+    protected function supportSuperAdmin(): User
     {
-        $user = UserFactory::new()->create();
+        $user = $this->user();
+        $user->supportSuperAdmin()->create();
 
-        $this->actingAs($user);
+        return $user;
     }
 
-    protected function withAuthorizedUser(string $permission)
+    protected function departmentAdmin(Department $department): User
     {
-        $user = UserFactory::new()->create();
-        $super_user = $user->superAdmin()->create();
+        $user = $this->user();
 
-        $this->actingAs($user);
+        $user->departmentRole()->create(['department_id' => $department->id, 'role' => DepartmentRolesEnum::Admin->value]);
+
+        return $user;
     }
 
-    protected function withSuperUser()
+    protected function departmentAgent(Department $department): User
     {
-        $user = UserFactory::new()->create();
-        $super_user = $user->superAdmin()->create();
+        $user = $this->user();
 
-        $this->actingAs($user);
+        $user->departmentRole()->create(['department_id' => $department->id, 'role' => DepartmentRolesEnum::Agent->value]);
+
+        return $user;
     }
 
-    public function withoutAuthorizedUser()
+    protected function user(array $attributes = []): User
     {
-        $user = UserFactory::new()->create([
-            'email' => 'some@random.com',
-            'name' => 'Some Random'
-        ]);
-
-        $this->actingAs($user);
+        return UserFactory::new()->create($attributes);
     }
 }

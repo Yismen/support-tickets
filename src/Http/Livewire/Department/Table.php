@@ -31,6 +31,9 @@ class Table extends AbstractDataTableComponent
             Column::make('Name')
                 ->sortable()
                 ->searchable(),
+            Column::make('Ticket Prefix')
+                ->sortable()
+                ->searchable(),
             Column::make('Description')
                 ->sortable()
                 ->searchable(),

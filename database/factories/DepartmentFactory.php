@@ -2,6 +2,7 @@
 
 namespace Dainsys\Support\Database\Factories;
 
+use Illuminate\Support\Str;
 use Dainsys\Support\Models\Department;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,6 +24,7 @@ class DepartmentFactory extends Factory
     {
         return [
             'name' => $this->faker->sentence(2),
+            'ticket_prefix' => str(Str::random(5))->upper() . '-',
             'description' => $this->faker->paragraph(),
         ];
     }

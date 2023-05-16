@@ -7,7 +7,6 @@ use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Models\Department;
 use Dainsys\Support\Enums\TicketStatusesEnum;
 use Orchestra\Testbench\Factories\UserFactory;
-use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TicketFactory extends Factory
@@ -27,15 +26,16 @@ class TicketFactory extends Factory
     public function definition()
     {
         return [
-            'created_by' => UserFactory::new()->create(),
+            'created_by' => UserFactory::new(),
             'department_id' => Department::factory(),
             'reason_id' => Reason::factory(),
             'description' => $this->faker->sentence(4),
-            // 'assigned_to' => UserFactory::new()->create(),
+            // 'assigned_to' => UserFactory::new(),
             // 'assigned_at' => now(),
-            'expected_at' => now(),
-            'priority' => TicketPrioritiesEnum::Normal->value,
+            // 'expected_at' => now(),
             // 'completed_at' => now(),
+            // 'reference' => 'watever',
+            'status' => TicketStatusesEnum::Pending->value,
         ];
     }
 
@@ -45,6 +45,16 @@ class TicketFactory extends Factory
             return [
                 'assigned_to' => null,
                 'assigned_at' => null,
+            ];
+        });
+    }
+
+    public function assigned()
+    {
+        return $this->state(function (array $aatributes) {
+            return [
+                'assigned_to' => UserFactory::new()->create(),
+                'assigned_at' => now(),
             ];
         });
     }
@@ -68,29 +78,29 @@ class TicketFactory extends Factory
         });
     }
 
-    public function medium()
+    public function incompleted()
     {
         return $this->state(function (array $aatributes) {
             return [
-                'priority' => TicketPrioritiesEnum::Medium->value,
+                'completed_at' => null,
             ];
         });
     }
 
-    public function high()
+    public function compliant()
     {
         return $this->state(function (array $aatributes) {
             return [
-                'priority' => TicketPrioritiesEnum::High->value,
+                'completed_at' => now(),
             ];
         });
     }
 
-    public function emergency()
+    public function noncompliant()
     {
         return $this->state(function (array $aatributes) {
             return [
-                'priority' => TicketPrioritiesEnum::Emergency->value,
+                'completed_at' => now()->addDays(50),
             ];
         });
     }

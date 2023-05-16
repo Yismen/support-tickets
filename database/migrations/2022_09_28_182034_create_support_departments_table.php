@@ -1,5 +1,6 @@
 <?php
 
+use Dainsys\Support\Models\Department;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -13,9 +14,10 @@ class CreateSupportDepartmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create(supportTableName('departments'), function (Blueprint $table) {
+        Schema::create(resolve(Department::class)->getTable(), function (Blueprint $table) {
             $table->id();
             $table->string('name', 500)->unique();
+            $table->string('ticket_prefix', 8)->nullable()->index();
             $table->text('description')->nullable();
             $table->timestamps();
         });
@@ -28,6 +30,6 @@ class CreateSupportDepartmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(supportTableName('departments'));
+        Schema::dropIfExists(resolve(Department::class)->getTable());
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Dainsys\Support\Models\Traits;
 
-use Illuminate\Foundation\Auth\User;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait BelongsToUser

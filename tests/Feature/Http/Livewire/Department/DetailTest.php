@@ -24,9 +24,9 @@ class DetailTest extends TestCase
     }
 
     /** @test */
-    public function department_detail_component_grants_access_to_super_admin()
+    public function department_detail_component_grants_access_to_support_super_admin()
     {
-        $this->withSuperUser();
+        $this->actingAs($this->supportSuperAdmin());
         $department = Department::factory()->create();
 
         $component = Livewire::test(Detail::class);
@@ -38,7 +38,7 @@ class DetailTest extends TestCase
     /** @test */
     public function department_detail_component_grants_access_to_authorized_users()
     {
-        $this->withAuthorizedUser('view departments');
+        $this->actingAs($this->supportSuperAdmin());
         $department = Department::factory()->create();
 
         $component = Livewire::test(Detail::class);
@@ -50,7 +50,7 @@ class DetailTest extends TestCase
     /** @test */
     public function department_detail_component_responds_to_wants_show_department_event()
     {
-        $this->withAuthorizedUser('view departments');
+        $this->actingAs($this->supportSuperAdmin());
         $department = Department::factory()->create();
 
         $component = Livewire::test(Detail::class);

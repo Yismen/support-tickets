@@ -37,12 +37,7 @@ class CreateSuperUser extends Command
      */
     public function handle()
     {
-        $confirmation = $this->confirm('This command will convert user into a SUPER USER, capable of handling the whole application. Are you sure?');
-        if ($confirmation === false) {
-            return self::FAILURE;
-        }
-
-        $email = $this->ask('Please provide the email of the user to be made super admin!');
+        $email = $this->ask('Please provide the email of the user to be made support super admin!');
         $user = \App\Models\User::where('email', $email)->first();
 
         if (!$user) {
@@ -51,11 +46,11 @@ class CreateSuperUser extends Command
             return self::FAILURE;
         }
 
-        if (!$user->isSuperAdmin()) {
-            $user->superAdmin()->create();
+        if (!$user->isSupportSuperAdmin()) {
+            $user->supportSuperAdmin()->create();
         }
 
-        $this->info("User {$user->name} is now a Super Admin user!");
+        $this->info("User {$user->name} is now a Support Super Admin user!");
 
         return self::SUCCESS;
     }

@@ -9,6 +9,10 @@
                     <td class="text-left">{{ $department->name ?? '' }}</td>
                 </tr>
                 <tr>
+                    <th class="text-right">{{ str(__('support::messages.ticket_prefix'))->headline() }}:</th>
+                    <td class="text-left">{{ $department->ticket_prefix ?? '' }}</td>
+                </tr>
+                <tr>
                     <th class="text-right">{{ str(__('support::messages.description'))->headline() }}:</th>
                     <td class="text-left">{{ $department->description ?? '' }}</td>
                 </tr>

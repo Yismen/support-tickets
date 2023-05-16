@@ -2,38 +2,64 @@
 
 namespace Dainsys\Support\Traits;
 
+use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Models\Department;
-use Dainsys\Support\Models\SuperAdmin;
+use Illuminate\Notifications\Notifiable;
 use Dainsys\Support\Models\DepartmentRole;
+use Dainsys\Support\Models\SupportSuperAdmin;
 use Dainsys\Support\Enums\DepartmentRolesEnum;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasSupportTickets
 {
-    public function superAdmin(): HasOne
+    use Notifiable;
+
+    public function supportSuperAdmin(): HasOne
     {
-        return $this->hasOne(SuperAdmin::class);
+        return $this->hasOne(SupportSuperAdmin::class);
     }
 
-    public function isSuperAdmin(): bool
+    public function isSupportSuperAdmin(): bool
     {
-        return $this->superAdmin()->exists();
+        return \Illuminate\Support\Facades\Cache::remember('user_is_superadmin_' . $this->id, now()->addMinutes(30), function () {
+            return $this->supportSuperAdmin()->exists();
+        });
     }
 
     public function isDepartmentAdmin(Department $department): bool
     {
-        return $this->departmentRole->role == DepartmentRolesEnum::Admin
-            && $this->departmentRole->department_id === $department->id;
+        return $this->hasDepartmentRole($department, DepartmentRolesEnum::Admin);
     }
 
     public function isDepartmentAgent(Department $department): bool
     {
-        return $this->departmentRole->role == DepartmentRolesEnum::Agent
-            && $this->departmentRole->department_id === $department->id;
+        return $this->hasDepartmentRole($department, DepartmentRolesEnum::Agent);
     }
 
-    protected function departmentRole(): HasOne
+    public function hasDepartmentRole(Department $department, DepartmentRolesEnum $role): bool
+    {
+        return $this->departmentRole?->role === $role && $department->id === $this->departmentRole->department_id;
+    }
+
+    public function hasAnyDepartmentRole(): bool
+    {
+        return $this->departmentRole()->exists();
+    }
+
+    public function departmentRole(): HasOne
     {
         return $this->hasOne(DepartmentRole::class);
+    }
+
+    public function department(): BelongsTo
+    {
+        return $this->departmentRole?->department();
+    }
+
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(Ticket::class, 'created_by');
     }
 }
