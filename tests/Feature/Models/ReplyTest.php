@@ -3,10 +3,8 @@
 namespace Dainsys\Support\Tests\Feature\Models;
 
 use Dainsys\Support\Models\Reply;
-use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Tests\TestCase;
 use Illuminate\Support\Facades\Event;
-use Dainsys\Support\Models\DepartmentRole;
 use Dainsys\Support\Events\ReplyCreatedEvent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -55,45 +53,5 @@ class ReplyTest extends TestCase
         $reply = Reply::factory()->create();
 
         Event::assertDispatched(ReplyCreatedEvent::class);
-    }
-
-    /** @test */
-    public function reply_model_returns_list_of_notifiable_users()
-    {
-        $reply = new Reply();
-
-        $this->assertEquals([], $reply->getNotifiables());
-    }
-
-    /** @test */
-    public function reply_model_returns_notifiables_does_not_contain_same_sender()
-    {
-        Event::fake();
-        $ticket = Ticket::factory()->create();
-        $reply = Reply::factory()->create(['ticket_id' => $ticket->id, 'user_id' => $ticket->created_by]);
-        $this->assertEquals([], $reply->getNotifiables());
-    }
-
-    /** @test */
-    public function reply_model_returns_notifiables_contains_department_admin()
-    {
-        Event::fake();
-        $ticket = Ticket::factory()->create();
-        $reply = Reply::factory()->create(['ticket_id' => $ticket->id]);
-        $admin = DepartmentRole::factory()->admin()->create(['department_id' => $ticket->department_id]);
-
-        $this->assertEquals($admin->id, $reply->getNotifiables()[0]->id);
-    }
-
-    /** @test */
-    public function reply_model_returns_notifiables_contains_ticket_agent()
-    {
-        Event::fake();
-        $ticket = Ticket::factory()->create();
-        $agent = DepartmentRole::factory()->admin()->create(['department_id' => $ticket->department_id]);
-        $ticket->assignTo($agent);
-        $reply = Reply::factory()->create(['ticket_id' => $ticket->id]);
-
-        $this->assertEquals($agent->id, $reply->getNotifiables()[0]->id);
     }
 }

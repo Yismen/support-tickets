@@ -3,6 +3,7 @@
 namespace Dainsys\Support\Services;
 
 use Carbon\Carbon;
+use Dainsys\Support\Models\Rating;
 use Dainsys\Support\Models\Ticket;
 use Illuminate\Support\Facades\Cache;
 use Dainsys\Support\Models\Department;
@@ -64,6 +65,33 @@ class TicketService
 
                 return $total
                     ? $completed / $total
+                    : 0;
+            }
+        );
+    }
+
+    public static function satisfactionRate(Department|null|int $department = null)
+    {
+        return Cache::remember(
+            self::cacheKey($department, __FUNCTION__),
+            self::cacheTtl(),
+            function () use ($department) {
+                $rating = Rating::query()
+                    ->withWhereHas('ticket', function ($query) use ($department) {
+                        $query->when(
+                            $department ?? null,
+                            function (Builder $query) use ($department) {
+                                if ($department) {
+                                    $query->where('department_id', $department);
+                                }
+                            }
+                        );
+                    })->avg('score');
+
+                $total = 5;
+
+                return $total
+                    ? $rating / $total
                     : 0;
             }
         );

@@ -23,6 +23,11 @@ return [
      * https://laravel-livewire.com/docs/2.x/polling. Adjust wiselly.
      */
     'polling_miliseconds' => 60000, // 2 minutes
+    // email.include_current_user
+    'email' => [
+        'include_current_user' => true
+    ],
+
     /**
      * Configurations to use in the dashboard
      */

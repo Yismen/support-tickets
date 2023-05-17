@@ -1,5 +1,5 @@
 <div class="align-self-end">
-    <button class="btn btn-sm btn-primary" wire:click.prevent='reOpen'>
+    <button class="btn btn-xs btn-primary" wire:click.prevent='reOpen'>
         {{ str(
         __('support::messages.reopen')
         . ' ' .

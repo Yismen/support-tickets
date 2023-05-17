@@ -3,46 +3,44 @@
 namespace Dainsys\Support\Http\Livewire\Ticket;
 
 use Livewire\Component;
+use Illuminate\Validation\Rule;
+use Dainsys\Support\Models\Rating;
 use Dainsys\Support\Models\Ticket;
+use Illuminate\Foundation\Auth\User;
+use Dainsys\Support\Enums\TicketRatingsEnum;
 use Dainsys\Support\Traits\WithRealTimeValidation;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Dainsys\Support\Http\Livewire\Traits\HasSweetAlertConfirmation;
 
-class CloseTicket extends Component
+class RateTicket extends Component
 {
     use AuthorizesRequests;
     use WithRealTimeValidation;
     use HasSweetAlertConfirmation;
 
     public Ticket $ticket;
-    public string $comment;
+    public Rating $rating;
 
     public function mount(Ticket $ticket)
     {
         $this->ticket = $ticket;
+        $this->rating = new Rating(['user_id' => auth()->user()->id]);
     }
 
     public function render()
     {
-        return view('support::livewire.ticket.close', [
+        return view('support::livewire.ticket.rating', [
+            'ratings' => TicketRatingsEnum::cases()
         ])
         ->layout('support::layouts.app');
     }
 
-    public function closeTicket()
+    public function rateTicket()
     {
-        $this->authorize('close-ticket', $this->ticket);
-
+        $this->authorize('create', $this->rating);
         $this->validate();
 
-        $this->confirm('closeTicketConfirmed', 'Are you sure you want to close this ticket?');
-    }
-
-    public function closeTicketConfirmed()
-    {
-        $this->authorize('close-ticket', $this->ticket);
-
-        $this->ticket->close($this->comment);
+        $this->ticket->rating()->create($this->rating->toArray());
 
         $this->emit('ticketUpdated');
         // $this->emit('showTicket', $this->ticket);
@@ -51,8 +49,16 @@ class CloseTicket extends Component
     protected function getRules()
     {
         return [
-            'comment' => [
+            'rating.user_id' => [
                 'required',
+                Rule::exists(User::class, 'id'),
+            ],
+            'rating.score' => [
+                'required',
+                Rule::in(array_column(TicketRatingsEnum::cases(), 'value')),
+            ],
+            'rating.comment' => [
+                'nullable',
                 'min:5'
             ]
         ];

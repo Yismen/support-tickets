@@ -77,6 +77,14 @@ class TicketTest extends TestCase
     }
 
     /** @test */
+    public function tickets_model_has_one_raging()
+    {
+        $ticket = Ticket::factory()->create();
+
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\HasOne::class, $ticket->rating());
+    }
+
+    /** @test */
     public function tickets_model_belongs_to_one_reason()
     {
         $ticket = Ticket::factory()->create();

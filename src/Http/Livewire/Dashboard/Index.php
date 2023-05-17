@@ -45,6 +45,7 @@ class Index extends Component
             'tickets_open' => TicketService::byDepartment($this->selected)->incompleted()->count(),
             'completion_rate' => TicketService::completionRate($this->selected),
             'compliance_rate' => TicketService::complianceRate($this->selected),
+            'satisfaction_rate' => TicketService::satisfactionRate($this->selected),
         ])
         ->layout('support::layouts.app');
     }

@@ -9,10 +9,6 @@ been deleted by {{ $user?->name }}.
 *Content:*
 > {!! $ticket->description !!}
 
-@component('mail::button', ['url' => url('/support/my_tickets')])
-View Ticket
-@endcomponent
-
 Thanks,<br>
 {{ config('app.name') }}
 @endcomponent

@@ -131,7 +131,8 @@ class SupportServiceProvider extends AuthServiceProvider
 
     protected function bootEvents()
     {
-        Event::listen(\Dainsys\Support\Events\ReplyCreatedEvent::class, \Dainsys\Support\Listeners\SendReplyCreatedNotification::class);
+        Event::listen(\Dainsys\Support\Events\ReplyCreatedEvent::class, \Dainsys\Support\Listeners\SendReplyCreatedMail::class);
+        Event::listen(\Dainsys\Support\Events\RatingCreatedEvent::class, \Dainsys\Support\Listeners\SendRatingCreatedMail::class);
         Event::listen(\Dainsys\Support\Events\TicketCreatedEvent::class, \Dainsys\Support\Listeners\SendTicketCreatedMail::class);
         Event::listen(\Dainsys\Support\Events\TicketAssignedEvent::class, \Dainsys\Support\Listeners\SendTicketAssignedMail::class);
         Event::listen(\Dainsys\Support\Events\TicketCompletedEvent::class, \Dainsys\Support\Listeners\SendTicketCompletedMail::class);
@@ -168,6 +169,7 @@ class SupportServiceProvider extends AuthServiceProvider
         Livewire::component('support::dashboard.table', \Dainsys\Support\Http\Livewire\Dashboard\Table::class);
 
         Livewire::component('support::ticket.close', \Dainsys\Support\Http\Livewire\Ticket\CloseTicket::class);
+        Livewire::component('support::ticket.rating', \Dainsys\Support\Http\Livewire\Ticket\RateTicket::class);
 
         Livewire::component('support::reply.form', \Dainsys\Support\Http\Livewire\Reply\Form::class);
 
@@ -175,5 +177,6 @@ class SupportServiceProvider extends AuthServiceProvider
         Livewire::component('support::charts.weekly-tickets-count-by-reason', \Dainsys\Support\Http\Livewire\Charts\WeeklyTicketsCountByReasonChart::class);
         Livewire::component('support::charts.weekly-tickets-completion-rate', \Dainsys\Support\Http\Livewire\Charts\WeeklyTicketsCompletionRateChart::class);
         Livewire::component('support::charts.weekly-tickets-compliance-rate', \Dainsys\Support\Http\Livewire\Charts\WeeklyTicketsComplianceRateChart::class);
+        Livewire::component('support::charts.weekly-tickets-satisfaction-rate', \Dainsys\Support\Http\Livewire\Charts\WeeklyTicketsSatisfactionRateChart::class);
     }
 }

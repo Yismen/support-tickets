@@ -20,4 +20,9 @@
             Rate
         </x-support::infographic>
     </div>
+    <div class="col-sm-6 col-md-4 col-lg-3">
+        <x-support::infographic count='{{ number_format($satisfaction_rate * 100, 0) }}%' icon="fa fa-percent">
+            Satisfaction Rate
+        </x-support::infographic>
+    </div>
 </div>

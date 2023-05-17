@@ -19,16 +19,18 @@
                 <x-support::inputs.select field="role" :options='$roles'>
                     {{ str(__('support::messages.role'))->headline() }}:
                 </x-support::inputs.select>
-                {{-- <x-support::inputs.with-labels field="user.name">{{ str(
-                    __('support::messages.name'))->headline()
-                    }}:
-                </x-support::inputs.with-labels>
-
-
-                <x-support::inputs.text-area field="user.description" :required="false">
-                    {{ str(__('support::messages.description'))->headline() }}:
-                </x-support::inputs.text-area> --}}
             </div>
         </x-support::form>
+
+        @if ($this->user?->departmentRole)
+        @can('delete', $this->user?->departmentRole)
+        <x-slot name="footer">
+            <a href="#" class="btn btn-danger btn-sm text-uppercase" wire:click.prevent='deleteRole'>
+                {{ __('support::messages.delete') }}
+            </a>
+        </x-slot>
+        @endcan
+
+        @endif
     </x-support::modal>
 </div>

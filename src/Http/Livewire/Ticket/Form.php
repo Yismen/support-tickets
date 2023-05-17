@@ -52,14 +52,6 @@ class Form extends Component
         ->layout('support::layouts.app');
     }
 
-    protected function confirmationsContract(): array
-    {
-        return [
-            'delete_ticket' => 'deleteTicketConfirmed',
-            'remove_image' => 'deleteImageConfirmed',
-        ];
-    }
-
     public function createTicket($ticket = null)
     {
         $this->ticket = new Ticket();
@@ -136,18 +128,19 @@ class Form extends Component
         $this->emit('ticketUpdated');
 
         supportFlash('Ticket updated!', 'success');
+        $this->emit('showTicket', $this->ticket);
     }
 
     public function delete()
     {
         $this->authorize('delete', $this->ticket);
 
-        $this->confirm('delete_ticket', 'Deleting tickets is not reversable. Are you really sure you want to delete this ticket?');
+        $this->confirm('deleteTicketConfirmed', 'Deleting tickets is not reversable. Are you really sure you want to delete this ticket?');
     }
 
     public function removeImage()
     {
-        $this->confirm('remove_image', 'Are you sure you want to delete this image from the ticket?');
+        $this->confirm('deleteImageConfirmed', 'Are you sure you want to delete this image from the ticket?');
     }
 
     protected function getRules()

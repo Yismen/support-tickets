@@ -12,11 +12,13 @@ use Dainsys\Support\Enums\DepartmentRolesEnum;
 use Dainsys\Support\Services\DepartmentService;
 use Dainsys\Support\Traits\WithRealTimeValidation;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Dainsys\Support\Http\Livewire\Traits\HasSweetAlertConfirmation;
 
 class Form extends Component
 {
     use AuthorizesRequests;
     use WithRealTimeValidation;
+    use HasSweetAlertConfirmation;
 
     protected $listeners = [
         'updateDepartmentRole',
@@ -91,5 +93,22 @@ class Form extends Component
                 new Enum(DepartmentRolesEnum::class)
             ]
         ];
+    }
+
+    public function deleteRole()
+    {
+        $this->confirm('deleteRoleConfirmed', 'Are you sure you want to remove this role from this user');
+    }
+
+    public function deleteRoleConfirmed()
+    {
+        $department_role = $this->user->departmentRole;
+
+        $department_role->delete();
+
+        flasher("Role removed for user {$this->user->name}", 'error');
+
+        $this->emit('departmentUpdated');
+        $this->dispatchBrowserEvent('closeAllModals');
     }
 }

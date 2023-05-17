@@ -32,12 +32,12 @@ class Detail extends Component
 
     public function mount()
     {
-        $this->authorize('viewAny', new Ticket());
         $this->ticket = new Ticket();
     }
 
     public function render()
     {
+        $this->authorize('viewAny', new Ticket());
         $this->assign_to = $this->ticket->assigned_to;
 
         return view('support::livewire.ticket.detail', [
@@ -45,13 +45,6 @@ class Detail extends Component
             'team' => $this->ticket?->department?->team->load('user')->pluck('user.name', 'user_id')->toArray() ?: []
         ])
             ->layout('support::layouts.app');
-    }
-
-    protected function confirmationsContract(): array
-    {
-        return [
-            'reopen_ticket' => 'confirmReopen'
-        ];
     }
 
     public function showTicket(Ticket $ticket)
@@ -113,7 +106,7 @@ class Detail extends Component
 
     public function reOpen()
     {
-        $this->confirm('reopen_ticket');
+        $this->confirm('confirmReopen', 'Are you sure you want to re-open this ticket?');
     }
 
     public function confirmReopen()
@@ -125,5 +118,6 @@ class Detail extends Component
         $this->emit('ticketUpdated');
 
         supportFlash('Ticket is now open!', 'warning');
+        // $this->emit('showTicket', $this->ticket);
     }
 }
