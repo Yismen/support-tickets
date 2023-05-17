@@ -6,8 +6,14 @@
     @if ($ticket->isOpen())
     <livewire:support::ticket.close :ticket='$ticket' :wire:key="'replies-form-{{ $ticket?->id }}'" modifier="lazy"
         wire:key="close-ticket-{{ $ticket?->id }}" />
+
+    @if (auth()->user()->isSupportSuperAdmin())
+    @include('support::livewire.ticket._assign')
+    @endif
+
     @else
 
+    @include('support::livewire.ticket._rating')
     @include('support::livewire.ticket._reopen')
 
     @endif

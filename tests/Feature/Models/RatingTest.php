@@ -28,7 +28,7 @@ class RatingTest extends TestCase
 
         $this->assertInstanceOf(Rating::class, $rating);
         $this->assertDatabaseHas(Rating::class, $data->only([
-            'user_id', 'ticket_id', 'rating', 'comment'
+            'user_id', 'ticket_id', 'score', 'comment'
         ]));
     }
 

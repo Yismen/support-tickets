@@ -27,7 +27,7 @@ class RatingFactory extends Factory
         return [
             'user_id' => UserFactory::new(),
             'ticket_id' => Ticket::factory(),
-            'rating' => TicketRatingsEnum::MeetsExpectations->value,
+            'score' => TicketRatingsEnum::MeetsExpectations->value,
             'comment' => $this->faker->paragraph()
         ];
     }

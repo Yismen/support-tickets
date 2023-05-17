@@ -132,6 +132,7 @@ class SupportServiceProvider extends AuthServiceProvider
     protected function bootEvents()
     {
         Event::listen(\Dainsys\Support\Events\ReplyCreatedEvent::class, \Dainsys\Support\Listeners\SendReplyCreatedMail::class);
+        Event::listen(\Dainsys\Support\Events\RatingCreatedEvent::class, \Dainsys\Support\Listeners\SendRatingCreatedMail::class);
         Event::listen(\Dainsys\Support\Events\TicketCreatedEvent::class, \Dainsys\Support\Listeners\SendTicketCreatedMail::class);
         Event::listen(\Dainsys\Support\Events\TicketAssignedEvent::class, \Dainsys\Support\Listeners\SendTicketAssignedMail::class);
         Event::listen(\Dainsys\Support\Events\TicketCompletedEvent::class, \Dainsys\Support\Listeners\SendTicketCompletedMail::class);
@@ -168,6 +169,7 @@ class SupportServiceProvider extends AuthServiceProvider
         Livewire::component('support::dashboard.table', \Dainsys\Support\Http\Livewire\Dashboard\Table::class);
 
         Livewire::component('support::ticket.close', \Dainsys\Support\Http\Livewire\Ticket\CloseTicket::class);
+        Livewire::component('support::ticket.rating', \Dainsys\Support\Http\Livewire\Ticket\RateTicket::class);
 
         Livewire::component('support::reply.form', \Dainsys\Support\Http\Livewire\Reply\Form::class);
 

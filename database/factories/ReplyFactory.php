@@ -26,7 +26,7 @@ class ReplyFactory extends Factory
         return [
             'user_id' => UserFactory::new(),
             'ticket_id' => Ticket::factory(),
-            'comment' => $this->faker->paragraph()
+            'content' => $this->faker->paragraph()
         ];
     }
 }

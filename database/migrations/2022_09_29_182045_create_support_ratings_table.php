@@ -21,8 +21,10 @@ class CreateSupportRatingsTable extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained(resolve(User::class)->getTable());
             $table->foreignIdFor(Ticket::class)->constrained(resolve(Ticket::class)->getTable());
-            $table->integer('rating')->default(TicketRatingsEnum::MeetsExpectations->value);
+            $table->integer('score')->default(TicketRatingsEnum::MeetsExpectations->value);
             $table->text('comment')->nullable();
+
+            $table->softDeletes();
 
             $table->timestamps();
         });

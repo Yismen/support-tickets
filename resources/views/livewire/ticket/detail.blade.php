@@ -4,6 +4,10 @@
         <table class="table table-striped table-inverse table-sm">
             <tbody class="thead-inverse">
                 <tr>
+                    <th class="text-right">{{ str(__('support::messages.id'))->headline() }}:</th>
+                    <td class="text-left">{{ $ticket->id }}</td>
+                </tr>
+                <tr>
                     <th class="text-right">{{ str(__('support::messages.department'))->headline() }}:</th>
                     <td class="text-left">{{ $ticket->department?->name }}</td>
                 </tr>
@@ -83,10 +87,10 @@
         <x-slot name="footer" wire:key="ticket-footer-{{ $ticket?->id }}">
             <x-support::loading :remove-while-loading="true">
                 {{-- Is current user the ticket's owner. Owner should not work tickets themself --}}
-                @if(auth()->user()?->isSupportSuperAdmin())
-                @include('support::livewire.ticket.roles._super_admin')
-                @elseif($ticket->created_by === auth()->user()?->id)
+                @if($ticket->created_by === auth()->user()?->id)
                 @include('support::livewire.ticket.roles._owner')
+                @elseif(auth()->user()?->isSupportSuperAdmin())
+                @include('support::livewire.ticket.roles._super_admin')
                 @elseif(auth()->user()->isDepartmentAdmin($ticket->department ?: new
                 \Dainsys\Support\Models\Department()))
                 @include('support::livewire.ticket.roles._admin')

@@ -28,7 +28,7 @@ class ReplyCreatedMail extends Mailable implements ShouldQueue
             ->subject("Ticket #{$ticket->reference} Has Been Replied")
             ->priority($ticket->mail_priority)
             ->markdown('support::mail.reply-created', [
-                'user' => $ticket->audits()->latest()->first()?->user
+                'user' => $this->reply?->user
             ])
 
         ;

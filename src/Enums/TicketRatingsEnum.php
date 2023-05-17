@@ -15,11 +15,11 @@ enum TicketRatingsEnum: int implements EnumContract
     public function class(): string
     {
         return match ($this) {
-            self::Unacceptable => 'bg-danger',
-            self::NeedsImprovement => 'bg-danger disabled',
-            self::MeetsExpectations => 'bg-secondary',
-            self::ExceedsExpectations => 'bg-success',
-            self::Outstanding => 'bg-success disabled',
+            self::Unacceptable => 'text-danger text-bold',
+            self::NeedsImprovement => 'text-fuchsia text-bold',
+            self::MeetsExpectations => 'text-dark text-bold',
+            self::ExceedsExpectations => 'text-info text-bold',
+            self::Outstanding => 'text-success text-bold',
         };
     }
 }

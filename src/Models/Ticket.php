@@ -33,6 +33,7 @@ class Ticket extends AbstractModel implements Auditable
     use \Dainsys\Support\Traits\EnsureDateNotWeekend;
     use \Dainsys\Support\Models\Traits\BelongsToOwner;
     use \Illuminate\Database\Eloquent\SoftDeletes;
+    use \Dainsys\Support\Models\Traits\HasOneRating;
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = ['created_by', 'department_id', 'reason_id', 'description', 'status', 'assigned_to', 'assigned_at', 'expected_at', 'completed_at', 'reference', 'image'];
@@ -115,6 +116,8 @@ class Ticket extends AbstractModel implements Auditable
         ]);
 
         TicketReopenedEvent::dispatch($this);
+
+        $this->rating()->delete();
     }
 
     public function complete(string $comment = '')
@@ -123,6 +126,8 @@ class Ticket extends AbstractModel implements Auditable
             'status' => $this->getStatus(),
             'completed_at' => now(),
         ]);
+
+        $this->rating()->delete();
 
         TicketCompletedEvent::dispatch($this, $comment);
     }

@@ -11,6 +11,7 @@
 
     @else
 
+    @include('support::livewire.ticket._rating')
     @include('support::livewire.ticket._reopen')
 
     @endif
