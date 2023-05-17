@@ -21,7 +21,7 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
-                <livewire:support::charts.weekly-tickets-completion-rate :department='$department' height="300px"
+                <livewire:support::charts.weekly-tickets-completion-rate :department='$department' height="200px"
                     key="weekly-tickets-completion-rate-{{ rand() }}" />
             </div>
         </div>
@@ -30,8 +30,17 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
-                <livewire:support::charts.weekly-tickets-compliance-rate :department='$department' height="300px"
+                <livewire:support::charts.weekly-tickets-compliance-rate :department='$department' height="200px"
                     key="weekly-tickets-compliance-rate-{{ rand() }}" />
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <livewire:support::charts.weekly-tickets-satisfaction-rate :department='$department' height="200px"
+                    key="weekly-tickets-satisfaction-rate-{{ rand() }}" />
             </div>
         </div>
     </div>
