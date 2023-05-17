@@ -97,7 +97,7 @@ class Form extends Component
 
     public function deleteRole()
     {
-        $this->confirm('confirm_delete_role', 'Are you sure you want to remove this role from this user');
+        $this->confirm('deleteRoleConfirmed', 'Are you sure you want to remove this role from this user');
     }
 
     public function deleteRoleConfirmed()
@@ -110,12 +110,5 @@ class Form extends Component
 
         $this->emit('departmentUpdated');
         $this->dispatchBrowserEvent('closeAllModals');
-    }
-
-    protected function confirmationsContract(): array
-    {
-        return [
-            'confirm_delete_role' => 'deleteRoleConfirmed'
-        ];
     }
 }

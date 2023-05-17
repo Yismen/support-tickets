@@ -47,13 +47,6 @@ class Detail extends Component
             ->layout('support::layouts.app');
     }
 
-    protected function confirmationsContract(): array
-    {
-        return [
-            'reopen_ticket' => 'confirmReopen'
-        ];
-    }
-
     public function showTicket(Ticket $ticket)
     {
         $this->authorize('view', $ticket);
@@ -113,7 +106,7 @@ class Detail extends Component
 
     public function reOpen()
     {
-        $this->confirm('reopen_ticket', 'Are you sure you want to re-open this ticket?');
+        $this->confirm('confirmReopen', 'Are you sure you want to re-open this ticket?');
     }
 
     public function confirmReopen()

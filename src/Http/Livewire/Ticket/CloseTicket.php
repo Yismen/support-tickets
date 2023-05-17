@@ -29,20 +29,13 @@ class CloseTicket extends Component
         ->layout('support::layouts.app');
     }
 
-    protected function confirmationsContract(): array
-    {
-        return [
-            'close_ticket' => 'closeTicketConfirmed'
-        ];
-    }
-
     public function closeTicket()
     {
         $this->authorize('close-ticket', $this->ticket);
 
         $this->validate();
 
-        $this->confirm('close_ticket', 'Are you sure you want to close this ticket?');
+        $this->confirm('closeTicketConfirmed', 'Are you sure you want to close this ticket?');
     }
 
     public function closeTicketConfirmed()
