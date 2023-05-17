@@ -32,12 +32,12 @@ class Detail extends Component
 
     public function mount()
     {
-        $this->authorize('viewAny', new Ticket());
         $this->ticket = new Ticket();
     }
 
     public function render()
     {
+        $this->authorize('viewAny', new Ticket());
         $this->assign_to = $this->ticket->assigned_to;
 
         return view('support::livewire.ticket.detail', [
@@ -113,7 +113,7 @@ class Detail extends Component
 
     public function reOpen()
     {
-        $this->confirm('reopen_ticket');
+        $this->confirm('reopen_ticket', 'Are you sure you want to re-open this ticket?');
     }
 
     public function confirmReopen()

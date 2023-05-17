@@ -80,12 +80,12 @@
             @include('support::livewire.ticket._replies')
         </section>
 
-        <x-slot name="footer" wire:key="ticket-footer-{{ $ticket->id }}">
+        <x-slot name="footer" wire:key="ticket-footer-{{ $ticket?->id }}">
             <x-support::loading :remove-while-loading="true">
                 {{-- Is current user the ticket's owner. Owner should not work tickets themself --}}
-                @if(auth()->user()->isSupportSuperAdmin())
+                @if(auth()->user()?->isSupportSuperAdmin())
                 @include('support::livewire.ticket.roles._super_admin')
-                @elseif($ticket->created_by === auth()->user()->id)
+                @elseif($ticket->created_by === auth()->user()?->id)
                 @include('support::livewire.ticket.roles._owner')
                 @elseif(auth()->user()->isDepartmentAdmin($ticket->department ?: new
                 \Dainsys\Support\Models\Department()))
@@ -97,5 +97,4 @@
             </x-support::loading>
         </x-slot>
     </x-support::modal>
-
 </div>

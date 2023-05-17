@@ -15,8 +15,6 @@ class DetailTest extends TestCase
     /** @test */
     public function ticket_detail_requires_authorization()
     {
-        // $this->actingAs($this->user());
-
         $ticket = Ticket::factory()->create();
         $component = Livewire::test(Detail::class);
 
@@ -30,7 +28,7 @@ class DetailTest extends TestCase
     {
         $this->actingAs($this->supportSuperAdmin());
         $ticket = Ticket::factory()->create();
-        
+
         $component = Livewire::test(Detail::class);
         $component->emit('showTicket', $ticket);
 

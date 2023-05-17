@@ -9,7 +9,7 @@ $ticket->department->name }}!
 *Content:*
 > {!! $ticket->description !!}
 
-@component('mail::button', ['url' => url('/support/my_tickets')])
+@component('mail::button', ['url' => route('support.my_tickets', ['ticket_details' => $ticket->id])])
 View Ticket
 @endcomponent
 

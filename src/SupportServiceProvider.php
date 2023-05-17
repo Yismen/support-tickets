@@ -131,7 +131,7 @@ class SupportServiceProvider extends AuthServiceProvider
 
     protected function bootEvents()
     {
-        Event::listen(\Dainsys\Support\Events\ReplyCreatedEvent::class, \Dainsys\Support\Listeners\SendReplyCreatedNotification::class);
+        Event::listen(\Dainsys\Support\Events\ReplyCreatedEvent::class, \Dainsys\Support\Listeners\SendReplyCreatedMail::class);
         Event::listen(\Dainsys\Support\Events\TicketCreatedEvent::class, \Dainsys\Support\Listeners\SendTicketCreatedMail::class);
         Event::listen(\Dainsys\Support\Events\TicketAssignedEvent::class, \Dainsys\Support\Listeners\SendTicketAssignedMail::class);
         Event::listen(\Dainsys\Support\Events\TicketCompletedEvent::class, \Dainsys\Support\Listeners\SendTicketCompletedMail::class);
