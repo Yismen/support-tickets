@@ -115,9 +115,9 @@ class Ticket extends AbstractModel implements Auditable
             'completed_at' => null,
         ]);
 
-        TicketReopenedEvent::dispatch($this);
-
         $this->rating()->delete();
+
+        TicketReopenedEvent::dispatch($this);
     }
 
     public function complete(string $comment = '')

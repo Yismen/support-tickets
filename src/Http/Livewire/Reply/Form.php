@@ -22,9 +22,9 @@ class Form extends Component
         'showReplyEdit' => 'edit',
     ];
 
-    public function mount()
+    public function mount(Ticket $ticket)
     {
-        $this->ticket = new Ticket();
+        $this->ticket = $ticket;
         $this->reply = new Reply();
     }
 

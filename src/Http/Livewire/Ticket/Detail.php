@@ -118,5 +118,6 @@ class Detail extends Component
         $this->emit('ticketUpdated');
 
         supportFlash('Ticket is now open!', 'warning');
+        // $this->emit('showTicket', $this->ticket);
     }
 }

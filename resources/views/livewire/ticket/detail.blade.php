@@ -72,18 +72,6 @@
             </tbody>
         </table>
 
-        <section id="replies" style="background-color: rgb(178, 229, 255);" class="p-1">
-            {{-- <div wire:ignore.self> --}}
-                @can('create', [new Dainsys\Support\Models\Reply(), $ticket])
-                <livewire:support::reply.form ticket='{{ $ticket }}' :key="'replies-form'" modifier="lazy"
-                    wire:key="reply-ticket-{{ $ticket?->id }}" />
-                @endcan
-                {{--
-            </div> --}}
-
-            @include('support::livewire.ticket._replies')
-        </section>
-
         <x-slot name="footer" wire:key="ticket-footer-{{ $ticket?->id }}">
             <x-support::loading :remove-while-loading="true">
                 {{-- Is current user the ticket's owner. Owner should not work tickets themself --}}
@@ -99,6 +87,27 @@
                 @include('support::livewire.ticket.roles._agent')
                 @endif
             </x-support::loading>
+
+            <section id="replies" style="background-color: rgb(178, 229, 255);" class="p-1 w-100"
+                wire:key="replies-section-{{ $ticket->id }}" x-data="{open: false}">
+                @if ($ticket->isOpen())
+                @can('create', [new Dainsys\Support\Models\Reply(), $ticket])
+                <livewire:support::reply.form :ticket='$ticket' wire:key="replies-form-{{ $ticket->id }}"
+                    modifier="lazy" wire:key="reply-ticket-{{ $ticket?->id }}" />
+                @endcan
+                @endif
+
+                <div class="d-flex justify-content-end">
+                    <a href="#" class="text-bold text-info" x-show="open == false" @click.prevent="open = true">Show
+                        Replies</a>
+
+                    <a href="#" class="text-bold text-purple" x-show="open" @click.prevent="open = false">Hide
+                        Replies</a>
+                </div>
+                <div x-show="open">
+                    @include('support::livewire.ticket._replies')
+                </div>
+            </section>
         </x-slot>
     </x-support::modal>
 </div>

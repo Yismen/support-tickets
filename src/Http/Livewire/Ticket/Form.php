@@ -128,6 +128,7 @@ class Form extends Component
         $this->emit('ticketUpdated');
 
         supportFlash('Ticket updated!', 'success');
+        $this->emit('showTicket', $this->ticket);
     }
 
     public function delete()
