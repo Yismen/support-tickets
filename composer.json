@@ -1,5 +1,5 @@
 {
-    "name": "dainsys/support",
+    "name": "dainsys/support-tickets",
     "description": "Support and recipients management package for Dainsys. This package allows you to Associate recipients to your department files.",
     "type": "library",
     "license": "MIT",
