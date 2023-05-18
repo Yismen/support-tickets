@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-between flex-fill">
+<div class="d-flex justify-content-between flex-fill flex-column">
     <h6 class="text-bold text-uppercase text-fuchsia border-top">Department Agent Actions</h6>
     @if ($ticket->isAssigned())
 

@@ -72,16 +72,19 @@
             </tbody>
         </table>
 
-        <x-slot name="footer" wire:key="ticket-footer-{{ $ticket?->id }}">
+        <x-slot name="footer" wire:key="ticket-footer-{{ $ticket?->id }}" class="p-0">
             <x-support::loading :remove-while-loading="true">
                 {{-- Is current user the ticket's owner. Owner should not work tickets themself --}}
                 @if($ticket->created_by === auth()->user()?->id)
                 @include('support::livewire.ticket.roles._owner')
+                {{-- // check if user is super admin --}}
                 @elseif(auth()->user()?->isSupportSuperAdmin())
                 @include('support::livewire.ticket.roles._super_admin')
+                {{-- // Che if user is department admin --}}
                 @elseif(auth()->user()->isDepartmentAdmin($ticket->department ?: new
                 \Dainsys\Support\Models\Department()))
                 @include('support::livewire.ticket.roles._admin')
+                {{-- // check if user is department agent --}}
                 @elseif(auth()->user()->isDepartmentAgent($ticket->department ?: new
                 \Dainsys\Support\Models\Department()))
                 @include('support::livewire.ticket.roles._agent')

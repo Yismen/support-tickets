@@ -7,7 +7,6 @@ use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Models\Department;
 use Illuminate\Database\Eloquent\Builder;
 use Dainsys\Support\Services\ReasonService;
-use Dainsys\Support\Enums\TicketStatusesEnum;
 use Dainsys\Support\Enums\DepartmentRolesEnum;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Dainsys\Support\Services\DepartmentService;
@@ -15,15 +14,14 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use Dainsys\Support\Services\UserDepartmentRoleService;
 use Dainsys\Support\Http\Livewire\AbstractDataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
-use Rappasoft\LaravelLivewireTables\Views\Filters\MultiSelectFilter;
 
 class Table extends AbstractDataTableComponent
 {
     protected string $module = 'Ticket';
     protected $create_button = false;
     protected $edit_button = false;
-
     public $department;
+    protected $agent_id;
 
     protected $listeners = [
         'ticketUpdated' => '$refresh',
@@ -39,17 +37,6 @@ class Table extends AbstractDataTableComponent
     public function builder(): Builder
     {
         return Ticket::query()
-            ->when(
-                auth()->user()->departmentRole?->role === DepartmentRolesEnum::Agent,
-                function ($query) {
-                    $query->incompleted();
-                }
-            )
-            ->when($this->department->id, function ($query) {
-                $query->whereHas('department', function ($query) {
-                    $query->where('id', $this->department->id);
-                });
-            })
             ->addSelect([
                 'created_by',
                 'reason_id',
@@ -66,6 +53,17 @@ class Table extends AbstractDataTableComponent
                 'owner',
                 // 'replies'
             ])
+            ->when(
+                auth()->user()->departmentRole?->role === DepartmentRolesEnum::Agent,
+                function ($query) {
+                    $query->incompleted();
+                }
+            )
+            ->when($this->department->id, function ($query) {
+                $query->whereHas('department', function ($query) {
+                    $query->where('id', $this->department->id);
+                });
+            })
             // ->withCount([
             //     'tickets',
             // ])
@@ -138,6 +136,11 @@ class Table extends AbstractDataTableComponent
 
     public function filters(): array
     {
+        $users = UserDepartmentRoleService::list($this->department);
+        $super_users = User::query()
+            ->whereHas('supportSuperAdmin')
+            ->pluck('name', 'id');
+
         return [
             SelectFilter::make('Department')
                 ->options(
@@ -167,7 +170,9 @@ class Table extends AbstractDataTableComponent
                         '' => 'All',
 
                     ] +
-                    UserDepartmentRoleService::list($this->department)->toArray()
+                    \Illuminate\Support\Arr::sort($super_users->toArray()
+                    +
+                    $users->toArray())
                 )->filter(function (Builder $builder, int $value) {
                     $builder->where('assigned_to', $value);
                 }),
@@ -192,13 +197,6 @@ class Table extends AbstractDataTableComponent
                 )->filter(function (Builder $builder, string $value) {
                     $builder->$value();
                 }),
-            // MultiSelectFilter::make('Status')
-            //     ->options(
-            //         TicketStatusesEnum::asArray()
-            //     )
-            //     ->filter(function (Builder $builder, array $values) {
-            //         $builder->whereIn('status', $values);
-            //     })
         ];
     }
 
@@ -214,5 +212,25 @@ class Table extends AbstractDataTableComponent
             __('support::messages.for'),
             $this->department->name ?? 'All Departments'
         ]))->headline();
+    }
+
+    public function configure(): void
+    {
+        parent::configure();
+
+        $this->setConfigurableAreas([
+            'toolbar-right-start' => [
+                'support::livewire.dashboard._assigned_to_me', [
+                    'user' => auth()->user(),
+                ],
+            ],
+        ]);
+    }
+
+    public function filterAgent($id = null)
+    {
+        // dump($id);
+        $this->agent_id = $id;
+        $this->table['filters']['assigned_to'] = $id;
     }
 }

@@ -30,6 +30,10 @@ class Index extends Component
             return;
         }
 
+        if (!auth()->user()->hasAnyDepartmentRole()) {
+            return redirect()->route('support.my_tickets');
+        }
+
         $this->department = auth()->user()->department;
         $this->selected = $this->department->id;
     }

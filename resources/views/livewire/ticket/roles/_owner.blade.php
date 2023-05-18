@@ -1,4 +1,4 @@
-<div class="d-flex flex-column flex-fill">
+<div class="d-flex justify-content-between flex-fill flex-column">
     <h6 class="text-bold text-uppercase text-cyan border-top">Ticket Owner Actions</h6>
 
     @include('support::livewire.ticket._edit-button')

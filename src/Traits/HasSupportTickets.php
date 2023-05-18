@@ -45,7 +45,7 @@ trait HasSupportTickets
 
     public function hasAnyDepartmentRole(): bool
     {
-        return $this->departmentRole()->exists();
+        return $this->departmentRole && $this->departmentRole()->exists();
     }
 
     public function departmentRole(): HasOne
@@ -55,7 +55,7 @@ trait HasSupportTickets
 
     public function department(): BelongsTo
     {
-        return $this->departmentRole?->department();
+        return $this->departmentRole->department();
     }
 
     public function tickets(): HasMany
