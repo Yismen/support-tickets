@@ -7,21 +7,20 @@ use Dainsys\Support\Tests\TestCase;
 use Dainsys\Support\Models\Department;
 use Dainsys\Support\Http\Livewire\Dashboard\Index;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 class DashboardTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    // public function dashboard_component_renders_correctly_for_regular_users()
-    // {
-    //     $this->actingAs($this->user());
+    public function dashboard_component_renders_correctly_for_regular_users()
+    {
+        $this->actingAs($this->user());
 
-    //     $component = Livewire::test(Dashboard::class);
+        $component = Livewire::test(Index::class);
 
-    //     $component->assertSee('My Tickets');
-    // }
+        $component->assertRedirect(route('support.my_tickets'));
+    }
 
     /** @test */
     public function dashboard_component_renders_correctly_for_department_agent()

@@ -9,7 +9,6 @@ Route::middleware(['web', 'auth'])
             ->prefix('support')
             ->group(function () {
                 Route::get('', HomeController::class)->name('home');
-                // Route::get('', \Dainsys\Support\Http\Livewire\Dashboard::class)->name('home');
                 Route::get('admin', HomeController::class)->name('admin');
                 Route::get('my_tickets', \Dainsys\Support\Http\Livewire\Ticket\Index::class)->name('my_tickets');
                 Route::get('dashboard', \Dainsys\Support\Http\Livewire\Dashboard\Index::class)->name('dashboard');

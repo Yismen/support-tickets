@@ -11,9 +11,8 @@ This ticket {{ $ticket->expected_at->isPast() ? 'was' : 'is' }} expected {{ $tic
 *Content:*
 > {!! $ticket->description !!}
 
-@component('mail::button', ['url' => route('support.my_tickets', ['ticket_details' => $ticket->id])])
-View Ticket
-@endcomponent
+<x-support::email.button :url="route('support.my_tickets', ['ticket_details' => $ticket->id])">View
+    Ticket</x-support::email.button>
 
 Thanks,<br>
 {{ config('app.name') }}
