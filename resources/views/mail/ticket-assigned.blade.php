@@ -6,7 +6,7 @@ been assigned to **{{ $ticket->agent->name }}** by {{ $user?->name }}.
 
 This ticket {{ $ticket->expected_at->isPast() ? 'was' : 'is' }} expected {{ $ticket->expected_at->diffForHumans() }}
 
-**Title: {{ $ticket->reason->name }}**
+**Title: {{ $ticket->subject->name }}**
 
 *Content:*
 > {!! $ticket->description !!}

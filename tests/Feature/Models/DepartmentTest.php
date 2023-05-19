@@ -24,11 +24,11 @@ class DepartmentTest extends TestCase
     }
 
     /** @test */
-    public function departments_model_has_many_reasons()
+    public function departments_model_has_many_subjects()
     {
         $department = Department::factory()->create();
 
-        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\HasMany::class, $department->reasons());
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\HasMany::class, $department->subjects());
     }
 
     /** @test */

@@ -32,7 +32,7 @@ class TicketTest extends TestCase
         $this->assertDatabaseHas(supportTableName('tickets'), $data->only([
             'created_by',
             'department_id',
-            'reason_id',
+            'subject_id',
             'description',
             'assigned_to',
             'assigned_at',
@@ -85,11 +85,11 @@ class TicketTest extends TestCase
     }
 
     /** @test */
-    public function tickets_model_belongs_to_one_reason()
+    public function tickets_model_belongs_to_one_subject()
     {
         $ticket = Ticket::factory()->create();
 
-        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, $ticket->reason());
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, $ticket->subject());
     }
 
     /** @test */
@@ -97,7 +97,7 @@ class TicketTest extends TestCase
     {
         $ticket = Ticket::factory()->create(['created_at' => now()]);
 
-        $ticket->reason->update(['priority' => TicketPrioritiesEnum::Normal]);
+        $ticket->subject->update(['priority' => TicketPrioritiesEnum::Normal]);
         $ticket->touch();
 
         $this->assertDatabaseHas(Ticket::class, [
@@ -110,7 +110,7 @@ class TicketTest extends TestCase
     {
         $ticket = Ticket::factory()->create(['created_at' => now()]);
 
-        $ticket->reason->update(['priority' => TicketPrioritiesEnum::Medium]);
+        $ticket->subject->update(['priority' => TicketPrioritiesEnum::Medium]);
         $ticket->touch();
 
         $this->assertDatabaseHas(Ticket::class, [
@@ -123,7 +123,7 @@ class TicketTest extends TestCase
     {
         $ticket = Ticket::factory()->create(['created_at' => now()]);
 
-        $ticket->reason->update(['priority' => TicketPrioritiesEnum::High]);
+        $ticket->subject->update(['priority' => TicketPrioritiesEnum::High]);
         $ticket->touch();
 
         $this->assertDatabaseHas(Ticket::class, [
@@ -136,7 +136,7 @@ class TicketTest extends TestCase
     {
         $ticket = Ticket::factory()->create(['created_at' => now()]);
 
-        $ticket->reason->update(['priority' => TicketPrioritiesEnum::Emergency]);
+        $ticket->subject->update(['priority' => TicketPrioritiesEnum::Emergency]);
         $ticket->touch();
 
         $this->assertDatabaseHas(Ticket::class, [

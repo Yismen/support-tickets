@@ -6,7 +6,7 @@ use App\Models\User;
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Models\Department;
 use Illuminate\Database\Eloquent\Builder;
-use Dainsys\Support\Services\ReasonService;
+use Dainsys\Support\Services\SubjectService;
 use Dainsys\Support\Enums\DepartmentRolesEnum;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Dainsys\Support\Services\DepartmentService;
@@ -39,7 +39,7 @@ class Table extends AbstractDataTableComponent
         return Ticket::query()
             ->addSelect([
                 'created_by',
-                'reason_id',
+                'subject_id',
                 'assigned_to',
                 'assigned_at',
                 'expected_at',
@@ -48,7 +48,7 @@ class Table extends AbstractDataTableComponent
             ])
             ->with([
                 'department',
-                'reason',
+                'subject',
                 'agent',
                 'owner',
                 // 'replies'
@@ -100,7 +100,7 @@ class Table extends AbstractDataTableComponent
                 ->hideIf(!is_null($this->department->id))
                 ->sortable()
                 ->searchable(),
-            Column::make('Reason', 'reason.name')
+            Column::make('Subject', 'subject.name')
                 ->sortable()
                 ->searchable(),
             // Column::make('Description')
@@ -111,8 +111,8 @@ class Table extends AbstractDataTableComponent
             Column::make('Owner', 'owner.name')
                 ->sortable()
                 ->searchable(),
-            Column::make('Priority', 'reason.priority')
-                ->format(fn ($value, $row) => "<span class='{$row->reason?->priority->class()}'> {$row->reason?->priority->name}</span>")
+            Column::make('Priority', 'subject.priority')
+                ->format(fn ($value, $row) => "<span class='{$row->subject?->priority->class()}'> {$row->subject?->priority->name}</span>")
                 ->html()
                 ->searchable()
                 ->sortable(),
@@ -154,15 +154,15 @@ class Table extends AbstractDataTableComponent
                         $query->where('id', $value);
                     });
                 }),
-            SelectFilter::make('Reason')
+            SelectFilter::make('Subject')
                 ->options(
                     [
                         '' => 'All',
 
                     ] +
-                    ReasonService::list()->toArray()
+                    SubjectService::list()->toArray()
                 )->filter(function (Builder $builder, int $value) {
-                    $builder->where('reason_id', $value);
+                    $builder->where('subject_id', $value);
                 }),
             SelectFilter::make('Assigned To')
                 ->options(

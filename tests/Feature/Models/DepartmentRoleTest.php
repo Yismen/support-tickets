@@ -23,7 +23,7 @@ class DepartmentRoleTest extends TestCase
     }
 
     /** @test */
-    public function reasons_model_belongs_to_one_user()
+    public function subjects_model_belongs_to_one_user()
     {
         $department_role = DepartmentRole::factory()->create();
 
@@ -31,10 +31,10 @@ class DepartmentRoleTest extends TestCase
     }
 
     /** @test */
-    public function reasons_model_belongs_to_one_department()
+    public function subjects_model_belongs_to_one_department()
     {
-        $reason = DepartmentRole::factory()->create();
+        $subject = DepartmentRole::factory()->create();
 
-        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, $reason->department());
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, $subject->department());
     }
 }

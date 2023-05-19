@@ -4,11 +4,11 @@ namespace Dainsys\Support\Models;
 
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Dainsys\Support\Models\Traits\HasManyTickets;
-use Dainsys\Support\Database\Factories\ReasonFactory;
+use Dainsys\Support\Database\Factories\SubjectFactory;
 use Dainsys\Support\Models\Traits\BelongsToDepartment;
 use Dainsys\Support\Models\Traits\HasShortDescription;
 
-class Reason extends AbstractModel
+class Subject extends AbstractModel
 {
     use BelongsToDepartment;
     use HasShortDescription;
@@ -20,9 +20,9 @@ class Reason extends AbstractModel
         'priority' => TicketPrioritiesEnum::class,
     ];
 
-    protected static function newFactory(): ReasonFactory
+    protected static function newFactory(): SubjectFactory
     {
-        return ReasonFactory::new();
+        return SubjectFactory::new();
     }
 
     public function getNameWithPriorityAttribute()

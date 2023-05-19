@@ -10,7 +10,7 @@ class DepartmentRoleTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function reasons_index_route_requires_authentication()
+    public function subjects_index_route_requires_authentication()
     {
         $response = $this->get(route('support.admin.department_roles.index'));
 

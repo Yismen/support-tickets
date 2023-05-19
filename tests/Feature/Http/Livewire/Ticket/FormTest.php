@@ -110,10 +110,10 @@ class FormTest extends TestCase
         $this->actingAs($this->supportSuperAdmin());
         $data = ['department_id' => Department::factory()->create()];
         $component = Livewire::test(Form::class)
-            ->set('ticket.reason_id', null);
+            ->set('ticket.subject_id', null);
 
         $component->call('store');
-        $component->assertHasErrors(['ticket.reason_id' => 'required']);
+        $component->assertHasErrors(['ticket.subject_id' => 'required']);
     }
 
     /** @test */
@@ -122,10 +122,10 @@ class FormTest extends TestCase
         $this->actingAs($this->supportSuperAdmin());
         $component = Livewire::test(Form::class)
             ->set('ticket.department_id', '')
-            ->set('ticket.reason_id', '');
+            ->set('ticket.subject_id', '');
 
         $component->call('update');
-        $component->assertHasErrors(['ticket.reason_id' => 'required']);
+        $component->assertHasErrors(['ticket.subject_id' => 'required']);
     }
 
     /** @test */
@@ -135,19 +135,19 @@ class FormTest extends TestCase
         $ticket = Ticket::factory()->make();
         $component = Livewire::test(Form::class);
         $component->emit('createTicket', new Ticket());
-        $component->set('ticket.reason_id', $ticket->reason_id);
+        $component->set('ticket.subject_id', $ticket->subject_id);
         $component->set('ticket.description', $ticket->description);
         $component->set('ticket.department_id', $ticket->department_id);
 
         $component->call('store');
 
-        $component->assertSet('ticket.reason_id', $ticket->reason_id);
+        $component->assertSet('ticket.subject_id', $ticket->subject_id);
         $component->assertSet('editing', false);
         $component->assertDispatchedBrowserEvent('closeAllModals');
         $component->assertEmitted('ticketUpdated');
 
         $this->assertDatabasehas(Ticket::class, [
-            'reason_id' => $ticket->reason_id,
+            'subject_id' => $ticket->subject_id,
             'description' => $ticket->description,
             'department_id' => $ticket->department_id
         ]);

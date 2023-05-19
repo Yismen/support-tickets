@@ -2,19 +2,19 @@
 
 namespace Dainsys\Support\Database\Factories;
 
-use Dainsys\Support\Models\Reason;
+use Dainsys\Support\Models\Subject;
 use Dainsys\Support\Models\Department;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ReasonFactory extends Factory
+class SubjectFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Reason::class;
+    protected $model = Subject::class;
 
     /**
      * Define the model's default state.

@@ -1,37 +1,62 @@
- # Dainsys Support and Recipients
- A full stack package to add support functionality to Laravel applications. This package allows you to associate recipients (contacts) to your department files.
-
+ # Dainsys Support Tickets
+ A full stack package to add tickets support functionality to Laravel applications. 
  ### Installation
- 1. Require using composer: `composer require dainsys/support`.
- 2. You can install all package assets by running `php artisan support:install` command.
-    1. Another option is installing each asset individually:
-       1. Publish the assets: `@php artisan vendor:publish --force --tag=support:assets`.  
-          1. optionally, you add the following line to your `composer` file, under the `scripts` and `post-update-cmd` key, to publish the assets every time you update your composer dependencies: `@php artisan vendor:publish --tag=support:assets --force --ansi`.
+ 1. Require using composer: `composer require dainsys/support-tickets`.
+ 2. You can install all package assets by running `php artisan support:install` command or `@php artisan vendor:publish --force --tag=support:assets`.  
+    1. optionally, you add the following line to your `composer` file, under the `scripts` and `post-update-cmd` key, to publish the assets every time you update your composer dependencies: `@php artisan vendor:publish --tag=support:assets --force --ansi`.
     2. If you may want to customize the migrations before next step, first publish them: `@php artisan vendor:publish --force --tag=support:migrations`.
-    3. Run the migrations: `php artisan migrate`.   
- 3. Only support super admin users are allowed to interact with the app. You can register them using any of the following options:
-    1. Using the register method of your `AuthServiceProvider`: `\Dainsys\Support\Support::registerSuperUsers(["super@user1.com", "super@user2.com"]);`.
-    2. In your `.env` file, `SUPPORT_SUPER_USERS='super@user1.com,super@user2.com'`
-##### Configure your application
- 1. Visit package main route: `/dainsys/support/about`.
- 2. Optionally, you may want to publish and tweek the config file: `@php artisan vendor:publish --force --tag=support:config`.
- 3. This package has its own views, designed with livewire and AdminLte. However, if you may want to change them then you can publish them with `@php artisan vendor:publish --force --tag=support:views`. 
- 4. Package views extend it's own layout app. However, you can change this by adding the key `SUPPORT_LAYOUT_VIEW` to your `.env` file. Or, change it directly in the `support` config file, under the `layout` key.
-
-#### Usage
-1. The package is configured to auto discover your departments within then `app\Mail` directory. However, if your departments reside outside this folder or if you want to register another directory, add the line `\Dainsys\Support\Support::bind(app_path('Mail'));` to your `AppServiceProvider`. The package will try to load all your departments for all directories added.
-2. Visit route `/support/admin/recipients` to manage your recipients contacts.
-3. Visit route `/support/admin/departments` to manage your departments and assign them to the recipients.
-4. In your departments, you can access the array of recipients associated to that class with the code snippet  `\Dainsys\Support\Support::recipients($this);`. For example, `->to(\Dainsys\Support\Support::recipients($this))`;
-
-
-
-Users with role 'support super admin', 'support management' or permission to interact with models like 'create departments' or 'update departments'
-    use \Dainsys\Support\Traits\HasSupport;
-
+ 3. Run the migrations: `php artisan migrate`.   
+### Usage
+1. Identify at least one user as super admin, which will have no restrictions in the application, by running command `php artisan support:create-super-user`.
+2. Add the following trait to the Athenticatable model, most like `App\Models\User`
 ```
 class User extends Authenticatable
 {
-    use \Dainsys\Support\Traits\HasSupport;
-    ```
+    use \Dainsys\Support\Traits\HasSupportTickets;
+    .....
+}
+```
+### Configure your application
+ 1. Optionally, you may want to publish and tweek the config file: `@php artisan vendor:publish --force --tag=support:config`.
+### Features
+1. Super admin admin users can perform all type of actions.
+2. Ability to separate tickets and support by departments.
+3. Specific subjects for tickets.
+4. Notifications based on model actions:
+   1. Ticket Created: Department admins, department agents.
+   2. Ticket Assigned: ticket owner, ticket agent
+   3. Reply Created: ticket owner, ticket agent, department admins.
+   4. Ticket Completed: ticket owner, department admins, ticket agent.
+   5. Ticket Reopened: ticktet owner, department admins, ticket agent.
+   6. Ticket Deleted: ticktet owner, department admins, ticket agent.
+   7. Ticket Rated: department admins, ticket agent.
+5. Timeframe: amount of time a ticket is expected to be completed, based on the subject priority
+6. Completion rate: % of tickets completed
+7. Compliance rate: % of tickets within the required timeframe
+8. Satisfaction rate: average stars given to tickets divided by 5
+9. Ticket actions:
+   1.  Owner / Regular users
+       1.  Create and update
+       2.  Delete
+       3.  Close 
+       4.  Reply 
+       5.  Rate service
+       6.  Reopen
+       7.  Department admins can assign tickets to their agents
+   2.  Department Admins
+       1.  Access to department dashboard
+       2.  Assign and reassign tickets to department agents
+       3.  Close
+       4.  Reopen
+   3.  Department agents
+       1.  Grab (assign to themself) unassigned tickets
+       2.  Reply
+       3.  Close
+   4.  Super admins
+       1.  Create or remove super admins
+       2.  Manage departments
+       3.  Manage subjects
+       4.  manage department roles
+       5.  View dashboard
+       6.  Create, edit, delete, close, reply, assign tickets.
 

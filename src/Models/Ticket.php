@@ -27,7 +27,7 @@ class Ticket extends AbstractModel implements Auditable
     use \Dainsys\Support\Models\Traits\BelongsToDepartment;
     use \Dainsys\Support\Models\Traits\HasShortDescription;
     use \Dainsys\Support\Models\Scopes\Dates\PeriodScope;
-    use \Dainsys\Support\Models\Traits\BelongsToReason;
+    use \Dainsys\Support\Models\Traits\BelongsToSubject;
     use \Dainsys\Support\Models\Traits\HasManyReplies;
     use \Dainsys\Support\Models\Traits\BelongsToAgent;
     use \Dainsys\Support\Traits\EnsureDateNotWeekend;
@@ -36,7 +36,7 @@ class Ticket extends AbstractModel implements Auditable
     use \Dainsys\Support\Models\Traits\HasOneRating;
     use \OwenIt\Auditing\Auditable;
 
-    protected $fillable = ['created_by', 'department_id', 'reason_id', 'description', 'status', 'assigned_to', 'assigned_at', 'expected_at', 'completed_at', 'reference', 'image'];
+    protected $fillable = ['created_by', 'department_id', 'subject_id', 'description', 'status', 'assigned_to', 'assigned_at', 'expected_at', 'completed_at', 'reference', 'image'];
 
     protected $casts = [
         'assigned_at' => 'datetime',
@@ -232,7 +232,7 @@ class Ticket extends AbstractModel implements Auditable
     public function getPriorityAttribute()
     {
         return Cache::rememberForever('ticket_priority_' . $this->id, function () {
-            return $this->reason->priority->value;
+            return $this->subject->priority->value;
         });
     }
 
@@ -250,7 +250,7 @@ class Ticket extends AbstractModel implements Auditable
     {
         $date = $this->created_at ?? now();
 
-        switch ($this->reason->priority) {
+        switch ($this->subject->priority) {
             case TicketPrioritiesEnum::Normal:
                 return $this->ensureNotWeekend($date->copy()->addDays(2));
                 break;

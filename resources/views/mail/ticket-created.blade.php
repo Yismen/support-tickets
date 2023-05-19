@@ -4,7 +4,7 @@
 A new ticket with #{{ $ticket->reference }} has been created by {{ $ticket->owner->name }} form department {{
 $ticket->department->name }}!
 
-**Title: {{ $ticket->reason->name }}**
+**Title: {{ $ticket->subject->name }}**
 
 *Content:*
 > {!! $ticket->description !!}

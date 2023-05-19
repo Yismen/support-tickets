@@ -1,10 +1,10 @@
 <?php
 
-namespace Dainsys\Support\Http\Livewire\Reason;
+namespace Dainsys\Support\Http\Livewire\Subject;
 
 use Livewire\Component;
 use Illuminate\Validation\Rule;
-use Dainsys\Support\Models\Reason;
+use Dainsys\Support\Models\Subject;
 use Dainsys\Support\Models\Department;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Dainsys\Support\Services\DepartmentService;
@@ -17,29 +17,29 @@ class Form extends Component
     use WithRealTimeValidation;
 
     protected $listeners = [
-        'createReason',
-        'updateReason',
+        'createSubject',
+        'updateSubject',
     ];
 
     public bool $editing = false;
-    public string $modal_event_name_form = 'showReasonFormModal';
-    public $reasons = [];
+    public string $modal_event_name_form = 'showSubjectFormModal';
+    public $subjects = [];
 
-    public $reason;
+    public $subject;
 
     public function render()
     {
-        return view('support::livewire.reason.form', [
+        return view('support::livewire.subject.form', [
             'departments' => DepartmentService::list(),
             'priorities' => TicketPrioritiesEnum::asArray(),
         ])
         ->layout('support::layouts.app');
     }
 
-    public function createReason($reason = null)
+    public function createSubject($subject = null)
     {
-        $this->reason = new Reason();
-        $this->authorize('create', $this->reason);
+        $this->subject = new Subject();
+        $this->authorize('create', $this->subject);
         $this->editing = false;
 
         $this->resetValidation();
@@ -48,10 +48,10 @@ class Form extends Component
         $this->dispatchBrowserEvent($this->modal_event_name_form);
     }
 
-    public function updateReason(Reason $reason)
+    public function updateSubject(Subject $subject)
     {
-        $this->reason = $reason;
-        $this->authorize('update', $this->reason);
+        $this->subject = $subject;
+        $this->authorize('update', $this->subject);
         $this->editing = true;
 
         $this->resetValidation();
@@ -62,52 +62,52 @@ class Form extends Component
 
     public function store()
     {
-        $this->authorize('create', new Reason());
+        $this->authorize('create', new Subject());
         $this->validate();
 
         $this->editing = false;
 
-        $this->reason->save();
+        $this->subject->save();
 
-        supportFlash('Reason created!', 'success');
+        supportFlash('Subject created!', 'success');
 
         $this->dispatchBrowserEvent('closeAllModals');
 
-        $this->emit('reasonUpdated');
+        $this->emit('subjectUpdated');
     }
 
     public function update()
     {
-        $this->authorize('update', $this->reason);
+        $this->authorize('update', $this->subject);
         $this->validate();
 
-        $this->reason->save();
+        $this->subject->save();
 
-        supportFlash('Reason updated!', 'success');
+        supportFlash('Subject updated!', 'success');
 
         $this->dispatchBrowserEvent('closeAllModals');
 
         $this->editing = false;
 
-        $this->emit('reasonUpdated');
+        $this->emit('subjectUpdated');
     }
 
     protected function getRules()
     {
         return [
-            'reason.name' => [
+            'subject.name' => [
                 'required',
-                Rule::unique(supportTableName('reasons'), 'name')->ignore($this->reason->id ?? 0)
+                Rule::unique(supportTableName('subjects'), 'name')->ignore($this->subject->id ?? 0)
             ],
-            'reason.department_id' => [
+            'subject.department_id' => [
                 'required',
                 Rule::exists(Department::class, 'id')
             ],
-            'reason.priority' => [
+            'subject.priority' => [
                 'required',
                 Rule::in(array_column(TicketPrioritiesEnum::cases(), 'value'))
             ],
-            'reason.description' => [
+            'subject.description' => [
                 'nullable'
             ]
         ];

@@ -4,7 +4,7 @@
         {{ str(__('support::messages.close'))->headline() }} {{ str(__('support::messages.ticket'))->headline() }}
     </button>
 
-    <x-support::loading target="closeTicket, closeTicketConfirmed">
+    <x-support::loading>
         <form class="needs-validation" autocomplete="false" wire:submit.prevent='closeTicket' x-show="open"
             style="background-color: #ffebee;">
             <div class="d-flex flex-column  p-2">
