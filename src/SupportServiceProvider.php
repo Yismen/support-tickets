@@ -57,25 +57,31 @@ class SupportServiceProvider extends AuthServiceProvider
         });
 
         Gate::define('grab-ticket', function (User $user, Ticket $ticket) {
-            $department = $ticket->department;
-
-            return $user->isDepartmentAdmin($department) || $user->isDepartmentAgent($department);
+            return !$ticket->department
+                ? false
+                : $user->isDepartmentAdmin($ticket->departmen) || $user->isDepartmentAgent($ticket->departmen);
         });
 
         Gate::define('assign-ticket', function (User $user, Ticket $ticket) {
-            $department = $ticket->department;
+            return !$ticket->department
+                ? false
+                : $user->isDepartmentAdmin($ticket->department);
+        });
 
-            return $user->isDepartmentAdmin($department);
+        Gate::define('rate-ticket', function (User $user, Ticket $ticket) {
+            return $ticket->created_by === $user->id;
+        });
+
+        Gate::define('reopen-ticket', function (User $user, Ticket $ticket) {
+            return !$ticket->department
+                ? false
+                : $user->isDepartmentAdmin($ticket->department) || $ticket->created_by === auth()->user()->id;
         });
 
         Gate::define('close-ticket', function (User $user, Ticket $ticket) {
-            $department = $ticket->department;
-
-            if (!$department) {
-                return false;
-            }
-
-            return $user->id === $ticket->created_by || $user->isDepartmentAdmin($department) || $user->isDepartmentAgent($department);
+            return !$ticket->department
+                ? false
+                : $user->id === $ticket->created_by || $user->isDepartmentAdmin($ticket->department) || $user->isDepartmentAgent($ticket->department);
         });
 
         Gate::define('view-dashboards', function (User $user) {

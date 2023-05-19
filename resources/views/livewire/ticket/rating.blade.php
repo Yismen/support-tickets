@@ -1,5 +1,6 @@
 <div class="w-100 " x-data="{ open: false }">
 
+    @can('rate-ticket', $ticket)
     <button class="btn btn-xs btn-info align-self-end" x-show="! open" @click.prevent="open = true">
         {{ str(__('support::messages.rate_service'))->headline() }}
     </button>
@@ -47,4 +48,6 @@
             </div>
         </form>
     </x-support::loading>
+
+    @endcan
 </div>

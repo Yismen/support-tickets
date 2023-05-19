@@ -1,3 +1,4 @@
+@can('reopen-ticket', $ticket)
 <div class="align-self-end">
     <button class="btn btn-xs btn-primary" wire:click.prevent='reOpen'>
         {{ str(
@@ -7,3 +8,4 @@
         )->headline() }}
     </button>
 </div>
+@endcan
