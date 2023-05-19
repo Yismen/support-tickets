@@ -29,14 +29,14 @@ class SendReplyCreatedMail
 
     protected function recipients(): Collection
     {
-        $super_admins = SupportSuperAdmin::get()->map->user;
+        // $super_admins = SupportSuperAdmin::get()->map->user;
         $department_admins = DepartmentRole::query()
             ->with('user')
             ->where('role', DepartmentRolesEnum::Admin)
             ->where('department_id', $this->reply->department_id)->get()->map->user;
 
         $recipients = (new Collection())
-            ->merge($super_admins)
+            // ->merge($super_admins)
             ->merge($department_admins)
             ->push($this->reply->ticket->agent)
             ->push($this->reply->ticket->owner)
