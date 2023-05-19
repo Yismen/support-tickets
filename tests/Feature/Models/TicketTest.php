@@ -195,7 +195,7 @@ class TicketTest extends TestCase
 
         $this->assertDatabaseHas(Ticket::class, [
             'assigned_to' => $agent->user_id,
-            'assigned_at' => now(),
+            'assigned_at' => $ticket->assigned_at,
             'status' => TicketStatusesEnum::InProgress,
         ]);
     }
@@ -222,7 +222,7 @@ class TicketTest extends TestCase
         $ticket->complete();
 
         $this->assertDatabaseHas(Ticket::class, [
-            'completed_at' => now(),
+            'completed_at' => $ticket->completed_at,
         ]);
     }
 

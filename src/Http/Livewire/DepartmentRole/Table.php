@@ -3,7 +3,6 @@
 namespace Dainsys\Support\Http\Livewire\DepartmentRole;
 
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
 use Dainsys\Support\Enums\DepartmentRolesEnum;
 use Dainsys\Support\Services\DepartmentService;
@@ -49,7 +48,7 @@ class Table extends AbstractDataTableComponent
     public function builder(): Builder
     {
         return User::query()
-            ->whereRaw(DB::raw('users.id != ' . auth()->user()->id))
+            ->where(resolve(User::class)->getTable() . '.id', '!=', auth()->user()->id)
             ->whereDoesntHave('supportSuperAdmin')
             ->with('departmentRole.department')
             // ->withCount([
