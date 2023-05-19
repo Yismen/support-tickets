@@ -3,7 +3,7 @@
 namespace Dainsys\Support\Models;
 
 use Dainsys\Support\Enums\DepartmentRolesEnum;
-use Dainsys\Support\Models\Traits\HasManyReasons;
+use Dainsys\Support\Models\Traits\HasManySubjects;
 use Dainsys\Support\Models\Traits\HasManyTickets;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Dainsys\Support\Models\Traits\HasShortDescription;
@@ -11,7 +11,7 @@ use Dainsys\Support\Database\Factories\DepartmentFactory;
 
 class Department extends AbstractModel
 {
-    use HasManyReasons;
+    use HasManySubjects;
     use HasManyTickets;
     use HasShortDescription;
     protected $fillable = ['name', 'ticket_prefix', 'description'];

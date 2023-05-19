@@ -2,11 +2,11 @@
 
 namespace Dainsys\Support\Policies;
 
-use Dainsys\Support\Models\Reason;
+use Dainsys\Support\Models\Subject;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ReasonPolicy
+class SubjectPolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class ReasonPolicy
      * Determine whether the user can view the model.
      *
      * @param  \Illuminate\Foundation\Auth\User      $user
-     * @param  \Dainsys\Support\Models\Reason        $reason
+     * @param  \Dainsys\Support\Models\Subject       $subject
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Reason $reason): bool
+    public function view(User $user, Subject $subject): bool
     {
         return $user->isSupportSuperAdmin();
     }
@@ -48,22 +48,22 @@ class ReasonPolicy
      * Determine whether the user can update the model.
      *
      * @param  \Illuminate\Foundation\Auth\User      $user
-     * @param  \Dainsys\Support\Models\Reason        $reason
+     * @param  \Dainsys\Support\Models\Subject       $subject
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Reason $reason): bool
+    public function update(User $user, Subject $subject): bool
     {
-        return $user->isSupportSuperAdmin() || $user->isDepartmentAdmin($reason->department);
+        return $user->isSupportSuperAdmin() || $user->isDepartmentAdmin($subject->department);
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \Illuminate\Foundation\Auth\User      $user
-     * @param  \Dainsys\Support\Models\Reason        $reason
+     * @param  \Dainsys\Support\Models\Subject       $subject
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Reason $reason): bool
+    public function delete(User $user, Subject $subject): bool
     {
         return $user->isSupportSuperAdmin();
     }
@@ -72,10 +72,10 @@ class ReasonPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \Illuminate\Foundation\Auth\User      $user
-     * @param  \Dainsys\Support\Models\Reason        $reason
+     * @param  \Dainsys\Support\Models\Subject       $subject
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Reason $reason): bool
+    public function restore(User $user, Subject $subject): bool
     {
         return $user->isSupportSuperAdmin();
     }
@@ -84,10 +84,10 @@ class ReasonPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \Illuminate\Foundation\Auth\User      $user
-     * @param  \Dainsys\Support\Models\Reason        $reason
+     * @param  \Dainsys\Support\Models\Subject       $subject
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Reason $reason): bool
+    public function forceDelete(User $user, Subject $subject): bool
     {
         return $user->isSupportSuperAdmin();
     }

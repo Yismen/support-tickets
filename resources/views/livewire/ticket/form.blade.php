@@ -20,8 +20,8 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <x-support::inputs.select field='ticket.reason_id' :options='$reasons'>
-                            {{ str(__('support::messages.reason'))->headline() }}:
+                        <x-support::inputs.select field='ticket.subject_id' :options='$subjects'>
+                            {{ str(__('support::messages.subject'))->headline() }}:
                         </x-support::inputs.select>
                     </div>
                 </div>

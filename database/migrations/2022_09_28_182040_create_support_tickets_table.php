@@ -1,6 +1,6 @@
 <?php
 
-use Dainsys\Support\Models\Reason;
+use Dainsys\Support\Models\Subject;
 use Dainsys\Support\Models\Ticket;
 use Illuminate\Foundation\Auth\User;
 use Dainsys\Support\Models\Department;
@@ -22,7 +22,7 @@ class CreateSupportTicketsTable extends Migration
             $table->id();
             $table->foreignIdFor(User::class, 'created_by')->constrained(resolve(User::class)->getTable());
             $table->foreignIdFor(Department::class)->constrained(resolve(Department::class)->getTable());
-            $table->foreignIdFor(Reason::class)->constrained(resolve(Reason::class)->getTable());
+            $table->foreignIdFor(Subject::class)->constrained(resolve(Subject::class)->getTable());
             $table->text('description');
             $table->foreignIdFor(User::class, 'assigned_to')->nullable()->constrained(resolve(User::class)->getTable());
             $table->dateTime('assigned_at')->nullable();

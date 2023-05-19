@@ -5,14 +5,14 @@ namespace Dainsys\Support\Feature\Http\Routes;
 use Dainsys\Support\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ReasonTest extends TestCase
+class SubjectTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function reasons_index_route_requires_authentication()
+    public function subjects_index_route_requires_authentication()
     {
-        $response = $this->get(route('support.admin.reasons.index'));
+        $response = $this->get(route('support.admin.subjects.index'));
 
         $response->assertRedirect(route('login'));
     }

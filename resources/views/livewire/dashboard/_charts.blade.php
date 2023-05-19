@@ -12,8 +12,8 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
-                <livewire:support::charts.weekly-tickets-count-by-reason :department='$department' height="200px"
-                    key="weekly-tickets-count-by-reason-{{ rand() }}" />
+                <livewire:support::charts.weekly-tickets-count-by-subject :department='$department' height="200px"
+                    key="weekly-tickets-count-by-subject-{{ rand() }}" />
             </div>
         </div>
     </div>

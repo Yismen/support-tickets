@@ -25,12 +25,12 @@
             </li>
             @endcan
 
-            @can('viewAny', \Dainsys\Support\Models\Reason::class)
+            @can('viewAny', \Dainsys\Support\Models\Subject::class)
             <li class="nav-item">
-                <a href="{{ route('support.admin.reasons.index') }}" target="_top"
-                    class="nav-link {{ (request()->is('support/reasons*')) ? 'active' : '' }}">
+                <a href="{{ route('support.admin.subjects.index') }}" target="_top"
+                    class="nav-link {{ (request()->is('support/subjects*')) ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>{{ str(__('support::messages.reasons'))->headline() }}</p>
+                    <p>{{ str(__('support::messages.subjects'))->headline() }}</p>
                 </a>
             </li>
             @endcan

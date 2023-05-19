@@ -12,8 +12,8 @@
                     <td class="text-left">{{ $ticket->department?->name }}</td>
                 </tr>
                 <tr>
-                    <th class="text-right">{{ str(__('support::messages.reason'))->headline() }}:</th>
-                    <td class="text-left">{{ $ticket->reason?->name }}</td>
+                    <th class="text-right">{{ str(__('support::messages.subject'))->headline() }}:</th>
+                    <td class="text-left">{{ $ticket->subject?->name }}</td>
                 </tr>
                 @if ($ticket->completed_at ?? null)
                 <tr>
@@ -33,7 +33,8 @@
                 </tr>
                 <tr>
                     <th class="text-right">{{ str(__('support::messages.priority'))->headline() }}:</th>
-                    <td class="text-left {{ $ticket->reason?->priority->class() }}">{{ $ticket->reason?->priority->name
+                    <td class="text-left {{ $ticket->subject?->priority->class() }}">{{
+                        $ticket->subject?->priority->name
                         }}</td>
                 </tr>
                 @if ($ticket->owner?->id !== auth()->user()?->id)
@@ -100,6 +101,7 @@
                 @endcan
                 @endif
 
+                @if ($ticket?->replies->count() > 0)
                 <div class="d-flex justify-content-end">
                     <a href="#" class="text-bold text-info" x-show="open == false" @click.prevent="open = true">Show
                         Replies</a>
@@ -110,6 +112,7 @@
                 <div x-show="open">
                     @include('support::livewire.ticket._replies')
                 </div>
+                @endif
             </section>
         </x-slot>
     </x-support::modal>

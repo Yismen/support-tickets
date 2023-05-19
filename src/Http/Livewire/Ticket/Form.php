@@ -5,13 +5,13 @@ namespace Dainsys\Support\Http\Livewire\Ticket;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
-use Dainsys\Support\Models\Reason;
+use Dainsys\Support\Models\Subject;
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Rules\MinText;
 use Illuminate\Support\Facades\DB;
 use Dainsys\Support\Models\Department;
 use Illuminate\Support\Facades\Storage;
-use Dainsys\Support\Services\ReasonService;
+use Dainsys\Support\Services\SubjectService;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Dainsys\Support\Services\DepartmentService;
 use Dainsys\Support\Traits\WithRealTimeValidation;
@@ -46,7 +46,7 @@ class Form extends Component
     {
         return view('support::livewire.ticket.form', [
             'departments' => DepartmentService::list(),
-            'reasons' => ReasonService::listForDeaprtment($this->ticket->department_id),
+            'subjects' => SubjectService::listForDeaprtment($this->ticket->department_id),
             'priorities' => TicketPrioritiesEnum::asArray()
         ])
         ->layout('support::layouts.app');
@@ -150,9 +150,9 @@ class Form extends Component
                 'required',
                 Rule::exists(Department::class, 'id')
             ],
-            'ticket.reason_id' => [
+            'ticket.subject_id' => [
                 'required',
-                Rule::exists(Reason::class, 'id')
+                Rule::exists(Subject::class, 'id')
             ],
             'ticket.description' => [
                 'required',

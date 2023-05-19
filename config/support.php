@@ -25,6 +25,9 @@ return [
     'polling_miliseconds' => 60000, // 2 minutes
     // email.include_current_user
     'email' => [
+        /**
+         * If set to true, the person creating the action that fires the email will also be copied.
+         */
         'include_current_user' => true
     ],
 

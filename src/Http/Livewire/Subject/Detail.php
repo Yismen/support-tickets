@@ -1,9 +1,9 @@
 <?php
 
-namespace Dainsys\Support\Http\Livewire\Reason;
+namespace Dainsys\Support\Http\Livewire\Subject;
 
 use Livewire\Component;
-use Dainsys\Support\Models\Reason;
+use Dainsys\Support\Models\Subject;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Detail extends Component
@@ -11,26 +11,26 @@ class Detail extends Component
     use AuthorizesRequests;
 
     protected $listeners = [
-        'showReason',
+        'showSubject',
     ];
 
     public bool $editing = false;
-    public string $modal_event_name_detail = 'showReasonDetailModal';
+    public string $modal_event_name_detail = 'showSubjectDetailModal';
 
-    public $reason;
+    public $subject;
 
     public function render()
     {
-        return view('support::livewire.reason.detail')
+        return view('support::livewire.subject.detail')
         ->layout('support::layouts.app');
     }
 
-    public function showReason(Reason $reason)
+    public function showSubject(Subject $subject)
     {
-        $this->authorize('view', $reason);
+        $this->authorize('view', $subject);
 
         $this->editing = false;
-        $this->reason = $reason;
+        $this->subject = $subject;
         $this->resetValidation();
 
         $this->dispatchBrowserEvent('closeAllModals');

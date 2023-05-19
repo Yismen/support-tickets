@@ -1,8 +1,8 @@
 <?php
 
-namespace Dainsys\Support\Http\Livewire\Reason;
+namespace Dainsys\Support\Http\Livewire\Subject;
 
-use Dainsys\Support\Models\Reason;
+use Dainsys\Support\Models\Subject;
 use Illuminate\Database\Eloquent\Builder;
 use Dainsys\Support\Services\DepartmentService;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -11,19 +11,19 @@ use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class Table extends AbstractDataTableComponent
 {
-    protected string $module = 'Reason';
+    protected string $module = 'Subject';
 
     protected $listeners = [
-        'reasonUpdated' => '$refresh',
+        'subjectUpdated' => '$refresh',
         'informationUpdated' => '$refresh',
     ];
 
     public function builder(): Builder
     {
-        return Reason::query()
+        return Subject::query()
             ->with('department')
             // ->withCount([
-            //     'reasons',
+            //     'subjects',
             // ])
             ;
     }
@@ -46,8 +46,8 @@ class Table extends AbstractDataTableComponent
                 ->format(fn ($value, $row) => $row->short_description)
                 ->sortable()
                 ->searchable(),
-            // Column::make('Reasons', 'id')
-            //     ->format(fn ($value, $row) => view('support::tables.badge')->with(['value' => $row->reasons_count])),
+            // Column::make('Subjects', 'id')
+            //     ->format(fn ($value, $row) => view('support::tables.badge')->with(['value' => $row->subjects_count])),
             Column::make('Actions', 'id')
                 ->view('support::tables.actions'),
         ];
@@ -62,7 +62,7 @@ class Table extends AbstractDataTableComponent
                         '' => 'All',
 
                     ] +
-                    DepartmentService::listWithReason()->toArray()
+                    DepartmentService::listWithSubject()->toArray()
                 )->filter(function (Builder $builder, int $value) {
                     $builder->where('department_id', $value);
                 }),

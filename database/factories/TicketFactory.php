@@ -2,7 +2,7 @@
 
 namespace Dainsys\Support\Database\Factories;
 
-use Dainsys\Support\Models\Reason;
+use Dainsys\Support\Models\Subject;
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Models\Department;
 use Dainsys\Support\Enums\TicketStatusesEnum;
@@ -28,7 +28,7 @@ class TicketFactory extends Factory
         return [
             'created_by' => UserFactory::new(),
             'department_id' => Department::factory(),
-            'reason_id' => Reason::factory(),
+            'subject_id' => Subject::factory(),
             'description' => $this->faker->sentence(4),
             // 'assigned_to' => UserFactory::new(),
             // 'assigned_at' => now(),

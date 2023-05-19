@@ -42,7 +42,7 @@ class IndexTest extends TestCase
 
         $component = Livewire::test(Index::class);
 
-        $component->assertSee($ticket_for_user->reason->name);
-        // $component->assertDontSee($ticket_for_oter_user->reason->name);
+        $component->assertSee($ticket_for_user->subject->name);
+        // $component->assertDontSee($ticket_for_oter_user->subject->name);
     }
 }

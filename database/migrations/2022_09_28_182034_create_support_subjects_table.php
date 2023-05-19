@@ -1,13 +1,13 @@
 <?php
 
-use Dainsys\Support\Models\Reason;
+use Dainsys\Support\Models\Subject;
 use Dainsys\Support\Models\Department;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 
-class CreateSupportReasonsTable extends Migration
+class CreateSupportSubjectsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,7 +16,7 @@ class CreateSupportReasonsTable extends Migration
      */
     public function up()
     {
-        Schema::create(resolve(Reason::class)->getTable(), function (Blueprint $table) {
+        Schema::create(resolve(Subject::class)->getTable(), function (Blueprint $table) {
             $table->id();
             $table->string('name', 500)->unique();
             $table->integer('priority')->default(TicketPrioritiesEnum::Normal->value); // normal, medium, high
@@ -33,6 +33,6 @@ class CreateSupportReasonsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(resolve(Reason::class)->getTable());
+        Schema::dropIfExists(resolve(Subject::class)->getTable());
     }
 }

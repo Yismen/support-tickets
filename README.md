@@ -55,7 +55,7 @@ class User extends Authenticatable
    4.  Super admins
        1.  Create or remove super admins
        2.  Manage departments
-       3.  Manage reasons
+       3.  Manage subjects
        4.  manage department roles
        5.  View dashboard
        6.  Create, edit, delete, close, reply, assign tickets.

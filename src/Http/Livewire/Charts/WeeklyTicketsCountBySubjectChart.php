@@ -2,18 +2,18 @@
 
 namespace Dainsys\Support\Http\Livewire\Charts;
 
-use Dainsys\Support\Models\Reason;
+use Dainsys\Support\Models\Subject;
 use Illuminate\Support\Facades\Cache;
 use Asantibanez\LivewireCharts\Models\BaseChartModel;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
 
-class WeeklyTicketsCountByReasonChart extends BaseChart
+class WeeklyTicketsCountBySubjectChart extends BaseChart
 {
     public function render()
     {
         parent::render();
 
-        return view('support::livewire.charts.weekly-tickets-count-by-reason', [
+        return view('support::livewire.charts.weekly-tickets-count-by-subject', [
             'chart' => $this->createChart()
         ]);
     }
@@ -25,8 +25,8 @@ class WeeklyTicketsCountByReasonChart extends BaseChart
 
     protected function createChart()
     {
-        $reasons = Cache::rememberForever('tickets-count-by-reasons-' . $this->department->id, function () {
-            return Reason::query()
+        $subjects = Cache::rememberForever('tickets-count-by-subjects-' . $this->department->id, function () {
+            return Subject::query()
                 ->withCount('tickets')
                 ->orderBy('tickets_count', 'desc')
                 ->when($this->department->id ?? null, function ($query) {
@@ -35,13 +35,13 @@ class WeeklyTicketsCountByReasonChart extends BaseChart
                 ->take(10)
                 // ->having('tickets_count', '>', 0)
                 ->get()
-                ->filter(fn ($reason) => $reason->tickets_count > 0);
+                ->filter(fn ($subject) => $subject->tickets_count > 0);
         });
 
-        $reasons->each(function ($reason, $index) {
+        $subjects->each(function ($subject, $index) {
             $this->chart->addColumn(
-                $reason->name,
-                $reason->tickets_count,
+                $subject->name,
+                $subject->tickets_count,
                 $this->color($index)
             );
         });

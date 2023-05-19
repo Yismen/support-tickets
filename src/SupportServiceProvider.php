@@ -59,7 +59,7 @@ class SupportServiceProvider extends AuthServiceProvider
         Gate::define('grab-ticket', function (User $user, Ticket $ticket) {
             return !$ticket->department
                 ? false
-                : $user->isDepartmentAdmin($ticket->departmen) || $user->isDepartmentAgent($ticket->departmen);
+                : $user->isDepartmentAdmin($ticket->department) || $user->isDepartmentAgent($ticket->department);
         });
 
         Gate::define('assign-ticket', function (User $user, Ticket $ticket) {
@@ -155,10 +155,10 @@ class SupportServiceProvider extends AuthServiceProvider
         Livewire::component('support::department.detail', \Dainsys\Support\Http\Livewire\Department\Detail::class);
         Livewire::component('support::department.form', \Dainsys\Support\Http\Livewire\Department\Form::class);
 
-        Livewire::component('support::reason.table', \Dainsys\Support\Http\Livewire\Reason\Table::class);
-        Livewire::component('support::reason.index', \Dainsys\Support\Http\Livewire\Reason\Index::class);
-        Livewire::component('support::reason.detail', \Dainsys\Support\Http\Livewire\Reason\Detail::class);
-        Livewire::component('support::reason.form', \Dainsys\Support\Http\Livewire\Reason\Form::class);
+        Livewire::component('support::subject.table', \Dainsys\Support\Http\Livewire\Subject\Table::class);
+        Livewire::component('support::subject.index', \Dainsys\Support\Http\Livewire\Subject\Index::class);
+        Livewire::component('support::subject.detail', \Dainsys\Support\Http\Livewire\Subject\Detail::class);
+        Livewire::component('support::subject.form', \Dainsys\Support\Http\Livewire\Subject\Form::class);
 
         Livewire::component('support::support_super_admin.index', \Dainsys\Support\Http\Livewire\SupportSuperAdmin\Index::class);
 
@@ -180,7 +180,7 @@ class SupportServiceProvider extends AuthServiceProvider
         Livewire::component('support::reply.form', \Dainsys\Support\Http\Livewire\Reply\Form::class);
 
         Livewire::component('support::charts.weekly-tickets-count', \Dainsys\Support\Http\Livewire\Charts\WeeklyTicketsCountChart::class);
-        Livewire::component('support::charts.weekly-tickets-count-by-reason', \Dainsys\Support\Http\Livewire\Charts\WeeklyTicketsCountByReasonChart::class);
+        Livewire::component('support::charts.weekly-tickets-count-by-subject', \Dainsys\Support\Http\Livewire\Charts\WeeklyTicketsCountBySubjectChart::class);
         Livewire::component('support::charts.weekly-tickets-completion-rate', \Dainsys\Support\Http\Livewire\Charts\WeeklyTicketsCompletionRateChart::class);
         Livewire::component('support::charts.weekly-tickets-compliance-rate', \Dainsys\Support\Http\Livewire\Charts\WeeklyTicketsComplianceRateChart::class);
         Livewire::component('support::charts.weekly-tickets-satisfaction-rate', \Dainsys\Support\Http\Livewire\Charts\WeeklyTicketsSatisfactionRateChart::class);

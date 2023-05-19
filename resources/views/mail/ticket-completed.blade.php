@@ -8,7 +8,7 @@ been {{ $ticket->status->name }} by {{ $user?->name }}!.
 > Comment: *"{{ $comment }}"*
 @endif
 
-**Title: {{ $ticket->reason->name }}**
+**Title: {{ $ticket->subject->name }}**
 
 *Content:*
 > {!! $ticket->description !!}

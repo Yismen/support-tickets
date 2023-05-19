@@ -14,10 +14,10 @@ class DepartmentService implements ServicesContract
         });
     }
 
-    public static function listWithReason()
+    public static function listWithSubject()
     {
-        return Cache::rememberForever('departments_list_with_reason', function () {
-            return Department::orderBy('name')->whereHas('reasons')->pluck('name', 'id');
+        return Cache::rememberForever('departments_list_with_subject', function () {
+            return Department::orderBy('name')->whereHas('subjects')->pluck('name', 'id');
         });
     }
 

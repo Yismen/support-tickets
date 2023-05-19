@@ -4,7 +4,7 @@
 Ticket #{{ $ticket->reference }}, created by {{ $ticket->owner->name }} {{ $ticket->created_at->diffForHumans() }}, was
 reopened by {{ $user?->name }}!.
 
-**Title: {{ $ticket->reason->name }}**
+**Title: {{ $ticket->subject->name }}**
 
 *Content:*
 > {!! $ticket->description !!}

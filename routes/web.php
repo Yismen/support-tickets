@@ -17,7 +17,7 @@ Route::middleware(['web', 'auth'])
                     ->group(function () {
                         Route::get('departments', \Dainsys\Support\Http\Livewire\Department\Index::class)->name('departments.index');
 
-                        Route::get('reasons', \Dainsys\Support\Http\Livewire\Reason\Index::class)->name('reasons.index');
+                        Route::get('subjects', \Dainsys\Support\Http\Livewire\Subject\Index::class)->name('subjects.index');
 
                         Route::get('support_super_admins', \Dainsys\Support\Http\Livewire\SupportSuperAdmin\Index::class)->name('support_super_admins.index');
 
