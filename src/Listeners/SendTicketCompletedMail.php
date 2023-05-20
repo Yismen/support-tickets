@@ -4,17 +4,21 @@ namespace Dainsys\Support\Listeners;
 
 use Dainsys\Support\Models\Ticket;
 use Illuminate\Support\Facades\Mail;
-use Dainsys\Support\Models\DepartmentRole;
 use Illuminate\Database\Eloquent\Collection;
 use Dainsys\Support\Mail\TicketCompletedMail;
-use Dainsys\Support\Models\SupportSuperAdmin;
-use Dainsys\Support\Enums\DepartmentRolesEnum;
+use Dainsys\Support\Services\RecipientsService;
 use Dainsys\Support\Events\TicketCompletedEvent;
 
 class SendTicketCompletedMail
 {
     protected Ticket $ticket;
     protected string $comment;
+    protected RecipientsService $recipientsService;
+
+    public function __construct()
+    {
+        $this->recipientsService = new RecipientsService();
+    }
 
     public function handle(TicketCompletedEvent $event)
     {
@@ -31,25 +35,12 @@ class SendTicketCompletedMail
 
     protected function recipients(): Collection
     {
-        $super_admins = SupportSuperAdmin::get()->map->user;
-        $department_admins = DepartmentRole::query()
-            ->with('user')
-            ->where('role', DepartmentRolesEnum::Admin)
-            ->where('department_id', $this->ticket->department_id)->get()->map->user;
-
-        $recipients = (new Collection())
-            ->merge($super_admins)
-            ->merge($department_admins)
-            ->push($this->ticket->agent)
-            ->push($this->ticket->owner)
-            ->filter(function ($user) {
-                return $user?->email;
-            });
-
-        return config('support.email.include_current_user', false)
-            ? $recipients
-            : $recipients->filter(function ($user) {
-                return $user->id !== auth()->user()?->id;
-            });
+        return $this->recipientsService
+            ->ofTicket($this->ticket)
+            ->superAdmins()
+            ->owner()
+            ->agent()
+            ->allDepartmentAdmins()
+            ->recipients();
     }
 }
