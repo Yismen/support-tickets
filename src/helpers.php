@@ -11,7 +11,7 @@ if (function_exists('supportTableName') === false) {
 }
 
 if (function_exists('str') === false) {
-    function str(string $string)
+    function str(string|null $string)
     {
         return \Illuminate\Support\Str::of($string);
     }

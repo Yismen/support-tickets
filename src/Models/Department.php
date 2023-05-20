@@ -3,8 +3,8 @@
 namespace Dainsys\Support\Models;
 
 use Dainsys\Support\Enums\DepartmentRolesEnum;
-use Dainsys\Support\Models\Traits\HasManySubjects;
 use Dainsys\Support\Models\Traits\HasManyTickets;
+use Dainsys\Support\Models\Traits\HasManySubjects;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Dainsys\Support\Models\Traits\HasShortDescription;
 use Dainsys\Support\Database\Factories\DepartmentFactory;
@@ -85,7 +85,7 @@ class Department extends AbstractModel
 
     protected function getTicketPrefix(): string
     {
-        $words = explode(' ', trim($this->attributes['name']), 2);
+        $words = explode(' ', preg_replace('/\s+/', ' ', trim($this->attributes['name'])), 2);
         $count = count($words);
 
         $parsed = $count === 1

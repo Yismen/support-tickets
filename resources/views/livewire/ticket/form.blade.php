@@ -47,7 +47,7 @@
 
             </div>
         </x-support::form>
-        @if ($editing)
+        @if ($editing && $ticket->isOpen())
         <div class="border-top d-flex justify-content-end p-2">
             @can('delete', $ticket)
             <div>
