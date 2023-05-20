@@ -33,9 +33,9 @@ class RecipientsServiceTest extends TestCase
         $ticket = Ticket::factory()->createQuietly();
         $service = new RecipientsService();
 
-        $redicpients = $service->ofTicket($ticket)->owner()->recipients();
+        $recipients = $service->ofTicket($ticket)->owner()->recipients();
 
-        $this->assertTrue($redicpients->contains($ticket->owner));
+        $this->assertTrue($recipients->contains($ticket->owner));
     }
 
     /** @test */
@@ -45,13 +45,13 @@ class RecipientsServiceTest extends TestCase
         $ticket = Ticket::factory()->createQuietly();
 
         $service = new RecipientsService();
-        $redicpients = $service
+        $recipients = $service
             ->ofTicket($ticket)
             ->superAdmins()
             ->owner()
             ->recipients();
 
-        $this->assertTrue($redicpients->contains($super_admin_user));
+        $this->assertTrue($recipients->contains($super_admin_user));
     }
 
     /** @test */
@@ -61,14 +61,14 @@ class RecipientsServiceTest extends TestCase
         $department_admin = $this->departmentAdmin($ticket->department);
 
         $service = new RecipientsService();
-        $redicpients = $service
+        $recipients = $service
             ->ofTicket($ticket)
             ->superAdmins()
             ->owner()
             ->allDepartmentAdmins()
             ->recipients();
 
-        $this->assertTrue($redicpients->contains($department_admin));
+        $this->assertTrue($recipients->contains($department_admin));
     }
 
     /** @test */
@@ -78,7 +78,7 @@ class RecipientsServiceTest extends TestCase
         $user = $this->departmentAgent($ticket->department);
 
         $service = new RecipientsService();
-        $redicpients = $service
+        $recipients = $service
             ->ofTicket($ticket)
             ->superAdmins()
             ->owner()
@@ -86,7 +86,7 @@ class RecipientsServiceTest extends TestCase
             ->allDepartmentAgents()
             ->recipients();
 
-        $this->assertTrue($redicpients->contains($user));
+        $this->assertTrue($recipients->contains($user));
     }
 
     /** @test */
@@ -97,7 +97,7 @@ class RecipientsServiceTest extends TestCase
         $ticket->assignTo($user);
 
         $service = new RecipientsService();
-        $redicpients = $service
+        $recipients = $service
             ->ofTicket($ticket)
             ->superAdmins()
             ->owner()
@@ -105,7 +105,7 @@ class RecipientsServiceTest extends TestCase
             ->agent()
             ->recipients();
 
-        $this->assertTrue($redicpients->contains($user));
+        $this->assertTrue($recipients->contains($user));
     }
 
     /** @test */
@@ -117,7 +117,7 @@ class RecipientsServiceTest extends TestCase
         config()->set('support.email.include_current_user', true);
 
         $service = new RecipientsService();
-        $redicpients = $service
+        $recipients = $service
             ->ofTicket($ticket)
             ->superAdmins()
             ->owner()
@@ -125,7 +125,7 @@ class RecipientsServiceTest extends TestCase
             ->agent()
             ->recipients();
 
-        $this->assertTrue($redicpients->contains($user));
+        $this->assertTrue($recipients->contains($user));
     }
 
     /** @test */
@@ -137,7 +137,7 @@ class RecipientsServiceTest extends TestCase
         config()->set('support.email.include_current_user', false);
 
         $service = new RecipientsService();
-        $redicpients = $service
+        $recipients = $service
             ->ofTicket($ticket)
             ->superAdmins()
             ->owner()
@@ -145,6 +145,6 @@ class RecipientsServiceTest extends TestCase
             ->agent()
             ->recipients();
 
-        $this->assertTrue($redicpients->doesntContain($user));
+        $this->assertTrue($recipients->doesntContain($user));
     }
 }
