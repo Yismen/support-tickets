@@ -43,17 +43,27 @@ class RecipientsService
     {
         $this->ticket->load('owner');
 
-        $this->recipients->push($this->ticket->owner);
+        $this->recipients = $this->recipients
+            ->filter(function ($user) {
+                return $user?->email;
+            })
+            ->push($this->ticket->owner);
 
         return $this;
     }
 
     public function superAdmins(): self
     {
-        $super_admins = SupportSuperAdmin::get()->map->user;
+        $super_admins = SupportSuperAdmin::query()
+            ->with('user')
+            ->get()->map->user;
 
         if ($super_admins->count()) {
-            $this->recipients = $this->recipients->merge($super_admins);
+            $this->recipients = $this->recipients
+            ->filter(function ($user) {
+                return $user?->email;
+            })
+            ->merge($super_admins);
         }
 
         return $this;
@@ -68,7 +78,11 @@ class RecipientsService
             ->get()->map->user;
 
         if ($admins->count()) {
-            $this->recipients = $this->recipients->merge($admins);
+            $this->recipients = $this->recipients
+            ->filter(function ($user) {
+                return $user?->email;
+            })
+            ->merge($admins);
         }
 
         return $this;
@@ -82,7 +96,11 @@ class RecipientsService
             ->where('department_id', $this->ticket->department_id)->get()->map->user;
 
         if ($agents->count()) {
-            $this->recipients = $this->recipients->merge($agents);
+            $this->recipients = $this->recipients
+                ->filter(function ($user) {
+                    return $user?->email;
+                })
+                ->merge($agents);
         }
 
         return $this;
@@ -92,7 +110,11 @@ class RecipientsService
     {
         $this->ticket->load('agent');
 
-        $this->recipients = $this->recipients->push($this->ticket->agent);
+        $this->recipients = $this->recipients
+            ->filter(function ($user) {
+                return $user?->email;
+            })
+            ->push($this->ticket->agent);
 
         return $this;
     }

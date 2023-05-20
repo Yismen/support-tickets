@@ -10,7 +10,7 @@
                         <div class="col-sm-6 col-lg-3">
                             @foreach ($split as $user)
                             @if (auth()->user()->id !== $user->id)
-                            <div class='info-box bg-gradient-navy'>
+                            <div class="info-box bg-gradiend {{  in_array($user->id, $support_super_admins) ? 'bg-navy' : 'bg-white' }}">
                                 <div class="info-box-content">
                                     <x-support::inputs.switch field="support_super_admins" :value='(int)$user->id'>
                                         <span
