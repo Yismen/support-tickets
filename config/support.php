@@ -5,8 +5,9 @@ return [
     * Here you can specify a list of middleware to apply to
     * all routes. use "," or "|" to separate the list.
     */
-    'midlewares' => [
+    'middlewares' => [
         'api' => 'api',
+        'web' => ['web', 'auth']
     ],
     /**
      * All database tables will be prefixed with this

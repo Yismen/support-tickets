@@ -66,7 +66,7 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="/" class="brand-link text-center text-uppercase">
+            <a href="{{ Route::has('home') ? route('home') : '/' }}" class="brand-link text-center text-uppercase">
                 {{-- <img src="{{ asset('images/logo.png') }}" alt="AdminLTE Logo"
                     class="brand-image img-circle elevation-3" style="opacity: .8"> --}}
                 <span class="brand-text font-weight-light">{{ config('app.name', 'Dainsys Support') }}</span>
