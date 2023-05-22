@@ -120,7 +120,7 @@ class SupportServiceProvider extends AuthServiceProvider
 
     protected function boostCommandsAndSchedules()
     {
-        if ($this->app->runningInConsole() && !app()->isProduction()) {
+        if ($this->app->runningInConsole()) {
             $this->commands([
                 InstallCommand::class,
                 CreateSuperUser::class,
