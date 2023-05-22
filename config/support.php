@@ -7,7 +7,11 @@ return [
     */
     'middlewares' => [
         'api' => 'api',
-        'web' => ['web', 'auth']
+        'web' => [
+            'web',
+            'auth',
+            // 'verified',
+        ]
     ],
     /**
      * All database tables will be prefixed with this

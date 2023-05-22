@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Dainsys\Support\Http\Controllers\HomeController;
 
-Route::middleware(config('support.middlewares.web'))
+Route::middleware(config('support.middlewares.web', ['web', 'auth']))
     ->group(function () {
         Route::as('support.')
             ->prefix('support')

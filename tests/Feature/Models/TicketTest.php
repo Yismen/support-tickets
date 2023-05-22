@@ -95,52 +95,56 @@ class TicketTest extends TestCase
     /** @test */
     public function tickets_model_updates_expected_at_when_priority_is_normal()
     {
-        $ticket = Ticket::factory()->create(['created_at' => now()]);
+        $date = now();
+        $ticket = Ticket::factory()->create(['created_at' => $date->copy()]);
 
         $ticket->subject->update(['priority' => TicketPrioritiesEnum::Normal]);
         $ticket->touch();
 
         $this->assertDatabaseHas(Ticket::class, [
-            'expected_at' => $this->ensureNotWeekend(now()->addDays(2)),
+            'expected_at' => $this->ensureNotWeekend($date->copy()->addDays(2)),
         ]);
     }
 
     /** @test */
     public function tickets_model_updates_expected_at_when_priority_is_medium()
     {
-        $ticket = Ticket::factory()->create(['created_at' => now()]);
+        $date = now();
+        $ticket = Ticket::factory()->create(['created_at' => $date->copy()]);
 
         $ticket->subject->update(['priority' => TicketPrioritiesEnum::Medium]);
         $ticket->touch();
 
         $this->assertDatabaseHas(Ticket::class, [
-            'expected_at' => $this->ensureNotWeekend(now()->addDay()),
+            'expected_at' => $this->ensureNotWeekend($date->copy()->addDay()),
         ]);
     }
 
     /** @test */
     public function tickets_model_updates_expected_at_when_priority_is_high()
     {
-        $ticket = Ticket::factory()->create(['created_at' => now()]);
+        $date = now();
+        $ticket = Ticket::factory()->create(['created_at' => $date->copy()]);
 
         $ticket->subject->update(['priority' => TicketPrioritiesEnum::High]);
         $ticket->touch();
 
         $this->assertDatabaseHas(Ticket::class, [
-            'expected_at' => $this->ensureNotWeekend(now()->addMinutes(4 * 60)),
+            'expected_at' => $this->ensureNotWeekend($date->copy()->addMinutes(4 * 60)),
         ]);
     }
 
     /** @test */
     public function tickets_model_updates_expected_at_when_priority_is_emergency()
     {
-        $ticket = Ticket::factory()->create(['created_at' => now()]);
+        $date = now();
+        $ticket = Ticket::factory()->create(['created_at' => $date->copy()]);
 
         $ticket->subject->update(['priority' => TicketPrioritiesEnum::Emergency]);
         $ticket->touch();
 
         $this->assertDatabaseHas(Ticket::class, [
-            'expected_at' => $this->ensureNotWeekend(now()->addMinutes(30)),
+            'expected_at' => $this->ensureNotWeekend($date->copy()->addMinutes(30)),
         ]);
     }
 
@@ -239,9 +243,10 @@ class TicketTest extends TestCase
     /** @test */
     public function tickets_model_update_status_to_pending_expired_when_expected_at_has_passed()
     {
+        $date = now();
         $ticket = Ticket::factory()->unassigned()->create(['status' => TicketStatusesEnum::InProgress]);
 
-        $this->travelTo(now()->addDays(20));
+        $this->travelTo($date->copy()->addDays(20));
         $ticket->touch();
 
         $this->assertDatabaseHas(Ticket::class, [
@@ -266,11 +271,12 @@ class TicketTest extends TestCase
     /** @test */
     public function tickets_model_update_status_to_in_status_expired()
     {
+        $date = now();
         $ticket = Ticket::factory()->create();
         $agent = DepartmentRoleFactory::new()->create(['department_id' => $ticket->department_id]);
 
         $ticket->assignTo($agent);
-        $this->travelTo(now()->addDays(40));
+        $this->travelTo($date->copy()->addDays(40));
         $ticket->touch();
 
         $this->assertDatabaseHas(Ticket::class, [
@@ -283,7 +289,7 @@ class TicketTest extends TestCase
     {
         $ticket = Ticket::factory()->assigned()->create();
 
-        // $this->travelTo(now()->addDays(40));
+        // $this->travelTo($date->copy()->addDays(40));
         $ticket->complete();
 
         $this->assertDatabaseHas(Ticket::class, [
@@ -294,9 +300,10 @@ class TicketTest extends TestCase
     /** @test */
     public function tickets_model_update_status_to_in_completed_expired()
     {
+        $date = now();
         $ticket = Ticket::factory()->assigned()->create();
 
-        $this->travelTo(now()->addDays(40));
+        $this->travelTo($date->copy()->addDays(40));
         $ticket->complete();
 
         $this->assertDatabaseHas(Ticket::class, [
