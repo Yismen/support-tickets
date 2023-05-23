@@ -92,6 +92,17 @@ class Table extends AbstractDataTableComponent
                 )->filter(function (Builder $builder, int $value) {
                     $builder->where('department_id', $value);
                 }),
+
+            SelectFilter::make('Role')
+                ->options(
+                    [
+                        '' => 'All',
+
+                    ] +
+                    DepartmentRolesEnum::asArray()
+                )->filter(function (Builder $builder, string $value) {
+                    $builder->where('role', $value);
+                }),
         ];
     }
 }
