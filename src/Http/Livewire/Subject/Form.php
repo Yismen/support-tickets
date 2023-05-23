@@ -6,6 +6,7 @@ use Livewire\Component;
 use Illuminate\Validation\Rule;
 use Dainsys\Support\Models\Subject;
 use Dainsys\Support\Models\Department;
+use Dainsys\Support\Services\SubjectService;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Dainsys\Support\Services\DepartmentService;
 use Dainsys\Support\Traits\WithRealTimeValidation;
@@ -23,15 +24,18 @@ class Form extends Component
 
     public bool $editing = false;
     public string $modal_event_name_form = 'showSubjectFormModal';
-    public $subjects = [];
+    public $subjects;
 
     public $subject;
 
     public function render()
     {
+        $this->subjects = $this->subject?->department_id ? SubjectService::listForDeaprtment($this->subject->department_id) : null;
+
         return view('support::livewire.subject.form', [
             'departments' => DepartmentService::list(),
             'priorities' => TicketPrioritiesEnum::asArray(),
+            // 'subjects'
         ])
         ->layout('support::layouts.app');
     }
