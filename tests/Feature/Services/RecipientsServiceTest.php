@@ -2,9 +2,9 @@
 
 namespace Dainsys\Support\Tests\Feature\Services;
 
+use App\Models\User;
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Tests\TestCase;
-use Dainsys\Support\Models\SupportSuperAdmin;
 use Dainsys\Support\Services\RecipientsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
