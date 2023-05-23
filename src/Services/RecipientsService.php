@@ -7,6 +7,7 @@ use Dainsys\Support\Models\DepartmentRole;
 use Illuminate\Database\Eloquent\Collection;
 use Dainsys\Support\Models\SupportSuperAdmin;
 use Dainsys\Support\Enums\DepartmentRolesEnum;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class RecipientsService
 {
@@ -29,6 +30,9 @@ class RecipientsService
     {
         $recipients = $this->recipients
             ->filter(function ($user) {
+                if (is_subclass_of($user, MustVerifyEmail::class) && $user->email_verified_at === null) {
+                    return false;
+                }
                 return $user?->email;
             });
 
