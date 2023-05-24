@@ -39,6 +39,6 @@ class SendTicketAssignedMail
             ->owner()
             ->agent()
             ->allDepartmentAdmins()
-            ->recipients();
+            ->get();
     }
 }

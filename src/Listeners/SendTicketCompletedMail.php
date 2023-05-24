@@ -41,6 +41,6 @@ class SendTicketCompletedMail
             ->owner()
             ->agent()
             ->allDepartmentAdmins()
-            ->recipients();
+            ->get();
     }
 }
