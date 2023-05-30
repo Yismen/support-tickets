@@ -33,6 +33,7 @@ class TicketPolicy
         return $user->id === $ticket->created_by
             || $user->isDepartmentAdmin($ticket->department)
             || $user->isDepartmentAgent($ticket->department)
+            || $user->isSupportSuperAdmin()
             ;
     }
 
@@ -56,7 +57,8 @@ class TicketPolicy
      */
     public function update(User $user, Ticket $ticket): bool
     {
-        return $user->id === $ticket->created_by;
+        return $user->id === $ticket->created_by
+        || $user->isSupportSuperAdmin();
     }
 
     /**
