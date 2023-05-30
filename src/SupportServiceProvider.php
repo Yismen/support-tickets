@@ -55,10 +55,8 @@ class SupportServiceProvider extends AuthServiceProvider
                 $path->startsWith('support') ||
                 $path->beforeLast('::')->endsWith('support')
             ) {
-                return $user->isSupportSuperAdmin();
+                return $user->isSupportSuperAdmin() ? true : null;
             }
-
-            return true;
         });
 
         Gate::define('own-ticket', function (User $user, Ticket $ticket) {
@@ -94,7 +92,7 @@ class SupportServiceProvider extends AuthServiceProvider
         });
 
         Gate::define('view-dashboards', function (User $user) {
-            return $user->hasAnyDepartmentRole()
+            return $user->hasAnyDepartmentRole() || $user->isSupportSuperAdmin()
                 ;
         });
     }
