@@ -49,7 +49,16 @@ class SupportServiceProvider extends AuthServiceProvider
     protected function bootGates()
     {
         Gate::before(function ($user, $ability) {
-            return $user->isSupportSuperAdmin() ? true : null;
+            $path = str(request()->path());
+
+            if (
+                $path->startsWith('support') ||
+                $path->beforeLast('::')->endsWith('support')
+            ) {
+                return $user->isSupportSuperAdmin();
+            }
+
+            return true;
         });
 
         Gate::define('own-ticket', function (User $user, Ticket $ticket) {
