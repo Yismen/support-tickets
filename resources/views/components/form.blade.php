@@ -5,7 +5,7 @@
 
 <form @if ($editing) wire:submit.prevent="update()" @else wire:submit.prevent="store()" @endif {{ $attributes->merge([
     'class' => 'needs-validation'
-    ]) }} autocomplete="off">
+    ]) }} autocomplete="off" >
 
     {{ $slot }}
 
@@ -22,4 +22,15 @@
         @endif
     </div>
     @endif
+
+    @push('scripts')
+    <script>
+        (function() {
+            document.addEventListener("DOMContentLoaded", function(){
+                let firstInput = $("#formId").find('input[type=text],textarea,select').filter(':visible:first');
+                firstInput.focus();
+            });     
+        })()
+    </script>
+    @endpush
 </form>
