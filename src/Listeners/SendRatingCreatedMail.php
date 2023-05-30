@@ -38,6 +38,6 @@ class SendRatingCreatedMail
             ->owner()
             ->agent()
             ->allDepartmentAdmins()
-            ->recipients();
+            ->get();
     }
 }

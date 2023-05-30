@@ -26,7 +26,7 @@ class RecipientsService
         return $this;
     }
 
-    public function recipients(): Collection
+    public function get(): Collection
     {
         $recipients = $this->recipients
             ->filter(function ($user) {

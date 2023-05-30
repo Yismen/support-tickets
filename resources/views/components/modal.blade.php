@@ -42,8 +42,8 @@
         element.modal('show');
 
         element.on('shown.bs.modal', function (event) {
-            let firstInput = $(element).find('input[type!=hidden]:first').first();
-            
+            let firstInput = $(element).find('input[type=text],textarea,select').filter(':visible:first');
+
             firstInput.focus();
         });
     })

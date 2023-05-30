@@ -33,7 +33,7 @@ class RecipientsServiceTest extends TestCase
         $ticket = Ticket::factory()->createQuietly();
         $service = new RecipientsService();
 
-        $recipients = $service->ofTicket($ticket)->owner()->recipients();
+        $recipients = $service->ofTicket($ticket)->owner()->get();
 
         $this->assertTrue($recipients->contains($ticket->owner));
     }
@@ -49,7 +49,7 @@ class RecipientsServiceTest extends TestCase
             ->ofTicket($ticket)
             ->superAdmins()
             ->owner()
-            ->recipients();
+            ->get();
 
         $this->assertTrue($recipients->contains($super_admin_user));
     }
@@ -66,7 +66,7 @@ class RecipientsServiceTest extends TestCase
             ->superAdmins()
             ->owner()
             ->allDepartmentAdmins()
-            ->recipients();
+            ->get();
 
         $this->assertTrue($recipients->contains($department_admin));
     }
@@ -84,7 +84,7 @@ class RecipientsServiceTest extends TestCase
             ->owner()
             ->allDepartmentAdmins()
             ->allDepartmentAgents()
-            ->recipients();
+            ->get();
 
         $this->assertTrue($recipients->contains($user));
     }
@@ -103,7 +103,7 @@ class RecipientsServiceTest extends TestCase
             ->owner()
             ->allDepartmentAdmins()
             ->agent()
-            ->recipients();
+            ->get();
 
         $this->assertTrue($recipients->contains($user));
     }
@@ -123,7 +123,7 @@ class RecipientsServiceTest extends TestCase
             ->owner()
             ->allDepartmentAdmins()
             ->agent()
-            ->recipients();
+            ->get();
 
         $this->assertTrue($recipients->contains($user));
     }
@@ -143,7 +143,7 @@ class RecipientsServiceTest extends TestCase
             ->owner()
             ->allDepartmentAdmins()
             ->agent()
-            ->recipients();
+            ->get();
 
         $this->assertTrue($recipients->doesntContain($user));
     }

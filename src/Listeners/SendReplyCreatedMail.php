@@ -38,6 +38,6 @@ class SendReplyCreatedMail
             ->owner()
             ->agent()
             ->allDepartmentAdmins()
-            ->recipients();
+            ->get();
     }
 }

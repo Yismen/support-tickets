@@ -39,6 +39,6 @@ class SendTicketReopenedMail
             ->owner()
             ->agent()
             ->allDepartmentAdmins()
-            ->recipients();
+            ->get();
     }
 }
