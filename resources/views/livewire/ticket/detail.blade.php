@@ -25,7 +25,7 @@
                     <th class="text-right">{{ str(__('support::messages.assigned_to'))->headline() }}:</th>
                     <td class="text-left">
                         @if ($ticket->assigned_to ?? null)
-                        {{ $ticket->agent->name }}, {{ $ticket->assigned_at?->diffForHumans()
+                        {{ $ticket->agent?->name }}, {{ $ticket->assigned_at?->diffForHumans()
                         ??
                         '' }}
                         @endif
