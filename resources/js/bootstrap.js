@@ -10,6 +10,7 @@ try {
     // window.$ = window.jQuery = require('jquery');
     // window.Popper = require('popper.js').default;
     // require('bootstrap');
+    require('select2');
     require('admin-lte');
 } catch (e) { }
 
