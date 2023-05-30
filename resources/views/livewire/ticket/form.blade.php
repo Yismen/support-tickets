@@ -7,7 +7,7 @@
     @endphp
 
     <x-support::modal modal-name="TicketForm" title="{{ $title }}" event-name="{{ $this->modal_event_name_form }}"
-        :backdrop="false" class="modal-xl">
+        :backdrop="false" class="modal-lg">
 
         <x-support::form :editing="$editing">
             <div class="p-3">
