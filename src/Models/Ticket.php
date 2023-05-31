@@ -224,6 +224,11 @@ class Ticket extends AbstractModel implements Auditable
         return $query->whereColumn('completed_at', '>', 'expected_at');
     }
 
+    public function scopeExpired(Builder $query): Builder
+    {
+        return $query->where('expected_at', '<', now());
+    }
+
     public function getImagePathAttribute()
     {
         return Storage::url($this->image) . '?' . Str::random(5);

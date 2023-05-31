@@ -15,6 +15,7 @@ use Dainsys\Support\Policies\DepartmentPolicy;
 use Dainsys\Support\Console\Commands\InstallCommand;
 use Dainsys\Support\Console\Commands\CreateSuperUser;
 use Dainsys\Support\Console\Commands\UpdateTicketStatus;
+use Dainsys\Support\Console\Commands\SendTicketsExpiredReport;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider;
 
 class SupportServiceProvider extends AuthServiceProvider
@@ -132,6 +133,7 @@ class SupportServiceProvider extends AuthServiceProvider
                 InstallCommand::class,
                 CreateSuperUser::class,
                 UpdateTicketStatus::class,
+                SendTicketsExpiredReport::class
             ]);
         }
 
@@ -139,6 +141,10 @@ class SupportServiceProvider extends AuthServiceProvider
             $schedule->command(UpdateTicketStatus::class)
                ->timezone('America/New_York')
                ->everyThirtyMinutes();
+
+            $schedule->command(SendTicketsExpiredReport::class)
+                ->timezone('America/New_York')
+                ->dailyAt('08');
         });
     }
 
