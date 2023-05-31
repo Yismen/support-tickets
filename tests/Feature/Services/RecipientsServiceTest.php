@@ -65,7 +65,7 @@ class RecipientsServiceTest extends TestCase
             ->ofTicket($ticket)
             ->superAdmins()
             ->owner()
-            ->allDepartmentAdmins()
+            ->departmentAdmins()
             ->get();
 
         $this->assertTrue($recipients->contains($department_admin));
@@ -82,8 +82,8 @@ class RecipientsServiceTest extends TestCase
             ->ofTicket($ticket)
             ->superAdmins()
             ->owner()
-            ->allDepartmentAdmins()
-            ->allDepartmentAgents()
+            ->departmentAdmins()
+            ->departmentAgents()
             ->get();
 
         $this->assertTrue($recipients->contains($user));
@@ -101,7 +101,7 @@ class RecipientsServiceTest extends TestCase
             ->ofTicket($ticket)
             ->superAdmins()
             ->owner()
-            ->allDepartmentAdmins()
+            ->departmentAdmins()
             ->agent()
             ->get();
 
@@ -121,7 +121,7 @@ class RecipientsServiceTest extends TestCase
             ->ofTicket($ticket)
             ->superAdmins()
             ->owner()
-            ->allDepartmentAdmins()
+            ->departmentAdmins()
             ->agent()
             ->get();
 
@@ -141,7 +141,7 @@ class RecipientsServiceTest extends TestCase
             ->ofTicket($ticket)
             ->superAdmins()
             ->owner()
-            ->allDepartmentAdmins()
+            ->departmentAdmins()
             ->agent()
             ->get();
 

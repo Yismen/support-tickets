@@ -36,8 +36,8 @@ class SendTicketCreatedMail
             ->ofTicket($this->ticket)
             ->superAdmins()
             ->owner()
-            ->allDepartmentAdmins()
-            ->allDepartmentAgents()
+            ->departmentAdmins()
+            ->departmentAgents()
             ->get();
     }
 }

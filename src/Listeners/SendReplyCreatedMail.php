@@ -37,7 +37,7 @@ class SendReplyCreatedMail
             // ->superAdmins()
             ->owner()
             ->agent()
-            ->allDepartmentAdmins()
+            ->departmentAdmins()
             ->get();
     }
 }

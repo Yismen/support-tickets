@@ -40,7 +40,7 @@ class SendTicketCompletedMail
             ->superAdmins()
             ->owner()
             ->agent()
-            ->allDepartmentAdmins()
+            ->departmentAdmins()
             ->get();
     }
 }

@@ -37,7 +37,7 @@ class SendRatingCreatedMail
             ->superAdmins()
             ->owner()
             ->agent()
-            ->allDepartmentAdmins()
+            ->departmentAdmins()
             ->get();
     }
 }

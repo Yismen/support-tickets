@@ -38,7 +38,7 @@ class SendTicketDeletedMail
             ->superAdmins()
             ->owner()
             ->agent()
-            ->allDepartmentAdmins()
+            ->departmentAdmins()
             ->get();
     }
 }

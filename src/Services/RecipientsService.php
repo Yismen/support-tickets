@@ -19,7 +19,7 @@ class RecipientsService
         $this->recipients = new Collection();
     }
 
-    public function ofTicket($ticket): self
+    public function ofTicket(Ticket $ticket): self
     {
         $this->ticket = $ticket;
 
@@ -43,19 +43,6 @@ class RecipientsService
             });
     }
 
-    public function owner(): self
-    {
-        $this->ticket->load('owner');
-
-        $this->recipients = $this->recipients
-            ->filter(function ($user) {
-                return $user?->email;
-            })
-            ->push($this->ticket->owner);
-
-        return $this;
-    }
-
     public function superAdmins(): self
     {
         $super_admins = SupportSuperAdmin::query()
@@ -77,7 +64,6 @@ class RecipientsService
     {
         $admins = DepartmentRole::query()
             ->where('role', DepartmentRolesEnum::Admin)
-            ->where('department_id', $this->ticket->department_id)
             ->with('user')
             ->get()->map->user;
 
@@ -92,12 +78,63 @@ class RecipientsService
         return $this;
     }
 
-    public function allDepartmentAgents(): self
+    public function owner($ticket = null): self
     {
+        $ticket = $ticket ?: $this->ticket;
+        $ticket->load('owner');
+
+        $this->recipients = $this->recipients
+            ->filter(function ($user) {
+                return $user?->email;
+            })
+            ->push($ticket->owner);
+
+        return $this;
+    }
+
+    public function agent($ticket = null): self
+    {
+        $ticket = $ticket ?: $this->ticket;
+        $ticket->load('agent');
+
+        $this->recipients = $this->recipients
+            ->filter(function ($user) {
+                return $user?->email;
+            })
+            ->push($ticket->agent);
+
+        return $this;
+    }
+
+    public function departmentAdmins($ticket = null): self
+    {
+        $ticket = $ticket ?: $this->ticket;
+
+        $admins = DepartmentRole::query()
+            ->where('role', DepartmentRolesEnum::Admin)
+            ->where('department_id', $ticket->department_id)
+            ->with('user')
+            ->get()->map->user;
+
+        if ($admins->count()) {
+            $this->recipients = $this->recipients
+            ->filter(function ($user) {
+                return $user?->email;
+            })
+            ->merge($admins);
+        }
+
+        return $this;
+    }
+
+    public function departmentAgents($ticket = null): self
+    {
+        $ticket = $ticket ?: $this->ticket;
+
         $agents = DepartmentRole::query()
             ->with('user')
             ->where('role', DepartmentRolesEnum::Agent)
-            ->where('department_id', $this->ticket->department_id)->get()->map->user;
+            ->where('department_id', $ticket->department_id)->get()->map->user;
 
         if ($agents->count()) {
             $this->recipients = $this->recipients
@@ -106,19 +143,6 @@ class RecipientsService
                 })
                 ->merge($agents);
         }
-
-        return $this;
-    }
-
-    public function agent(): self
-    {
-        $this->ticket->load('agent');
-
-        $this->recipients = $this->recipients
-            ->filter(function ($user) {
-                return $user?->email;
-            })
-            ->push($this->ticket->agent);
 
         return $this;
     }
