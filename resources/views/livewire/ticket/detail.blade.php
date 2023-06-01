@@ -50,6 +50,10 @@
                     </td>
                 </tr>
                 <tr>
+                    <th class="text-right">{{ str(__('support::messages.created_at'))->headline() }}:</th>
+                    <td class="text-left">{{ $ticket?->created_at?->diffForHumans() }} </td>
+                </tr>
+                <tr>
                     <th class="text-right">{{ str(__('support::messages.dued_at'))->headline() }}:</th>
                     <td class="text-left">{{ $ticket?->expected_at?->diffForHumans() }} </td>
                 </tr>
