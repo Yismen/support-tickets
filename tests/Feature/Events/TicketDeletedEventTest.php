@@ -21,7 +21,7 @@ class TicketDeletedEventTest extends TestCase
         Event::fake([
             TicketDeletedEvent::class
         ]);
-        $this->supportSuperAdmin();
+        $this->supportSuperAdminUser();
 
         $ticket = Ticket::factory()->create();
 

@@ -26,7 +26,7 @@ class DetailTest extends TestCase
     /** @test */
     public function subject_detail_component_grants_access_to_support_super_admin()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $subject = Subject::factory()->create();
 
         $component = Livewire::test(Detail::class);
@@ -38,7 +38,7 @@ class DetailTest extends TestCase
     /** @test */
     public function subject_detail_component_grants_access_to_authorized_users()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $subject = Subject::factory()->create();
 
         $component = Livewire::test(Detail::class);
@@ -50,7 +50,7 @@ class DetailTest extends TestCase
     /** @test */
     public function subject_detail_component_responds_to_wants_show_subject_event()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $subject = Subject::factory()->create();
 
         $component = Livewire::test(Detail::class);

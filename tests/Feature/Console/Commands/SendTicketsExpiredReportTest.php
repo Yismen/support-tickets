@@ -37,7 +37,7 @@ class SendTicketsExpiredReportTest extends TestCase implements ShouldQueue
         ]);
         $ticket = Ticket::factory()->create();
 
-        $recipient = $this->supportSuperAdmin();
+        $recipient = $this->supportSuperAdminUser();
         $this->travelTo(now()->addDays(50));
         $this->artisan(SendTicketsExpiredReport::class);
 

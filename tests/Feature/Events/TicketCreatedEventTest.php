@@ -36,9 +36,9 @@ class TicketCreatedEventTest extends TestCase
     public function email_is_sent()
     {
         Mail::fake();
-        $superAdmin = $this->supportSuperAdmin();
+        $superAdmin = $this->supportSuperAdminUser();
         $department = Department::factory()->create();
-        $department_admin = $this->departmentAdmin($department);
+        $department_admin = $this->departmentAdminUser($department);
 
         $ticket = Ticket::factory()->create(['department_id' => $department->id]);
 

@@ -38,7 +38,7 @@ class FormTest extends TestCase
     /** @test */
     public function subject_form_component_grants_access_to_support_super_admin_to_create_subject()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $subject = Subject::factory()->create();
 
         $component = Livewire::test(Form::class);
@@ -50,7 +50,7 @@ class FormTest extends TestCase
     /** @test */
     public function subject_form_component_grants_access_to_support_super_admin_to_update_subject()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $subject = Subject::factory()->create();
 
         $component = Livewire::test(Form::class);
@@ -62,7 +62,7 @@ class FormTest extends TestCase
     /** @test */
     public function subject_form_component_grants_access_to_authorized_users_to_create_subject()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $subject = Subject::factory()->create();
 
         $component = Livewire::test(Form::class);
@@ -74,7 +74,7 @@ class FormTest extends TestCase
     /** @test */
     public function subject_form_component_grants_access_to_authorized_users_to_update_subject()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $subject = Subject::factory()->create();
 
         $component = Livewire::test(Form::class);
@@ -86,7 +86,7 @@ class FormTest extends TestCase
     /** @test */
     public function subject_form_component_responds_to_create_subject_event()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $subject = new Subject();
 
         $component = Livewire::test(Form::class);
@@ -101,7 +101,7 @@ class FormTest extends TestCase
     /** @test */
     public function subject_form_component_responds_to_update_subject_event()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $subject = Subject::factory()->create();
 
         $component = Livewire::test(Form::class);
@@ -116,7 +116,7 @@ class FormTest extends TestCase
     /** @test */
     public function subject_form_component_validates_required_fields_to_create_subjects()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $data = ['name' => '', 'department_id' => Department::factory()->create()];
         $component = Livewire::test(Form::class)
             ->set('subject', new Subject($data));
@@ -129,7 +129,7 @@ class FormTest extends TestCase
     /** @test */
     public function subject_form_component_validates_required_fields_to_update_subjects()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $component = Livewire::test(Form::class)
             ->set('subject', Subject::factory()->create())
             ->set('subject.name', '');
@@ -142,7 +142,7 @@ class FormTest extends TestCase
     public function subject_form_component_validates_unique_fields_to_create_subjects()
     {
         $subject = Subject::factory()->create();
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $data = ['name' => $subject->name];
         $component = Livewire::test(Form::class)
             ->set('subject', new Subject($data));
@@ -156,7 +156,7 @@ class FormTest extends TestCase
     {
         $subject_1 = Subject::factory()->create();
         $subject_2 = Subject::factory()->create();
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $component = Livewire::test(Form::class);
 
         $component->set('subject', $subject_1);
@@ -173,7 +173,7 @@ class FormTest extends TestCase
     /** @test */
     public function subject_form_component_creates_subject()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $subject = Subject::factory()->make();
         $component = Livewire::test(Form::class);
         $component->emit('createSubject', new Subject());
@@ -199,7 +199,7 @@ class FormTest extends TestCase
     /** @test */
     public function subject_form_component_updates_subject()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $subject = Subject::factory()->create();
 
         $component = Livewire::test(Form::class);

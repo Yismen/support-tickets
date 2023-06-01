@@ -26,7 +26,7 @@ class DashboardTest extends TestCase
     public function dashboard_component_renders_correctly_for_department_agent()
     {
         $department = Department::factory()->create();
-        $this->actingAs($this->departmentAgent($department));
+        $this->actingAs($this->departmentAgentUser($department));
 
         $component = Livewire::test(Index::class);
 
@@ -37,7 +37,7 @@ class DashboardTest extends TestCase
     public function dashboard_component_renders_correctly_for_department_admin()
     {
         $department = Department::factory()->create();
-        $this->actingAs($this->departmentAdmin($department));
+        $this->actingAs($this->departmentAdminUser($department));
 
         $component = Livewire::test(Index::class);
 
@@ -47,7 +47,7 @@ class DashboardTest extends TestCase
     /** @test */
     public function dashboard_component_renders_correctly_for_support_super_admin()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
 
         $component = Livewire::test(Index::class);
 

@@ -22,7 +22,7 @@ class RatingCreatedEventTest extends TestCase
             RatingCreatedEvent::class
         ]);
 
-        $this->supportSuperAdmin();
+        $this->supportSuperAdminUser();
 
         $rating = Rating::factory()->create();
 
@@ -38,7 +38,7 @@ class RatingCreatedEventTest extends TestCase
     {
         Mail::fake();
 
-        $this->supportSuperAdmin();
+        $this->supportSuperAdminUser();
 
         $rating = Rating::factory()->create();
 

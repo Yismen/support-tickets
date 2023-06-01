@@ -41,7 +41,7 @@ class RecipientsServiceTest extends TestCase
     /** @test */
     public function service_collection_contains_super_admin_user()
     {
-        $super_admin_user = $this->SupportSuperAdmin();
+        $super_admin_user = $this->supportSuperAdminUser();
         $ticket = Ticket::factory()->createQuietly();
 
         $service = new RecipientsService();
@@ -58,7 +58,7 @@ class RecipientsServiceTest extends TestCase
     public function service_collection_contains_departmet_admins()
     {
         $ticket = Ticket::factory()->createQuietly();
-        $department_admin = $this->departmentAdmin($ticket->department);
+        $department_admin = $this->departmentAdminUser($ticket->department);
 
         $service = new RecipientsService();
         $recipients = $service
@@ -75,7 +75,7 @@ class RecipientsServiceTest extends TestCase
     public function service_collection_contains_departmet_agents()
     {
         $ticket = Ticket::factory()->createQuietly();
-        $user = $this->departmentAgent($ticket->department);
+        $user = $this->departmentAgentUser($ticket->department);
 
         $service = new RecipientsService();
         $recipients = $service
@@ -93,7 +93,7 @@ class RecipientsServiceTest extends TestCase
     public function service_collection_contains_ticket_agent()
     {
         $ticket = Ticket::factory()->createQuietly();
-        $user = $this->departmentAgent($ticket->department);
+        $user = $this->departmentAgentUser($ticket->department);
         $ticket->assignTo($user);
 
         $service = new RecipientsService();

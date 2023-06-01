@@ -22,7 +22,7 @@ class TicketReopenedEventTest extends TestCase
             TicketReopenedEvent::class
         ]);
 
-        $this->supportSuperAdmin();
+        $this->supportSuperAdminUser();
         $ticket = Ticket::factory()->create();
 
         $ticket->reopen();
@@ -39,7 +39,7 @@ class TicketReopenedEventTest extends TestCase
     {
         Mail::fake();
 
-        $this->supportSuperAdmin();
+        $this->supportSuperAdminUser();
         $ticket = Ticket::factory()->assigned()->create();
         $ticket->reopen();
 
