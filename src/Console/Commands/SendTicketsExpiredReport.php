@@ -53,10 +53,12 @@ class SendTicketsExpiredReport extends Command
             ])
             ->get();
 
-        Mail::to($recipientsService->superAdmins()->allDepartmentAdmins()->get())
-            ->send(new TicketsExpiredMail($tickets));
+        if ($tickets->count() > 0) {
+            Mail::to($recipientsService->superAdmins()->allDepartmentAdmins()->get())
+                    ->send(new TicketsExpiredMail($tickets));
 
-        $this->info("Report Sent with {$tickets->count()} tickets");
+            $this->info("Report Sent with {$tickets->count()} tickets");
+        }
 
         return 0;
     }
