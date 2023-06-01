@@ -42,16 +42,8 @@ class InstallCommand extends Command
         $this->call('vendor:publish', ['--tag' => 'livewire-charts:public']);
         $this->call('migrate');
 
-        if ($this->confirm('Would you like to scafold the auth ui?')) {
-            $this->call('ui:auth');
-        }
-
         if ($this->confirm('Would you like to publish the support\'s configuration file?')) {
             $this->call('vendor:publish', ['--tag' => 'support:config']);
-        }
-
-        if ($this->confirm('Would you like to publish the support\'s translations files?')) {
-            $this->call('vendor:publish', ['--tag' => 'support:translations']);
         }
 
         $this->info('All done!');
