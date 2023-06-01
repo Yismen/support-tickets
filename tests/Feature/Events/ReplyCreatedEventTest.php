@@ -22,7 +22,7 @@ class ReplyCreatedEventTest extends TestCase
             ReplyCreatedEvent::class
         ]);
 
-        $this->supportSuperAdmin();
+        $this->supportSuperAdminUser();
 
         $reply = Reply::factory()->create();
 

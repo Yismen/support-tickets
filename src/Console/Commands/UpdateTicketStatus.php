@@ -39,7 +39,7 @@ class UpdateTicketStatus extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $this->tickets = Ticket::incompleted()->with('subject')->get();
 
@@ -48,5 +48,7 @@ class UpdateTicketStatus extends Command
         });
 
         $this->info("Successfully updated {$this->tickets->count()} tickets");
+
+        return 0;
     }
 }

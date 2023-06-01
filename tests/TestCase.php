@@ -2,11 +2,11 @@
 
 namespace Dainsys\Support\Tests;
 
-use Illuminate\Foundation\Auth\User;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Dainsys\Support\Models\Department;
 use Dainsys\Support\Enums\DepartmentRolesEnum;
-use Orchestra\Testbench\Factories\UserFactory;
+use Dainsys\Support\Database\Factories\UserFactory;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 class TestCase extends OrchestraTestCase
@@ -36,6 +36,7 @@ class TestCase extends OrchestraTestCase
             \Rappasoft\LaravelLivewireTables\LaravelLivewireTablesServiceProvider::class,
             \Asantibanez\LivewireCharts\LivewireChartsServiceProvider::class,
             \Dainsys\Support\SupportServiceProvider::class,
+            \Maatwebsite\Excel\ExcelServiceProvider::class,
         ];
     }
 
@@ -49,7 +50,7 @@ class TestCase extends OrchestraTestCase
         $this->loadLaravelMigrations();
     }
 
-    protected function supportSuperAdmin(): User
+    protected function supportSuperAdminUser(): User
     {
         $user = $this->user();
         $user->supportSuperAdmin()->create();
@@ -57,7 +58,7 @@ class TestCase extends OrchestraTestCase
         return $user;
     }
 
-    protected function departmentAdmin(Department $department): User
+    protected function departmentAdminUser(Department $department): User
     {
         $user = $this->user();
 
@@ -66,7 +67,7 @@ class TestCase extends OrchestraTestCase
         return $user;
     }
 
-    protected function departmentAgent(Department $department): User
+    protected function departmentAgentUser(Department $department): User
     {
         $user = $this->user();
 
@@ -78,5 +79,10 @@ class TestCase extends OrchestraTestCase
     protected function user(array $attributes = []): User
     {
         return UserFactory::new()->create($attributes);
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
     }
 }

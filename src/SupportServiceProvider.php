@@ -15,6 +15,7 @@ use Dainsys\Support\Policies\DepartmentPolicy;
 use Dainsys\Support\Console\Commands\InstallCommand;
 use Dainsys\Support\Console\Commands\CreateSuperUser;
 use Dainsys\Support\Console\Commands\UpdateTicketStatus;
+use Dainsys\Support\Console\Commands\SendTicketsExpiredReport;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider;
 
 class SupportServiceProvider extends AuthServiceProvider
@@ -132,6 +133,7 @@ class SupportServiceProvider extends AuthServiceProvider
                 InstallCommand::class,
                 CreateSuperUser::class,
                 UpdateTicketStatus::class,
+                SendTicketsExpiredReport::class
             ]);
         }
 
@@ -139,6 +141,10 @@ class SupportServiceProvider extends AuthServiceProvider
             $schedule->command(UpdateTicketStatus::class)
                ->timezone('America/New_York')
                ->everyThirtyMinutes();
+
+            $schedule->command(SendTicketsExpiredReport::class)
+                ->timezone('America/New_York')
+                ->dailyAt('08');
         });
     }
 
@@ -151,6 +157,8 @@ class SupportServiceProvider extends AuthServiceProvider
         Event::listen(\Dainsys\Support\Events\TicketCompletedEvent::class, \Dainsys\Support\Listeners\SendTicketCompletedMail::class);
         Event::listen(\Dainsys\Support\Events\TicketDeletedEvent::class, \Dainsys\Support\Listeners\SendTicketDeletedMail::class);
         Event::listen(\Dainsys\Support\Events\TicketReopenedEvent::class, \Dainsys\Support\Listeners\SendTicketReopenedMail::class);
+
+        Event::listen(\Illuminate\Mail\Events\MessageSent::class, \Dainsys\Support\Listeners\RemoveMailAttachment::class);
     }
 
     protected function bootLivewireComponents()

@@ -10,6 +10,7 @@ return [
     'comment' => 'comment',
     'completed_at' => 'completed_at',
     'create' => 'create',
+    'created_at' => 'created_at',
     'dashboard' => 'dashboard',
     'delete' => 'delete',
     'department_role' => 'department_role',

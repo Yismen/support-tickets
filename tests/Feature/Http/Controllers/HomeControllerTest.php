@@ -24,7 +24,7 @@ class HomeControllerTest extends TestCase
     public function agents_are_redirected_to_dashbard()
     {
         $department = Department::factory()->create();
-        $this->actingAs($this->departmentAgent($department));
+        $this->actingAs($this->departmentAgentUser($department));
 
         $response = $this->get(route('support.home'));
 
@@ -35,7 +35,7 @@ class HomeControllerTest extends TestCase
     public function agents_can_view_regular_department_dashbard()
     {
         $department = Department::factory()->create();
-        $this->actingAs($this->departmentAgent($department));
+        $this->actingAs($this->departmentAgentUser($department));
 
         $response = $this->get(route('support.dashboard'));
 
@@ -49,7 +49,7 @@ class HomeControllerTest extends TestCase
     public function admins_can_view_department_dashbard()
     {
         $department = Department::factory()->create();
-        $this->actingAs($this->departmentAdmin($department));
+        $this->actingAs($this->departmentAdminUser($department));
 
         $response = $this->get(route('support.dashboard'));
 
@@ -63,7 +63,7 @@ class HomeControllerTest extends TestCase
     public function super_admins_can_view_correct_dashbard()
     {
         $department = Department::factory()->create();
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
 
         $response = $this->get(route('support.dashboard'));
 

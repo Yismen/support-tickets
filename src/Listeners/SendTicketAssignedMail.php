@@ -38,7 +38,7 @@ class SendTicketAssignedMail
             ->superAdmins()
             ->owner()
             ->agent()
-            ->allDepartmentAdmins()
+            ->departmentAdmins()
             ->get();
     }
 }

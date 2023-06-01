@@ -77,7 +77,7 @@ class FormTest extends TestCase
     /** @test */
     public function ticket_form_component_responds_to_create_ticket_event()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $ticket = new Ticket();
 
         $component = Livewire::test(Form::class);
@@ -92,7 +92,7 @@ class FormTest extends TestCase
     /** @test */
     public function ticket_form_component_responds_to_update_ticket_event()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $ticket = Ticket::factory()->create();
 
         $component = Livewire::test(Form::class);
@@ -107,7 +107,7 @@ class FormTest extends TestCase
     /** @test */
     public function ticket_form_component_validates_required_fields_to_create_tickets()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $data = ['department_id' => Department::factory()->create()];
         $component = Livewire::test(Form::class)
             ->set('ticket.subject_id', null);
@@ -119,7 +119,7 @@ class FormTest extends TestCase
     /** @test */
     public function ticket_form_component_validates_required_fields_to_update_tickets()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $component = Livewire::test(Form::class)
             ->set('ticket.department_id', '')
             ->set('ticket.subject_id', '');
@@ -131,7 +131,7 @@ class FormTest extends TestCase
     /** @test */
     public function ticket_form_component_creates_ticket()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $ticket = Ticket::factory()->make();
         $component = Livewire::test(Form::class);
         $component->emit('createTicket', new Ticket());
@@ -158,7 +158,7 @@ class FormTest extends TestCase
     /** @test */
     public function ticket_form_component_updates_ticket()
     {
-        $this->actingAs($this->supportSuperAdmin());
+        $this->actingAs($this->supportSuperAdminUser());
         $ticket = Ticket::factory()->create();
 
         $component = Livewire::test(Form::class);

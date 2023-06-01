@@ -25,7 +25,7 @@
                     <th class="text-right">{{ str(__('support::messages.assigned_to'))->headline() }}:</th>
                     <td class="text-left">
                         @if ($ticket->assigned_to ?? null)
-                        {{ $ticket->agent->name }}, {{ $ticket->assigned_at?->diffForHumans()
+                        {{ $ticket->agent?->name }}, {{ $ticket->assigned_at?->diffForHumans()
                         ??
                         '' }}
                         @endif
@@ -48,6 +48,10 @@
                     <th class="text-right">{{ str(__('support::messages.status'))->headline() }}:</th>
                     <td class="text-left {{ $ticket->status?->class() }}">{{ str($ticket->status?->name)->headline() }}
                     </td>
+                </tr>
+                <tr>
+                    <th class="text-right">{{ str(__('support::messages.created_at'))->headline() }}:</th>
+                    <td class="text-left">{{ $ticket?->created_at?->diffForHumans() }} </td>
                 </tr>
                 <tr>
                     <th class="text-right">{{ str(__('support::messages.dued_at'))->headline() }}:</th>

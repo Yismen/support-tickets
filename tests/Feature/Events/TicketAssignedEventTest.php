@@ -24,9 +24,9 @@ class TicketAssignedEventTest extends TestCase
 
         $ticket = Ticket::factory()->create();
 
-        $this->supportSuperAdmin();
+        $this->supportSuperAdminUser();
 
-        $ticket->assignTo($this->departmentAgent($ticket->department));
+        $ticket->assignTo($this->departmentAgentUser($ticket->department));
 
         Event::assertDispatched(TicketAssignedEvent::class);
         Event::assertListening(
@@ -41,7 +41,7 @@ class TicketAssignedEventTest extends TestCase
         Mail::fake();
 
         $ticket = Ticket::factory()->create();
-        $ticket->assignTo($this->departmentAgent($ticket->department));
+        $ticket->assignTo($this->departmentAgentUser($ticket->department));
 
         Mail::assertQueued(TicketAssignedMail::class);
     }
