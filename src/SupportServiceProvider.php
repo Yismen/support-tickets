@@ -157,6 +157,8 @@ class SupportServiceProvider extends AuthServiceProvider
         Event::listen(\Dainsys\Support\Events\TicketCompletedEvent::class, \Dainsys\Support\Listeners\SendTicketCompletedMail::class);
         Event::listen(\Dainsys\Support\Events\TicketDeletedEvent::class, \Dainsys\Support\Listeners\SendTicketDeletedMail::class);
         Event::listen(\Dainsys\Support\Events\TicketReopenedEvent::class, \Dainsys\Support\Listeners\SendTicketReopenedMail::class);
+
+        Event::listen(\Illuminate\Mail\Events\MessageSent::class, \Dainsys\Support\Listeners\RemoveMailAttachment::class);
     }
 
     protected function bootLivewireComponents()

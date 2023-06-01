@@ -6,12 +6,13 @@ use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Tests\TestCase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Dainsys\Support\Mail\TicketsExpiredMail;
 use Dainsys\Support\Events\TicketCreatedEvent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Dainsys\Support\Console\Commands\SendTicketsExpiredReport;
 
-class SendTicketsExpiredReportTest extends TestCase
+class SendTicketsExpiredReportTest extends TestCase implements ShouldQueue
 {
     use RefreshDatabase;
 
@@ -30,7 +31,6 @@ class SendTicketsExpiredReportTest extends TestCase
     /** @test */
     public function sends_report()
     {
-        $this->withoutExceptionHandling();
         Mail::fake();
         Event::fake([
             TicketCreatedEvent::class
@@ -41,7 +41,7 @@ class SendTicketsExpiredReportTest extends TestCase
         $this->travelTo(now()->addDays(50));
         $this->artisan(SendTicketsExpiredReport::class);
 
-        Mail::assertQueued(TicketsExpiredMail::class, function ($mail) use ($ticket, $recipient) {
+        Mail::assertSent(TicketsExpiredMail::class, function ($mail) use ($ticket, $recipient) {
             return $mail->tickets->contains('id', $ticket->id)
                 && $mail->to[0]['address'] === $recipient->email;
         });

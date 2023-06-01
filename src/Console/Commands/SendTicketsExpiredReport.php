@@ -47,14 +47,14 @@ class SendTicketsExpiredReport extends Command
             ->orderBy('expected_at', 'ASC')
             ->with([
                 'subject',
+                'department',
                 'owner',
                 'agent',
-                'department',
             ])
             ->get();
 
         Mail::to($recipientsService->superAdmins()->allDepartmentAdmins()->get())
-            ->queue(new TicketsExpiredMail($tickets));
+            ->send(new TicketsExpiredMail($tickets));
 
         $this->info("Report Sent with {$tickets->count()} tickets");
 

@@ -36,6 +36,7 @@ class TestCase extends OrchestraTestCase
             \Rappasoft\LaravelLivewireTables\LaravelLivewireTablesServiceProvider::class,
             \Asantibanez\LivewireCharts\LivewireChartsServiceProvider::class,
             \Dainsys\Support\SupportServiceProvider::class,
+            \Maatwebsite\Excel\ExcelServiceProvider::class,
         ];
     }
 
@@ -78,5 +79,10 @@ class TestCase extends OrchestraTestCase
     protected function user(array $attributes = []): User
     {
         return UserFactory::new()->create($attributes);
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
     }
 }
