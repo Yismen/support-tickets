@@ -46,4 +46,19 @@ class SendTicketsExpiredReportTest extends TestCase implements ShouldQueue
                 && $mail->to[0]['address'] === $recipient->email;
         });
     }
+
+    /** @test */
+    public function sends_reportonly_if_it_has_expired_tickets()
+    {
+        Mail::fake();
+        Event::fake([
+            TicketCreatedEvent::class
+        ]);
+        $ticket = Ticket::factory()->create();
+
+        $recipient = $this->supportSuperAdminUser();
+        $this->artisan(SendTicketsExpiredReport::class);
+
+        Mail::assertNotSent(TicketsExpiredMail::class);
+    }
 }

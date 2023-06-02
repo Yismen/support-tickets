@@ -5,7 +5,8 @@
  2. You can install all package assets by running `php artisan support:install` command or `@php artisan vendor:publish --force --tag=support:assets`.  
     1. optionally, you add the following line to your `composer` file, under the `scripts` and `post-update-cmd` key, to publish the assets every time you update your composer dependencies: `@php artisan vendor:publish --tag=support:assets --force --ansi`.
     2. If you may want to customize the migrations before next step, first publish them: `@php artisan vendor:publish --force --tag=support:migrations`.
- 3. Run the migrations: `php artisan migrate`.   
+ 3. This package relies on `laravel/ui` package so make sure follow it's [guidelines](https://github.com/laravel/ui). 
+ 4. Run the migrations: `php artisan migrate`.   
 ### Usage
 1. Identify at least one user as super admin, which will have no restrictions in the application, by running command `php artisan support:create-super-user`.
 2. Add the following trait to the Athenticatable model, most like `App\Models\User`
