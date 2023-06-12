@@ -83,7 +83,7 @@ class FormTest extends TestCase
         $component = Livewire::test(Form::class);
         $component->emit('createTicket', $ticket);
 
-        $component->assertSet('ticket', $ticket);
+        $component->assertSet('ticket', $ticket->load('department'));
         $component->assertSet('editing', false);
         $component->assertDispatchedBrowserEvent('closeAllModals');
         $component->assertDispatchedBrowserEvent('showTicketFormModal');

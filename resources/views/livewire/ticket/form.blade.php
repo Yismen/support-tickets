@@ -31,6 +31,12 @@
                         <x-support::inputs.text-area field="ticket.description" rows="10" :editor=true>
                             {{ str(__('support::messages.description'))->headline() }}:
                         </x-support::inputs.text-area>
+
+                        @if (count($members) && $editing === false)
+                        <x-support::inputs.select field='assign_to' :options='$members' :required=false>
+                            {{ str(__('support::messages.assign_to'))->headline() }}:
+                        </x-support::inputs.select>
+                        @endif
                     </div>
                     <div class="col-sm-5">
                         <x-support::inputs.image :image="$image" field="image" current-image="{{ $ticket->image }}">

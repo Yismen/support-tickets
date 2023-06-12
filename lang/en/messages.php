@@ -4,6 +4,7 @@ return [
     'about' => 'about',
     'agent' => 'agent',
     'assigned_at' => 'assigned_at',
+    'assign_to' => 'assign_to',
     'assigned_to' => 'assigned_to',
     'cancel' => 'cancel',
     'close' => 'close',

@@ -5,12 +5,14 @@ namespace Dainsys\Support\Http\Livewire\Ticket;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
-use Dainsys\Support\Models\Subject;
 use Dainsys\Support\Models\Ticket;
 use Dainsys\Support\Rules\MinText;
 use Illuminate\Support\Facades\DB;
+use Dainsys\Support\Models\Subject;
+use Illuminate\Foundation\Auth\User;
 use Dainsys\Support\Models\Department;
 use Illuminate\Support\Facades\Storage;
+use Dainsys\Support\Models\DepartmentRole;
 use Dainsys\Support\Services\SubjectService;
 use Dainsys\Support\Enums\TicketPrioritiesEnum;
 use Dainsys\Support\Services\DepartmentService;
@@ -36,6 +38,7 @@ class Form extends Component
     public Ticket $ticket;
 
     public $image;
+    public $assign_to;
 
     public function mount()
     {
@@ -47,6 +50,9 @@ class Form extends Component
         return view('support::livewire.ticket.form', [
             'departments' => DepartmentService::list(),
             'subjects' => SubjectService::listForDeaprtment($this->ticket->department_id),
+            // 'members' => \Dainsys\Support\Services\Department\DepartmentService::members($this->ticket->department_id)->pluck('name', 'id'),
+
+            'members' => $this->ticket?->department?->team->load('user')->pluck('user.name', 'user_id')->toArray() ?: [],
             'priorities' => TicketPrioritiesEnum::asArray()
         ])
         ->layout('support::layouts.app');
@@ -94,6 +100,12 @@ class Form extends Component
             $ticket = auth()->user()->tickets()->create($this->ticket->toArray());
 
             $ticket->updateImage($this->image);
+
+            if ($this->assign_to) {
+                $agent = DepartmentRole::where('user_id', $this->assign_to)->firstOrFail();
+
+                $ticket->assignTo($agent);
+            }
         });
 
         $this->reset([
@@ -153,6 +165,12 @@ class Form extends Component
             'ticket.subject_id' => [
                 'required',
                 Rule::exists(Subject::class, 'id')
+            ],
+            'assign_to' => [
+                'nullable',
+                // Rule::exists(User::class, 'id')
+
+                Rule::exists(DepartmentRole::class, 'user_id'),
             ],
             'ticket.description' => [
                 'required',

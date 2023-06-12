@@ -8,12 +8,14 @@ use Dainsys\Support\Models\Traits\HasManySubjects;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Dainsys\Support\Models\Traits\HasShortDescription;
 use Dainsys\Support\Database\Factories\DepartmentFactory;
+use Dainsys\Support\Models\Traits\HasManyDepartmentRoles;
 
 class Department extends AbstractModel
 {
     use HasManySubjects;
     use HasManyTickets;
     use HasShortDescription;
+    use HasManyDepartmentRoles;
     protected $fillable = ['name', 'ticket_prefix', 'description'];
 
     protected static function newFactory(): DepartmentFactory
