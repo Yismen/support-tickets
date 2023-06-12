@@ -95,7 +95,7 @@ class Ticket extends AbstractModel implements Auditable
             $agent = DepartmentRole::where('user_id', $agent->id)->firstOrFail();
         }
 
-        if ($agent->department_id !== $this->department_id) {
+        if ($agent->department_id != $this->department_id) {
             throw new DifferentDepartmentException();
         }
 
