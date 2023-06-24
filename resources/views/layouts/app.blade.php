@@ -14,6 +14,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ mix('css/app.css', 'vendor/dainsys/support') }}">
+    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" />
     @livewireStyles
     <style>
         [x-cloak] {
