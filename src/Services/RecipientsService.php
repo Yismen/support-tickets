@@ -47,7 +47,10 @@ class RecipientsService
     {
         $super_admins = SupportSuperAdmin::query()
             ->with('user')
-            ->get()->map->user;
+            ->get() 
+            ->map->user->filter(function ($user) {
+                return $user?->email;
+            });
 
         if ($super_admins->count()) {
             $this->recipients = $this->recipients
@@ -65,7 +68,10 @@ class RecipientsService
         $admins = DepartmentRole::query()
             ->where('role', DepartmentRolesEnum::Admin)
             ->with('user')
-            ->get()->map->user;
+            ->get() 
+            ->map->user->filter(function ($user) {
+                return $user?->email;
+            });
 
         if ($admins->count()) {
             $this->recipients = $this->recipients
@@ -114,7 +120,10 @@ class RecipientsService
             ->where('role', DepartmentRolesEnum::Admin)
             ->where('department_id', $ticket->department_id)
             ->with('user')
-            ->get()->map->user;
+            ->get() 
+            ->map->user->filter(function ($user) {
+                return $user?->email;
+            });
 
         if ($admins->count()) {
             $this->recipients = $this->recipients
@@ -134,7 +143,10 @@ class RecipientsService
         $agents = DepartmentRole::query()
             ->with('user')
             ->where('role', DepartmentRolesEnum::Agent)
-            ->where('department_id', $ticket->department_id)->get()->map->user;
+            ->where('department_id', $ticket->department_id)->get() 
+            ->map->user->filter(function ($user) {
+                return $user?->email;
+            });
 
         if ($agents->count()) {
             $this->recipients = $this->recipients
