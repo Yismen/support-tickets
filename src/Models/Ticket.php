@@ -277,10 +277,14 @@ class Ticket extends AbstractModel implements Auditable
 
     protected function getReference(): string
     {
-        $latest_reference = self::query()->orderBy('reference', 'desc')->where('department_id', $this->department_id)->first()->reference;
+        $latest_reference = self::query()
+            ->orderBy('reference', 'desc')
+            ->where('department_id', $this->department_id)
+            ->where('reference', 'like', "{$this->department->ticket_prefix}%")
+            ->first();
 
         if ($latest_reference) {
-            return ++$latest_reference;
+            return ++$latest_reference->reference;
         }
 
         return $this->department->ticket_prefix . '000001';
