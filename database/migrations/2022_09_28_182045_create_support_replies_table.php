@@ -18,7 +18,7 @@ class CreateSupportRepliesTable extends Migration
     {
         Schema::create(resolve(Reply::class)->getTable(), function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained(resolve(User::class)->getTable());
+            $table->foreignIdFor(User::class);
             $table->foreignIdFor(Ticket::class)->constrained(resolve(Ticket::class)->getTable());
             $table->text('content');
 
