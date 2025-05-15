@@ -17,7 +17,7 @@ class CreateSupportSuperAdminsTable extends Migration
     {
         Schema::create(resolve(SupportSuperAdmin::class)->getTable(), function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained(resolve(User::class)->getTable());
+            $table->foreignIdFor(User::class);
             $table->timestamps();
         });
     }
