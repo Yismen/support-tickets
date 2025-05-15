@@ -20,11 +20,11 @@ class CreateSupportTicketsTable extends Migration
     {
         Schema::create(resolve(Ticket::class)->getTable(), function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class, 'created_by')->constrained(resolve(User::class)->getTable());
+            $table->foreignIdFor(User::class, 'created_by');
             $table->foreignIdFor(Department::class)->constrained(resolve(Department::class)->getTable());
             $table->foreignIdFor(Subject::class)->constrained(resolve(Subject::class)->getTable());
             $table->text('description');
-            $table->foreignIdFor(User::class, 'assigned_to')->nullable()->constrained(resolve(User::class)->getTable());
+            $table->foreignIdFor(User::class, 'assigned_to')->nullable();
             $table->dateTime('assigned_at')->nullable();
             $table->dateTime('expected_at')->nullable();
             $table->dateTime('completed_at')->nullable();
