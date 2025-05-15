@@ -19,7 +19,7 @@ class CreateSupportDepartmentRolesTable extends Migration
     {
         Schema::create(resolve(DepartmentRole::class)->getTable(), function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained()->unique();
+            $table->foreignIdFor(User::class)->unique();
             $table->foreignIdFor(Department::class)->constrained(resolve(Department::class)->getTable());
             $table->string('role')->default(DepartmentRolesEnum::Agent->value);
 
