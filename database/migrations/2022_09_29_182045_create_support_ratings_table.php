@@ -19,7 +19,7 @@ class CreateSupportRatingsTable extends Migration
     {
         Schema::create(resolve(Rating::class)->getTable(), function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained(resolve(User::class)->getTable());
+            $table->foreignIdFor(User::class);
             $table->foreignIdFor(Ticket::class)->constrained(resolve(Ticket::class)->getTable());
             $table->integer('score')->default(TicketRatingsEnum::MeetsExpectations->value);
             $table->text('comment')->nullable();
